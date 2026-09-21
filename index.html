@@ -1,0 +1,1417 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#050505" />
+  <meta name="color-scheme" content="dark" />
+
+  <title>Rohit Pant | Frontend Developer | React & TypeScript</title>
+  <meta
+    name="description"
+    content="Rohit Pant is a frontend developer focused on responsive UI, performance, React, TypeScript, realtime experiences and polished web interfaces."
+  />
+
+  <meta property="og:title" content="Rohit Pant | Frontend Developer" />
+  <meta property="og:description" content="Responsive frontend engineering, React/TypeScript projects and realtime product experiences." />
+  <meta property="og:type" content="website" />
+
+  <!-- Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
+  <style>
+    :root{
+      --bg:#050505;
+      --text:#f7f6f2;
+      --muted:#cbc8c1;
+      --soft:#918e88;
+      --line:rgba(255,255,255,.14);
+      --line-soft:rgba(255,255,255,.08);
+      --panel:rgba(255,255,255,.025);
+      --pad:clamp(22px,4vw,74px);
+      --nav-h:76px;
+      --radius:22px;
+    }
+
+    *{box-sizing:border-box}
+
+    html{
+      scroll-behavior:smooth;
+      background:var(--bg);
+    }
+
+    body{
+      margin:0;
+      background:transparent;
+      color:var(--text);
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      overflow-x:hidden;
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
+    }
+
+    main, footer{
+      position:relative;
+      z-index:2;
+    }
+
+    a{
+      color:inherit;
+      text-decoration:none;
+    }
+
+    img,video,svg{
+      display:block;
+      max-width:100%;
+    }
+
+    button,input,textarea{
+      font:inherit;
+    }
+
+    ::selection{
+      background:#fff;
+      color:#000;
+    }
+
+    .container{
+      width:min(1280px,100%);
+      margin:0 auto;
+    }
+
+    /* =========================================================
+       SCROLL VIDEO
+       ========================================================= */
+    .video-stage{
+      position:fixed;
+      inset:0;
+      z-index:0;
+      overflow:hidden;
+      background:#050505;
+    }
+
+    .video-stage video{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      object-position:center;
+      /* Avoid a full-screen CSS filter on every frame; the overlay handles contrast/darkness. */
+      transform:translateZ(0);
+      backface-visibility:hidden;
+    }
+
+    .video-overlay{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      background:
+        linear-gradient(
+          90deg,
+          rgba(0,0,0,.88) 0%,
+          rgba(0,0,0,.46) 42%,
+          rgba(0,0,0,.42) 56%,
+          rgba(0,0,0,.84) 100%
+        ),
+        linear-gradient(
+          180deg,
+          rgba(0,0,0,.42) 0%,
+          rgba(0,0,0,.18) 46%,
+          rgba(0,0,0,.76) 100%
+        );
+    }
+
+    /* =========================================================
+       HEADER
+       ========================================================= */
+    .site-header{
+      position:fixed;
+      top:0;
+      left:0;
+      right:0;
+      z-index:30;
+      height:var(--nav-h);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 var(--pad);
+      background:rgba(10,10,10,.48);
+      border-bottom:1px solid rgba(255,255,255,.10);
+      -webkit-backdrop-filter:blur(10px) saturate(120%);
+      backdrop-filter:blur(10px) saturate(120%);
+      box-shadow:0 10px 30px rgba(0,0,0,.18);
+    }
+
+    .brand{
+      font-size:1.02rem;
+      font-weight:820;
+      letter-spacing:-.03em;
+      white-space:nowrap;
+    }
+
+    .site-nav{
+      display:flex;
+      align-items:center;
+      gap:30px;
+      font-size:.88rem;
+      color:#ddd9d1;
+    }
+
+    .site-nav a{
+      opacity:.76;
+      transition:opacity .18s ease;
+    }
+
+    .site-nav a:hover{
+      opacity:1;
+    }
+
+    .header-cta{
+      min-height:42px;
+      padding:0 16px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid var(--line);
+      border-radius:999px;
+      background:rgba(255,255,255,.04);
+      font-size:.86rem;
+      font-weight:680;
+      transition:background .18s ease,color .18s ease,transform .18s ease;
+    }
+
+    .header-cta:hover{
+      background:#fff;
+      color:#000;
+      transform:translateY(-1px);
+    }
+
+    /* =========================================================
+       COMMON
+       ========================================================= */
+    .section{
+      position:relative;
+      padding:116px var(--pad) 92px;
+      border-bottom:1px solid rgba(255,255,255,.065);
+      content-visibility:auto;
+      contain-intrinsic-size:900px;
+    }
+
+    .section-label{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      color:#d8d4cc;
+      text-transform:uppercase;
+      letter-spacing:.15em;
+      font-size:.73rem;
+      font-weight:760;
+      margin-bottom:14px;
+    }
+
+    .section-label::before{
+      content:"";
+      width:38px;
+      height:1px;
+      background:currentColor;
+    }
+
+    .section-heading{
+      max-width:900px;
+      margin:0;
+      font-size:clamp(3rem,6.2vw,6rem);
+      line-height:.96;
+      letter-spacing:-.035em;
+      font-weight:850;
+    }
+
+    .section-intro{
+      max-width:720px;
+      margin:20px 0 0;
+      color:var(--muted);
+      font-size:1rem;
+      line-height:1.72;
+    }
+
+    .icon{
+      width:22px;
+      height:22px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-size:22px;
+      line-height:1;
+    }
+
+    .icon-sm{
+      width:18px;
+      height:18px;
+      font-size:18px;
+    }
+
+    /* =========================================================
+       HERO
+       ========================================================= */
+    #home{
+      min-height:100svh;
+      padding:calc(var(--nav-h) + 16px) var(--pad) 28px;
+      display:flex;
+      align-items:center;
+    }
+
+    .hero{
+      width:100%;
+      min-height:calc(100svh - var(--nav-h) - 44px);
+      position:relative;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+    }
+
+    .social-rail{
+      position:absolute;
+      left:0;
+      top:50%;
+      transform:translateY(-50%);
+      display:flex;
+      flex-direction:column;
+      gap:13px;
+      z-index:3;
+    }
+
+    .social-rail a{
+      width:52px;
+      height:52px;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      border:1px solid rgba(255,255,255,.18);
+      background:rgba(5,5,5,.22);
+      color:#f2efe8;
+      transition:background .18s ease,color .18s ease,transform .18s ease;
+    }
+
+    .social-rail a:hover{
+      background:#fff;
+      color:#000;
+      transform:translateY(-2px);
+    }
+
+    .hero-grid{
+      display:grid;
+      grid-template-columns:minmax(0,1.08fr) minmax(330px,.72fr);
+      gap:clamp(54px,7vw,150px);
+      align-items:center;
+      padding-left:92px;
+      padding-right:8px;
+    }
+
+    .hero-kicker{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      color:#e0ddd7;
+      text-transform:uppercase;
+      letter-spacing:.15em;
+      font-size:.78rem;
+      font-weight:760;
+      margin-bottom:16px;
+    }
+
+    .hero-kicker::before{
+      content:"";
+      width:44px;
+      height:1px;
+      background:currentColor;
+    }
+
+    .hero-title{
+      margin:0;
+      max-width:900px;
+      font-size:clamp(4.5rem,9.2vw,9rem);
+      line-height:.90;
+      letter-spacing:-.045em;
+      font-weight:880;
+    }
+
+    .hero-copy{
+      max-width:750px;
+      margin:25px 0 0;
+      color:#e0ddd7;
+      font-size:clamp(1rem,1.5vw,1.2rem);
+      line-height:1.72;
+    }
+
+    .hero-aside{
+      justify-self:end;
+      max-width:500px;
+      text-align:right;
+      padding-top:8px;
+    }
+
+    .hero-aside h2{
+      margin:0 0 18px;
+      font-size:clamp(2.8rem,4.5vw,4.8rem);
+      line-height:1;
+      letter-spacing:-.03em;
+      font-weight:820;
+    }
+
+    .hero-aside p{
+      margin:0 0 0 auto;
+      max-width:450px;
+      color:#d5d1ca;
+      font-size:clamp(.98rem,1.25vw,1.12rem);
+      line-height:1.7;
+    }
+
+    .hero-features{
+      margin:54px 0 0 92px;
+      padding-top:20px;
+      border-top:1px solid var(--line-soft);
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:18px;
+    }
+
+    .hero-feature{
+      font-size:.84rem;
+      font-weight:700;
+      color:#efebe4;
+    }
+
+    /* =========================================================
+       ABOUT / EXPERIENCE
+       ========================================================= */
+    .about-grid{
+      margin-top:42px;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+    }
+
+    .about-panel{
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      background:var(--panel);
+      padding:28px;
+    }
+
+    .about-panel h3{
+      margin:0 0 12px;
+      font-size:1.5rem;
+      letter-spacing:-.04em;
+    }
+
+    .about-panel p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.72;
+    }
+
+    .experience-row{
+      display:grid;
+      grid-template-columns:170px 1fr;
+      gap:24px;
+      padding:22px 0;
+      border-top:1px solid var(--line-soft);
+    }
+
+    .experience-row:first-child{
+      margin-top:8px;
+    }
+
+    .experience-date{
+      color:var(--soft);
+      font-size:.86rem;
+    }
+
+    .experience-content strong{
+      display:block;
+      font-size:1.06rem;
+      margin-bottom:6px;
+    }
+
+    .experience-content p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.65;
+      font-size:.94rem;
+    }
+
+    /* =========================================================
+       SKILLS — EDITORIAL ROWS
+       ========================================================= */
+    .skills-list{
+      margin-top:42px;
+      border-top:1px solid var(--line);
+    }
+
+    .skill-row{
+      display:grid;
+      grid-template-columns:minmax(190px,.32fr) 1fr;
+      gap:34px;
+      align-items:start;
+      padding:26px 0;
+      border-bottom:1px solid var(--line);
+    }
+
+    .skill-row h3{
+      margin:0;
+      font-size:clamp(1.25rem,2vw,1.75rem);
+      letter-spacing:-.045em;
+      font-weight:760;
+    }
+
+    .skill-items{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px 18px;
+      color:#dfdbd4;
+      line-height:1.6;
+    }
+
+    .skill-items span{
+      position:relative;
+      font-size:.94rem;
+    }
+
+    .skill-items span:not(:last-child)::after{
+      content:"";
+      width:3px;
+      height:3px;
+      border-radius:50%;
+      background:#77736d;
+      position:absolute;
+      top:50%;
+      right:-11px;
+      transform:translateY(-50%);
+    }
+
+    /* =========================================================
+       PROJECTS
+       ========================================================= */
+    .projects-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:end;
+      gap:36px;
+    }
+
+    .projects-head .section-intro{
+      max-width:520px;
+      margin:0 0 6px;
+    }
+
+    .projects-grid{
+      margin-top:40px;
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:18px;
+    }
+
+    .project-card{
+      min-width:0;
+      overflow:hidden;
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      background:rgba(255,255,255,.018);
+      transition:transform .18s ease,border-color .18s ease,background .18s ease;
+    }
+
+    .project-card:hover{
+      transform:translateY(-4px);
+      border-color:rgba(255,255,255,.28);
+      background:rgba(255,255,255,.032);
+    }
+
+    .project-thumb-link{
+      display:block;
+      position:relative;
+      overflow:hidden;
+      border-bottom:1px solid rgba(255,255,255,.10);
+    }
+
+    .project-thumb{
+      width:100%;
+      aspect-ratio:16/10;
+      object-fit:cover;
+      background:#111;
+      transition:transform .35s ease;
+    }
+
+    .project-card:hover .project-thumb{
+      transform:scale(1.025);
+    }
+
+    .project-live-badge{
+      position:absolute;
+      right:14px;
+      bottom:14px;
+      min-height:38px;
+      padding:0 13px;
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      border-radius:999px;
+      background:#fff;
+      color:#080808;
+      font-size:.78rem;
+      font-weight:760;
+    }
+
+    .project-body{
+      padding:22px;
+    }
+
+    .project-eyebrow{
+      color:#9d9992;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      font-size:.7rem;
+      line-height:1.5;
+      margin-bottom:10px;
+    }
+
+    .project-title-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+    }
+
+    .project-title-row h3{
+      margin:0;
+      font-size:1.85rem;
+      line-height:1.02;
+      letter-spacing:-.025em;
+    }
+
+    .project-github{
+      width:40px;
+      height:40px;
+      flex:0 0 40px;
+      display:grid;
+      place-items:center;
+      border:1px solid var(--line);
+      border-radius:50%;
+      color:#dedad2;
+      transition:background .18s ease,color .18s ease;
+    }
+
+    .project-github:hover{
+      background:#fff;
+      color:#000;
+    }
+
+    .project-summary{
+      margin:14px 0 0;
+      color:#c5c1ba;
+      font-size:.92rem;
+      line-height:1.68;
+    }
+
+    .project-stack{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:18px;
+    }
+
+    .project-stack span{
+      padding:7px 9px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      color:#ebe7df;
+      font-size:.7rem;
+    }
+
+    /* =========================================================
+       CONTACT
+       ========================================================= */
+    .contact-wrap{
+      display:grid;
+      grid-template-columns:1fr minmax(300px,.62fr);
+      gap:60px;
+      align-items:end;
+    }
+
+    .contact-links{
+      display:grid;
+      gap:10px;
+    }
+
+    .contact-link{
+      min-height:58px;
+      padding:0 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+      border:1px solid var(--line);
+      border-radius:18px;
+      background:rgba(255,255,255,.02);
+      color:#f1ede6;
+      transition:background .18s ease,border-color .18s ease;
+    }
+
+    .contact-link:hover{
+      background:rgba(255,255,255,.055);
+      border-color:rgba(255,255,255,.28);
+    }
+
+    .contact-link-main{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:0;
+    }
+
+    .contact-link strong{
+      font-size:.92rem;
+    }
+
+    .contact-link small{
+      color:#98948e;
+      font-size:.78rem;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .contact-arrow{
+      color:#9e9a93;
+      flex:0 0 auto;
+    }
+
+    /* =========================================================
+       FOOTER / PROGRESS
+       ========================================================= */
+    footer{
+      padding:26px var(--pad) 34px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:20px;
+      color:#85817a;
+      font-size:.8rem;
+      border-top:1px solid rgba(255,255,255,.055);
+      background:#050505;
+    }
+
+    .footer-socials{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .footer-socials a{
+      color:#b0aca5;
+    }
+
+    .footer-socials a:hover{
+      color:#fff;
+    }
+
+    .scroll-progress{
+      position:fixed;
+      left:0;
+      bottom:0;
+      z-index:50;
+      width:100%;
+      height:2px;
+      background:rgba(255,255,255,.07);
+    }
+
+    .scroll-progress span{
+      display:block;
+      width:0;
+      height:100%;
+      background:#fff;
+    }
+
+    /* =========================================================
+       RESPONSIVE
+       ========================================================= */
+    @media (max-width:1100px){
+      .hero-grid{
+        gap:52px;
+      }
+
+      .hero-features{
+        grid-template-columns:repeat(2,1fr);
+      }
+
+      .projects-grid{
+        grid-template-columns:1fr 1fr;
+      }
+    }
+
+    @media (max-width:860px){
+      :root{
+        --nav-h:68px;
+      }
+
+      .site-nav{
+        display:none;
+      }
+
+      .header-cta{
+        min-height:40px;
+      }
+
+      #home{
+        min-height:auto;
+        padding-top:100px;
+        padding-bottom:70px;
+      }
+
+      .hero{
+        min-height:auto;
+      }
+
+      .social-rail{
+        position:static;
+        transform:none;
+        flex-direction:row;
+        margin-bottom:28px;
+      }
+
+      .social-rail a{
+        width:46px;
+        height:46px;
+      }
+
+      .hero-grid{
+        grid-template-columns:1fr;
+        padding-left:0;
+        padding-right:0;
+        gap:38px;
+      }
+
+      .hero-aside{
+        justify-self:start;
+        text-align:left;
+        max-width:630px;
+      }
+
+      .hero-aside p{
+        margin-left:0;
+      }
+
+      .hero-features{
+        margin-left:0;
+      }
+
+      .about-grid{
+        grid-template-columns:1fr;
+      }
+
+      .skill-row{
+        grid-template-columns:1fr;
+        gap:14px;
+      }
+
+      .projects-head{
+        display:block;
+      }
+
+      .projects-head .section-intro{
+        margin-top:20px;
+      }
+
+      .projects-grid{
+        grid-template-columns:1fr;
+      }
+
+      .contact-wrap{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width:560px){
+      .site-header{
+        padding-inline:18px;
+      }
+
+      .brand{
+        font-size:.94rem;
+      }
+
+      .header-cta{
+        font-size:.78rem;
+        padding-inline:12px;
+      }
+
+      .section,
+      #home{
+        padding-left:18px;
+        padding-right:18px;
+      }
+
+      .hero-title{
+        font-size:clamp(3.7rem,18vw,5.4rem);
+      }
+
+      .hero-aside h2{
+        font-size:clamp(2.4rem,12vw,3.5rem);
+      }
+
+      .hero-features{
+        grid-template-columns:1fr;
+        gap:13px;
+      }
+
+      .experience-row{
+        grid-template-columns:1fr;
+        gap:8px;
+      }
+
+      .contact-link{
+        padding-inline:14px;
+      }
+
+      .contact-link small{
+        max-width:185px;
+      }
+
+      footer{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+
+      .video-stage video{
+        object-position:55% center;
+      }
+    }
+
+    @media (prefers-reduced-motion:reduce){
+      html{
+        scroll-behavior:auto;
+      }
+
+      *,
+      *::before,
+      *::after{
+        transition-duration:.001ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="video-stage" aria-hidden="true">
+    <video id="bgVideo" muted playsinline preload="auto">
+      <source src="assets/portfolio-bg.mp4" type="video/mp4" />
+    </video>
+    <div class="video-overlay"></div>
+  </div>
+
+  <header class="site-header">
+    <a class="brand" href="#home">Rohit Pant</a>
+
+    <nav class="site-nav" aria-label="Primary navigation">
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </nav>
+
+    <a class="header-cta" href="mailto:rohitpant090@gmail.com">Get in touch</a>
+  </header>
+
+  <main>
+    <section id="home">
+      <div class="hero">
+        <div class="social-rail" aria-label="Social links">
+          <a href="https://www.linkedin.com/in/rohitpantdev/" target="_blank" rel="noreferrer" aria-label="LinkedIn">
+            <i class="fa-brands fa-linkedin-in icon" aria-hidden="true"></i>
+          </a>
+
+          <a href="https://github.com/Rohit30418" target="_blank" rel="noreferrer" aria-label="GitHub">
+            <i class="fa-brands fa-github icon" aria-hidden="true"></i>
+          </a>
+
+          <a href="mailto:rohitpant090@gmail.com" aria-label="Email">
+            <i class="fa-solid fa-envelope icon" aria-hidden="true"></i>
+          </a>
+        </div>
+
+        <div class="hero-grid">
+          <div>
+            <div class="hero-kicker">Frontend Developer</div>
+            <h1 class="hero-title">Digital<br />Experiences.</h1>
+            <p class="hero-copy">
+              I build fast, responsive and polished web interfaces with a focus on
+              interaction, usability and real-world performance.
+            </p>
+          </div>
+
+          <aside class="hero-aside">
+            <h2>Good UI should feel effortless.</h2>
+            <p>
+              Clean frontend engineering, purposeful motion and details that make
+              the interface feel premium without getting in the user's way.
+            </p>
+          </aside>
+        </div>
+
+        <div class="hero-features" aria-label="Focus areas">
+          <div class="hero-feature">Frontend Engineering</div>
+          <div class="hero-feature">Responsive UI</div>
+          <div class="hero-feature">Performance</div>
+          <div class="hero-feature">Product UX</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="about">
+      <div class="container">
+        <div class="section-label">About</div>
+        <h2 class="section-heading">Frontend built for real products.</h2>
+        <p class="section-intro">
+          I work across UI implementation, responsive behavior, API integration,
+          performance and client-facing delivery. Alongside my professional work,
+          I build React and TypeScript products to explore modern frontend patterns,
+          realtime systems and richer user experiences.
+        </p>
+
+        <div class="about-grid">
+          <article class="about-panel">
+            <h3>Professional experience</h3>
+
+            <div class="experience-row">
+              <div class="experience-date">Aug 2022 — Present</div>
+              <div class="experience-content">
+                <strong>Frontend / UI Developer · Promithues Solutions Pvt. Ltd.</strong>
+                <p>
+                  HTML, CSS, JavaScript, jQuery, ASP.NET WebForms UI delivery,
+                  responsive implementation, API integrations, client coordination
+                  and support for junior team members.
+                </p>
+              </div>
+            </div>
+          </article>
+
+          <article class="about-panel">
+            <h3>How I approach UI</h3>
+            <p>
+              I prefer interfaces that are visually clear, technically practical
+              and easy to use. I focus on hierarchy, interaction states,
+              responsiveness, accessibility and performance rather than adding
+              effects that do not improve the product.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="skills">
+      <div class="container">
+        <div class="section-label">Skills</div>
+        <h2 class="section-heading">The stack behind my work.</h2>
+        <p class="section-intro">
+          Core frontend foundations for professional delivery, with modern React,
+          state management, motion and realtime tooling used across my product projects.
+        </p>
+
+        <div class="skills-list">
+          <div class="skill-row">
+            <h3>Core Frontend</h3>
+            <div class="skill-items">
+              <span>HTML5</span>
+              <span>CSS3</span>
+              <span>JavaScript</span>
+              <span>TypeScript</span>
+              <span>React</span>
+              <span>jQuery</span>
+            </div>
+          </div>
+
+          <div class="skill-row">
+            <h3>State & Data</h3>
+            <div class="skill-items">
+              <span>Redux Toolkit</span>
+              <span>React Query</span>
+              <span>Axios</span>
+              <span>Firebase</span>
+            </div>
+          </div>
+
+          <div class="skill-row">
+            <h3>UI & Motion</h3>
+            <div class="skill-items">
+              <span>Tailwind CSS</span>
+              <span>Bootstrap</span>
+              <span>Framer Motion</span>
+              <span>GSAP</span>
+              <span>Swiper</span>
+            </div>
+          </div>
+
+          <div class="skill-row">
+            <h3>Realtime & Tooling</h3>
+            <div class="skill-items">
+              <span>WebRTC</span>
+              <span>PeerJS</span>
+              <span>Socket.IO</span>
+              <span>Git</span>
+              <span>Vite</span>
+              <span>Chrome DevTools</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="projects">
+      <div class="container">
+        <div class="projects-head">
+          <div>
+            <div class="section-label">Projects</div>
+            <h2 class="section-heading">Selected Work.</h2>
+          </div>
+
+          <p class="section-intro">
+            Three product-focused builds covering realtime communication,
+            multi-role event management and ecommerce.
+          </p>
+        </div>
+
+        <div class="projects-grid">
+          <article class="project-card">
+            <a
+              class="project-thumb-link"
+              href="https://vaani.rohitpant.in/"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Open Vaani live website"
+            >
+              <img
+                class="project-thumb"
+                src="assets/vaani.png"
+                alt="Vaani realtime communication platform"
+                loading="lazy"
+                decoding="async"
+              />
+              <span class="project-live-badge">Live Project <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></span>
+            </a>
+
+            <div class="project-body">
+              <div class="project-eyebrow">Realtime communication · language practice</div>
+
+              <div class="project-title-row">
+                <h3>Vaani</h3>
+
+                <a
+                  class="project-github"
+                  href="https://github.com/Rohit30418/chattalk444"
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="Vaani GitHub repository"
+                >
+                  <i class="fa-brands fa-github icon icon-sm" aria-hidden="true"></i>
+                </a>
+              </div>
+
+              <p class="project-summary">
+                A realtime language exchange frontend with WebRTC rooms, live
+                collaboration features, Firebase-backed services, Redux state
+                and an interactive 3D AI experience.
+              </p>
+
+              <div class="project-stack">
+                <span>React</span>
+                <span>WebRTC</span>
+                <span>PeerJS</span>
+                <span>Socket.IO</span>
+                <span>Firebase</span>
+                <span>Three.js</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card">
+            <a
+              class="project-thumb-link"
+              href="https://eventhive.rohitpant.in/"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Open EventHive live website"
+            >
+              <img
+                class="project-thumb"
+                src="assets/eventhive.png"
+                alt="EventHive event management platform"
+                loading="lazy"
+                decoding="async"
+              />
+              <span class="project-live-badge">Live Project <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></span>
+            </a>
+
+            <div class="project-body">
+              <div class="project-eyebrow">Multi-role event management platform</div>
+
+              <div class="project-title-row">
+                <h3>EventHive</h3>
+
+                <a
+                  class="project-github"
+                  href="https://github.com/Rohit30418/EventHive"
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="EventHive GitHub repository"
+                >
+                  <i class="fa-brands fa-github icon icon-sm" aria-hidden="true"></i>
+                </a>
+              </div>
+
+              <p class="project-summary">
+                A React + TypeScript event platform for discovery, organizer
+                onboarding, role-based administration, attendee registration,
+                branded microsites, analytics and export workflows.
+              </p>
+
+              <div class="project-stack">
+                <span>React</span>
+                <span>TypeScript</span>
+                <span>React Query</span>
+                <span>Redux Toolkit</span>
+                <span>Firebase</span>
+                <span>Zod</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card">
+            <a
+              class="project-thumb-link"
+              href="https://khareedo.rohitpant.in/"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Open Khareedo live website"
+            >
+              <img
+                class="project-thumb"
+                src="https://raw.githubusercontent.com/Rohit30418/myportfolio/main/public/project-thumbnails/khareedo.webp"
+                alt="Khareedo ecommerce frontend"
+                loading="lazy"
+                decoding="async"
+              />
+              <span class="project-live-badge">Live Project <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></span>
+            </a>
+
+            <div class="project-body">
+              <div class="project-eyebrow">Ecommerce frontend · 3D product experience</div>
+
+              <div class="project-title-row">
+                <h3>Khareedo</h3>
+
+                <a
+                  class="project-github"
+                  href="https://github.com/Rohit30418/ecommerceWeb-"
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="Khareedo GitHub repository"
+                >
+                  <i class="fa-brands fa-github icon icon-sm" aria-hidden="true"></i>
+                </a>
+              </div>
+
+              <p class="project-summary">
+                A React storefront covering product discovery, filtering, cart
+                and checkout flows, authentication, responsive shopping UI,
+                3D product assets and AI-assisted product discovery.
+              </p>
+
+              <div class="project-stack">
+                <span>React</span>
+                <span>Redux Toolkit</span>
+                <span>React Query</span>
+                <span>Firebase</span>
+                <span>Tailwind CSS</span>
+                <span>GSAP</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contact">
+      <div class="container contact-wrap">
+        <div>
+          <div class="section-label">Contact</div>
+          <h2 class="section-heading">Have a frontend role or product in mind?</h2>
+          <p class="section-intro">
+            Reach out for frontend opportunities, UI implementation or product collaboration.
+          </p>
+        </div>
+
+        <div class="contact-links">
+          <a class="contact-link" href="mailto:rohitpant090@gmail.com">
+            <span class="contact-link-main">
+             <i class="fa-solid fa-envelope icon icon-sm" aria-hidden="true"></i>
+              <span>
+                <strong>Email</strong><br />
+                <small>rohitpant090@gmail.com</small>
+              </span>
+            </span>
+            <span class="contact-arrow"><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></span>
+          </a>
+
+          <a class="contact-link" href="https://www.linkedin.com/in/rohitpantdev/" target="_blank" rel="noreferrer">
+            <span class="contact-link-main">
+              <i class="fa-brands fa-linkedin-in icon icon-sm" aria-hidden="true"></i>
+              <span>
+                <strong>LinkedIn</strong><br />
+                <small>/in/rohitpantdev</small>
+              </span>
+            </span>
+            <span class="contact-arrow"><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></span>
+          </a>
+
+          <a class="contact-link" href="https://github.com/Rohit30418" target="_blank" rel="noreferrer">
+            <span class="contact-link-main">
+              <i class="fa-brands fa-github icon icon-sm" aria-hidden="true"></i>
+              <span>
+                <strong>GitHub</strong><br />
+                <small>@Rohit30418</small>
+              </span>
+            </span>
+            <span class="contact-arrow"><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>© <span id="year"></span> Rohit Pant · Frontend Developer</span>
+
+    <div class="footer-socials">
+      <a href="https://www.linkedin.com/in/rohitpantdev/" target="_blank" rel="noreferrer" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in icon icon-sm" aria-hidden="true"></i></a>
+      <a href="https://github.com/Rohit30418" target="_blank" rel="noreferrer" aria-label="GitHub"><i class="fa-brands fa-github icon icon-sm" aria-hidden="true"></i></a>
+      <a href="mailto:rohitpant090@gmail.com" aria-label="Email"><i class="fa-solid fa-envelope icon icon-sm" aria-hidden="true"></i></a>
+    </div>
+  </footer>
+
+  <div class="scroll-progress" aria-hidden="true">
+    <span id="progressBar"></span>
+  </div>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    const video = document.getElementById("bgVideo");
+    const progressBar = document.getElementById("progressBar");
+
+    let duration = 0;
+    let targetTime = 0;
+    let rafPending = false;
+    let lastSeekAt = 0;
+    let seekTimer = null;
+
+    // Throttle expensive video seeks, but always perform the final seek.
+    const SEEK_INTERVAL = 55;
+
+    function pageProgress(){
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      return max > 0
+        ? Math.max(0, Math.min(1, window.scrollY / max))
+        : 0;
+    }
+
+    function performSeek(){
+      seekTimer = null;
+
+      if (!duration || video.readyState < 1) return;
+      if (Math.abs(video.currentTime - targetTime) < 0.025) return;
+
+      lastSeekAt = performance.now();
+
+      try{
+        // Use currentTime rather than fastSeek(). fastSeek may jump only to
+        // sparse keyframes and can make scroll-scrubbing appear frozen.
+        video.currentTime = targetTime;
+      }catch(e){}
+    }
+
+    function queueSeek(){
+      if (!duration) return;
+
+      const elapsed = performance.now() - lastSeekAt;
+      const wait = Math.max(0, SEEK_INTERVAL - elapsed);
+
+      if (wait === 0){
+        if (seekTimer){
+          clearTimeout(seekTimer);
+          seekTimer = null;
+        }
+        performSeek();
+        return;
+      }
+
+      // Important: schedule the last requested frame even if scrolling stops
+      // before the throttle interval expires.
+      clearTimeout(seekTimer);
+      seekTimer = setTimeout(performSeek, wait);
+    }
+
+    function updateScrollState(){
+      rafPending = false;
+
+      const progress = pageProgress();
+      progressBar.style.width = `${progress * 100}%`;
+
+      if (duration){
+        targetTime = Math.max(0, Math.min(duration - 0.001, progress * duration));
+        queueSeek();
+      }
+    }
+
+    function onScroll(){
+      if (!rafPending){
+        rafPending = true;
+        requestAnimationFrame(updateScrollState);
+      }
+    }
+
+    video.addEventListener("loadedmetadata", async () => {
+      duration = Number.isFinite(video.duration) ? video.duration : 0;
+
+      // Prime the decoder once, then pause. Scrolling controls currentTime.
+      try{
+        await video.play();
+        video.pause();
+      }catch(e){}
+
+      targetTime = duration
+        ? Math.max(0, Math.min(duration - 0.001, pageProgress() * duration))
+        : 0;
+
+      try{
+        video.currentTime = targetTime;
+      }catch(e){}
+
+      updateScrollState();
+    });
+
+    video.addEventListener("seeked", () => {
+      // If the user kept scrolling during the seek, catch up to the latest target.
+      if (duration && Math.abs(video.currentTime - targetTime) > 0.04){
+        queueSeek();
+      }
+    });
+
+    window.addEventListener("scroll", onScroll, { passive:true });
+    window.addEventListener("resize", onScroll, { passive:true });
+
+    updateScrollState();
+  </script>
+</body>
+</html>
