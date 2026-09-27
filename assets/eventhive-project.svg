@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#120a06"/><stop offset=".55" stop-color="#1c0d09"/><stop offset="1" stop-color="#0f0816"/></linearGradient>
+  <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ff9d3d"/><stop offset="1" stop-color="#ff5d6c"/></linearGradient>
+</defs>
+<rect width="1600" height="900" fill="url(#bg)"/>
+<text x="105" y="115" fill="#ffad58" font-family="Arial,sans-serif" font-size="34" font-weight="700">EVENTHIVE</text>
+<text x="105" y="255" fill="#fff" font-family="Arial,sans-serif" font-size="72" font-weight="800">Events built to</text>
+<text x="105" y="335" fill="#fff" font-family="Arial,sans-serif" font-size="72" font-weight="800">discover & manage.</text>
+<text x="105" y="402" fill="#cfb9ae" font-family="Arial,sans-serif" font-size="27">React · TypeScript · Firebase · Role-based dashboards</text>
+<rect x="100" y="470" width="920" height="320" rx="28" fill="#160e0c" stroke="#503025" stroke-width="2"/>
+<rect x="132" y="504" width="856" height="58" rx="15" fill="#241510"/>
+<text x="164" y="542" fill="#fff1e7" font-family="Arial,sans-serif" font-size="25" font-weight="700">Upcoming Events</text>
+<g font-family="Arial,sans-serif">
+  <rect x="136" y="596" width="244" height="150" rx="20" fill="#29160f"/><rect x="136" y="596" width="244" height="68" rx="20" fill="url(#accent)"/><text x="158" y="704" fill="#fff" font-size="23" font-weight="700">Tech Summit</text>
+  <rect x="432" y="596" width="244" height="150" rx="20" fill="#21121f"/><rect x="432" y="596" width="244" height="68" rx="20" fill="#8d3df0"/><text x="454" y="704" fill="#fff" font-size="23" font-weight="700">Music Night</text>
+  <rect x="728" y="596" width="244" height="150" rx="20" fill="#181a24"/><rect x="728" y="596" width="244" height="68" rx="20" fill="#2577ef"/><text x="750" y="704" fill="#fff" font-size="23" font-weight="700">Design Meetup</text>
+</g>
+<rect x="1090" y="220" width="325" height="615" rx="48" fill="#090807" stroke="#70402d" stroke-width="3"/>
+<rect x="1118" y="258" width="269" height="539" rx="28" fill="#120d0b"/>
+<text x="1150" y="332" fill="#ff9b44" font-family="Arial,sans-serif" font-size="29" font-weight="700">Find your event</text>
+<rect x="1150" y="385" width="204" height="52" rx="13" fill="#231713"/>
+<text x="1170" y="419" fill="#bba9a1" font-family="Arial,sans-serif" font-size="18">Search events...</text>
+<rect x="1150" y="486" width="204" height="120" rx="18" fill="#32160f"/>
+<rect x="1150" y="632" width="204" height="120" rx="18" fill="#221329"/>
+<circle cx="1326" cy="760" r="35" fill="url(#accent)"/>
+</svg>
