@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#020b09"/><stop offset="1" stop-color="#071713"/></linearGradient>
+  <linearGradient id="green" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#61ffbb"/><stop offset="1" stop-color="#22d989"/></linearGradient>
+</defs>
+<rect width="1600" height="900" fill="url(#bg)"/>
+<g opacity=".18" stroke="#37d896"><path d="M0 120h1600M0 240h1600M0 360h1600M0 480h1600M0 600h1600M0 720h1600"/><path d="M160 0v900M320 0v900M480 0v900M640 0v900M800 0v900M960 0v900M1120 0v900M1280 0v900M1440 0v900"/></g>
+<text x="105" y="115" fill="#63f4b6" font-family="Arial,sans-serif" font-size="36" font-weight="800">ARGUS</text>
+<text x="105" y="255" fill="#fff" font-family="Arial,sans-serif" font-size="72" font-weight="800">AI website auditing.</text>
+<text x="105" y="337" fill="#fff" font-family="Arial,sans-serif" font-size="72" font-weight="800">See beyond the surface.</text>
+<text x="105" y="402" fill="#a7c9bc" font-family="Arial,sans-serif" font-size="27">Performance · SEO · Accessibility · Security · Interactions</text>
+<rect x="100" y="470" width="1390" height="330" rx="28" fill="#07110f" stroke="#245c49" stroke-width="2"/>
+<rect x="130" y="502" width="280" height="266" rx="18" fill="#0b1814"/>
+<text x="162" y="552" fill="#91eec7" font-family="Arial,sans-serif" font-size="23" font-weight="700">Audit Overview</text>
+<circle cx="268" cy="654" r="75" fill="none" stroke="#163d30" stroke-width="20"/>
+<path d="M268 579a75 75 0 1 1-62 117" fill="none" stroke="url(#green)" stroke-width="20" stroke-linecap="round"/>
+<text x="231" y="669" fill="#fff" font-family="Arial,sans-serif" font-size="46" font-weight="800">87</text>
+<g font-family="Arial,sans-serif">
+<rect x="450" y="502" width="205" height="118" rx="17" fill="#0b1814"/><text x="477" y="544" fill="#99bcb0" font-size="20">Performance</text><text x="477" y="592" fill="#65f0b8" font-size="39" font-weight="800">92</text>
+<rect x="680" y="502" width="205" height="118" rx="17" fill="#0b1814"/><text x="707" y="544" fill="#99bcb0" font-size="20">SEO</text><text x="707" y="592" fill="#ffcf5a" font-size="39" font-weight="800">78</text>
+<rect x="910" y="502" width="205" height="118" rx="17" fill="#0b1814"/><text x="937" y="544" fill="#99bcb0" font-size="20">Accessibility</text><text x="937" y="592" fill="#63f0b5" font-size="39" font-weight="800">84</text>
+<rect x="1140" y="502" width="205" height="118" rx="17" fill="#0b1814"/><text x="1167" y="544" fill="#99bcb0" font-size="20">Security</text><text x="1167" y="592" fill="#63f0b5" font-size="39" font-weight="800">96</text>
+</g>
+<rect x="450" y="650" width="895" height="118" rx="17" fill="#0b1814"/>
+<text x="480" y="695" fill="#7bf0bd" font-family="Arial,sans-serif" font-size="22" font-weight="700">AI INSIGHT</text>
+<text x="480" y="736" fill="#d8ebe3" font-family="Arial,sans-serif" font-size="22">Large hero image detected · optimize to improve load time and LCP.</text>
+</svg>
