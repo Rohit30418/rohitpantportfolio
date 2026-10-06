@@ -1305,6 +1305,367 @@
       .lux-text-link{font-size:.68rem}
     }
 
+  
+    /* =========================================================
+       EDITORIAL PROJECTS — matches portrait hero
+       ========================================================= */
+    .lux-projects{
+      position:relative;
+      padding:128px 0 136px;
+      overflow:hidden;
+      background:
+        radial-gradient(circle at 88% 10%,rgba(164,159,87,.07),transparent 28rem),
+        linear-gradient(180deg,#080908 0%,#0a0b0a 48%,#070807 100%);
+      border-top:1px solid rgba(255,255,255,.065);
+    }
+    .lux-projects::before{
+      content:"";
+      position:absolute;
+      inset:0 auto 0 0;
+      width:38%;
+      opacity:.12;
+      background-image:radial-gradient(circle,rgba(255,255,255,.18) .7px,transparent .7px);
+      background-size:8px 8px;
+      -webkit-mask-image:linear-gradient(90deg,black,transparent);
+      mask-image:linear-gradient(90deg,black,transparent);
+      pointer-events:none;
+    }
+    .lux-projects-head{
+      position:relative;
+      z-index:1;
+      display:grid;
+      grid-template-columns:1.2fr .8fr;
+      gap:80px;
+      align-items:end;
+      margin-bottom:58px;
+    }
+    .lux-section-index{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin-bottom:19px;
+      color:#8b8c85;
+      font-size:.62rem;
+      font-weight:650;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+    }
+    .lux-section-index span{
+      color:#c8b176;
+      font-variant-numeric:tabular-nums;
+    }
+    .lux-section-index::after{
+      content:"";
+      width:56px;
+      height:1px;
+      background:rgba(200,177,118,.45);
+    }
+    .lux-projects-title{
+      margin:0;
+      display:flex;
+      flex-direction:column;
+      color:#f2f1ec;
+      font-size:clamp(4rem,7.4vw,7.35rem);
+      font-weight:430;
+      line-height:.82;
+      letter-spacing:-.072em;
+      text-transform:uppercase;
+    }
+    .lux-projects-title span:last-child{
+      color:transparent;
+      -webkit-text-stroke:1px rgba(242,241,236,.47);
+      text-stroke:1px rgba(242,241,236,.47);
+    }
+    .lux-projects-intro{
+      max-width:430px;
+      justify-self:end;
+      padding-bottom:5px;
+    }
+    .lux-projects-intro p{
+      margin:0;
+      color:#b2b3ad;
+      font-size:.93rem;
+      line-height:1.72;
+    }
+    .lux-projects-intro>span{
+      display:block;
+      margin-top:15px;
+      color:#73756e;
+      font-size:.63rem;
+      font-weight:600;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+    }
+
+    .lux-projects-list{
+      position:relative;
+      z-index:1;
+      display:grid;
+      gap:22px;
+    }
+    .lux-projects .lux-project-card{
+      position:relative;
+      min-height:420px;
+      display:grid;
+      grid-template-columns:minmax(0,1.12fr) minmax(360px,.88fr);
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.095);
+      border-radius:22px;
+      background:
+        linear-gradient(135deg,rgba(255,255,255,.035),rgba(255,255,255,.012)),
+        #0d0e0d;
+      box-shadow:0 30px 80px rgba(0,0,0,.18);
+      transform:none;
+      transition:
+        transform .5s var(--ease),
+        border-color .35s ease,
+        box-shadow .5s ease;
+    }
+    .lux-projects .lux-project-card::before{
+      content:"";
+      position:absolute;
+      z-index:0;
+      inset:auto -12% -54% auto;
+      width:420px;
+      height:420px;
+      border-radius:50%;
+      background:rgba(178,163,93,.055);
+      filter:blur(55px);
+      pointer-events:none;
+    }
+    .lux-projects .lux-project-card:hover{
+      transform:translateY(-5px);
+      border-color:rgba(203,184,126,.25);
+      box-shadow:0 38px 100px rgba(0,0,0,.30);
+    }
+    .lux-projects .lux-project-card:nth-child(even){
+      grid-template-columns:minmax(360px,.88fr) minmax(0,1.12fr);
+    }
+    .lux-projects .lux-project-card:nth-child(even) .lux-project-media{order:2}
+    .lux-projects .lux-project-card:nth-child(even) .lux-project-body{order:1}
+
+    .lux-projects .lux-project-media{
+      position:relative;
+      min-width:0;
+      margin:0;
+      border:0;
+      border-radius:0;
+      overflow:hidden;
+      background:#080908;
+      isolation:isolate;
+    }
+    .lux-projects .lux-project-media::before{
+      content:"";
+      position:absolute;
+      z-index:2;
+      inset:0;
+      border-right:1px solid rgba(255,255,255,.06);
+      pointer-events:none;
+    }
+    .lux-projects .lux-project-card:nth-child(even) .lux-project-media::before{
+      border-right:0;
+      border-left:1px solid rgba(255,255,255,.06);
+    }
+    .lux-projects .lux-project-media img{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      aspect-ratio:auto;
+      object-fit:cover;
+      transform:scale(1.015);
+      filter:saturate(.66) brightness(.72) contrast(1.07);
+      transition:transform .8s var(--ease),filter .65s ease;
+    }
+    .lux-projects .lux-project-card:hover .lux-project-media img{
+      transform:scale(1.055);
+      filter:saturate(.92) brightness(.86) contrast(1.03);
+    }
+    .lux-media-shade{
+      position:absolute;
+      z-index:1;
+      inset:0;
+      background:
+        linear-gradient(180deg,rgba(5,6,5,.05),rgba(5,6,5,.18)),
+        linear-gradient(90deg,transparent 55%,rgba(8,9,8,.26));
+      pointer-events:none;
+    }
+    .lux-project-card:nth-child(even) .lux-media-shade{
+      background:
+        linear-gradient(180deg,rgba(5,6,5,.05),rgba(5,6,5,.18)),
+        linear-gradient(270deg,transparent 55%,rgba(8,9,8,.26));
+    }
+    .lux-live-pill{
+      position:absolute;
+      z-index:4;
+      left:18px;
+      bottom:18px;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:8px 11px;
+      border:1px solid rgba(255,255,255,.15);
+      border-radius:999px;
+      background:rgba(8,9,8,.70);
+      color:#dbdcd6;
+      font-size:.62rem;
+      font-weight:600;
+      letter-spacing:.04em;
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
+    }
+    .lux-live-pill b{color:#d4bd7e;font-size:.72rem}
+
+    .lux-projects .lux-project-body{
+      position:relative;
+      z-index:2;
+      min-width:0;
+      padding:44px 42px 34px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+    }
+    .lux-project-meta{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+      margin-bottom:30px;
+      color:#777970;
+      font-size:.60rem;
+      font-weight:650;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+    }
+    .lux-project-meta span:first-child{
+      color:#c9b174;
+      font-variant-numeric:tabular-nums;
+    }
+    .lux-projects .lux-project-title{
+      margin:0;
+      color:#f3f2ed;
+      font-size:clamp(3rem,4.6vw,5rem);
+      font-weight:430;
+      line-height:.94;
+      letter-spacing:-.065em;
+      text-transform:uppercase;
+    }
+    .lux-projects .lux-project-desc{
+      min-height:0;
+      max-width:500px;
+      margin:22px 0 0;
+      color:#a4a69f;
+      font-size:.88rem;
+      line-height:1.7;
+    }
+    .lux-projects .lux-stack{
+      margin-top:27px;
+      gap:7px;
+    }
+    .lux-projects .lux-stack span{
+      padding:7px 10px;
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:999px;
+      background:rgba(255,255,255,.018);
+      color:#959790;
+      font-size:.60rem;
+      font-weight:600;
+      letter-spacing:.035em;
+    }
+    .lux-project-foot{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+      margin-top:auto;
+      padding-top:34px;
+      color:#777970;
+      font-size:.62rem;
+      font-weight:650;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+    }
+    .lux-project-foot::before{
+      content:"";
+      position:absolute;
+      left:42px;
+      right:42px;
+      bottom:72px;
+      height:1px;
+      background:rgba(255,255,255,.075);
+    }
+    .lux-project-foot i{
+      width:39px;
+      height:39px;
+      display:grid;
+      place-items:center;
+      flex:none;
+      border:1px solid rgba(201,177,116,.25);
+      border-radius:50%;
+      color:#c9b174;
+      font-size:.9rem;
+      font-style:normal;
+      transition:transform .35s var(--ease),background .25s ease,border-color .25s ease;
+    }
+    .lux-project-card:hover .lux-project-foot i{
+      transform:translate(2px,-2px) rotate(7deg);
+      border-color:rgba(201,177,116,.52);
+      background:rgba(201,177,116,.06);
+    }
+
+    @media(max-width:1020px){
+      .lux-projects{padding:108px 0 116px}
+      .lux-projects-head{grid-template-columns:1fr .65fr;gap:50px}
+      .lux-projects .lux-project-card,
+      .lux-projects .lux-project-card:nth-child(even){
+        grid-template-columns:1.05fr .95fr;
+      }
+      .lux-projects .lux-project-body{padding:36px 30px 30px}
+      .lux-project-foot::before{left:30px;right:30px;bottom:68px}
+    }
+
+    @media(max-width:760px){
+      .lux-projects{padding:82px 0 88px}
+      .lux-projects-head{
+        grid-template-columns:1fr;
+        gap:24px;
+        margin-bottom:38px;
+      }
+      .lux-projects-title{font-size:clamp(3.4rem,15vw,5.6rem)}
+      .lux-projects-intro{justify-self:start;max-width:520px}
+      .lux-projects-list{gap:16px}
+      .lux-projects .lux-project-card,
+      .lux-projects .lux-project-card:nth-child(even){
+        min-height:0;
+        grid-template-columns:1fr;
+        border-radius:18px;
+      }
+      .lux-projects .lux-project-card:nth-child(even) .lux-project-media,
+      .lux-projects .lux-project-card:nth-child(even) .lux-project-body{order:initial}
+      .lux-projects .lux-project-media{height:245px}
+      .lux-projects .lux-project-media::before,
+      .lux-projects .lux-project-card:nth-child(even) .lux-project-media::before{
+        border-left:0;
+        border-right:0;
+        border-bottom:1px solid rgba(255,255,255,.06);
+      }
+      .lux-projects .lux-project-body{padding:28px 24px 24px}
+      .lux-project-meta{margin-bottom:20px}
+      .lux-projects .lux-project-title{font-size:clamp(2.8rem,13vw,4.3rem)}
+      .lux-projects .lux-project-desc{margin-top:16px}
+      .lux-project-foot{padding-top:29px}
+      .lux-project-foot::before{left:24px;right:24px;bottom:62px}
+    }
+
+    @media(max-width:480px){
+      .lux-projects .lux-project-media{height:210px}
+      .lux-projects .lux-project-body{padding:24px 20px 20px}
+      .lux-project-meta{font-size:.55rem}
+      .lux-projects .lux-stack{margin-top:22px}
+      .lux-project-foot::before{left:20px;right:20px;bottom:58px}
+      .lux-project-foot i{width:35px;height:35px}
+    }
+
   </style>
 </head>
 <body>
@@ -1359,27 +1720,63 @@
       </div>
     </section>
 
-    <section class="section" id="work">
+    <section class="section lux-projects" id="work">
       <div class="shell">
-        <div class="projects-head" data-reveal>
-          <div><div class="eyebrow">Featured projects</div><h2 class="display">Selected works<span class="dot">.</span></h2></div>
-          <p class="body-copy">A focused collection of product builds where interface design, frontend engineering and realtime behavior come together.</p>
+        <div class="lux-projects-head" data-reveal>
+          <div>
+            <div class="lux-section-index"><span>02</span> Selected work</div>
+            <h2 class="lux-projects-title"><span>FEATURED</span><span>PROJECTS</span></h2>
+          </div>
+          <div class="lux-projects-intro">
+            <p>A selection of product-focused builds where interface design, frontend engineering and real-world functionality come together.</p>
+            <span>Built for performance. Designed to feel effortless.</span>
+          </div>
         </div>
 
-        <div class="projects-grid">
-          <a class="project-card" href="https://vaani.rohitpant.in/" target="_blank" rel="noreferrer" data-reveal data-tilt>
-            <div class="project-media"><span class="project-no">01</span><img src="assets/vaani-project.svg" alt="Vaani realtime language practice platform" loading="lazy" decoding="async" /></div>
-            <div class="project-body"><div class="project-title-row"><h3 class="project-title">Vaani</h3><span class="project-arrow">↗</span></div><p class="project-desc">Realtime language-practice rooms with WebRTC, PeerJS, Socket.IO, Firebase and collaborative room states.</p><div class="stack"><span>React</span><span>WebRTC</span><span>Firebase</span><span>Socket.IO</span></div></div>
+        <div class="lux-projects-list">
+          <a class="project-card lux-project-card" href="https://vaani.rohitpant.in/" target="_blank" rel="noreferrer" data-reveal>
+            <div class="project-media lux-project-media">
+              <img src="assets/vaani-project.svg" alt="Vaani realtime language practice platform" loading="lazy" decoding="async" />
+              <div class="lux-media-shade"></div>
+              <span class="lux-live-pill">Live project <b>↗</b></span>
+            </div>
+            <div class="project-body lux-project-body">
+              <div class="lux-project-meta"><span>01</span><span>Realtime communication</span></div>
+              <h3 class="project-title lux-project-title">Vaani</h3>
+              <p class="project-desc lux-project-desc">A realtime language-practice platform with live rooms, device checks, peer-to-peer audio/video and synchronized participant states.</p>
+              <div class="stack lux-stack"><span>React</span><span>WebRTC</span><span>Firebase</span><span>Socket.IO</span></div>
+              <div class="lux-project-foot"><span>Explore project</span><i>↗</i></div>
+            </div>
           </a>
 
-          <a class="project-card" data-accent="green" href="https://argus-pro-a2px.onrender.com" target="_blank" rel="noreferrer" data-reveal data-tilt>
-            <div class="project-media"><span class="project-no">02</span><img src="assets/argus-project.svg" alt="ARGUS AI website auditor" loading="lazy" decoding="async" /></div>
-            <div class="project-body"><div class="project-title-row"><h3 class="project-title">ARGUS</h3><span class="project-arrow">↗</span></div><p class="project-desc">Automated website intelligence across performance, accessibility, SEO, security, responsiveness and runtime behavior.</p><div class="stack"><span>Node.js</span><span>Playwright</span><span>AI Analysis</span><span>QA</span></div></div>
+          <a class="project-card lux-project-card" href="https://argus-pro-a2px.onrender.com" target="_blank" rel="noreferrer" data-reveal>
+            <div class="project-media lux-project-media">
+              <img src="assets/argus-project.svg" alt="ARGUS AI website auditor" loading="lazy" decoding="async" />
+              <div class="lux-media-shade"></div>
+              <span class="lux-live-pill">Live project <b>↗</b></span>
+            </div>
+            <div class="project-body lux-project-body">
+              <div class="lux-project-meta"><span>02</span><span>AI / QA intelligence</span></div>
+              <h3 class="project-title lux-project-title">ARGUS</h3>
+              <p class="project-desc lux-project-desc">Automated website intelligence covering performance, accessibility, SEO, security, responsive behavior and runtime issues.</p>
+              <div class="stack lux-stack"><span>Node.js</span><span>Playwright</span><span>AI Analysis</span><span>QA</span></div>
+              <div class="lux-project-foot"><span>Explore project</span><i>↗</i></div>
+            </div>
           </a>
 
-          <a class="project-card" data-accent="violet" href="https://eventhive.rohitpant.in/" target="_blank" rel="noreferrer" data-reveal data-tilt>
-            <div class="project-media"><span class="project-no">03</span><img src="assets/eventhive-project.svg" alt="EventHive event management platform" loading="lazy" decoding="async" /></div>
-            <div class="project-body"><div class="project-title-row"><h3 class="project-title">EventHive</h3><span class="project-arrow">↗</span></div><p class="project-desc">A role-based event platform covering discovery, registration, organizer workflows, microsites and analytics.</p><div class="stack"><span>React</span><span>TypeScript</span><span>Redux</span><span>Firebase</span></div></div>
+          <a class="project-card lux-project-card" href="https://eventhive.rohitpant.in/" target="_blank" rel="noreferrer" data-reveal>
+            <div class="project-media lux-project-media">
+              <img src="assets/eventhive-project.svg" alt="EventHive event management platform" loading="lazy" decoding="async" />
+              <div class="lux-media-shade"></div>
+              <span class="lux-live-pill">Live project <b>↗</b></span>
+            </div>
+            <div class="project-body lux-project-body">
+              <div class="lux-project-meta"><span>03</span><span>Event management</span></div>
+              <h3 class="project-title lux-project-title">EventHive</h3>
+              <p class="project-desc lux-project-desc">A role-based event product for discovery, registration, organizer workflows, microsites, dashboards and event analytics.</p>
+              <div class="stack lux-stack"><span>React</span><span>TypeScript</span><span>Redux</span><span>Firebase</span></div>
+              <div class="lux-project-foot"><span>Explore project</span><i>↗</i></div>
+            </div>
           </a>
         </div>
       </div>
