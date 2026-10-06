@@ -1943,7 +1943,8 @@
 
   
     /* =========================================================
-       HERO PARALLAX — lightweight layered depth
+       HERO PARALLAX — performance mode
+       Pointer-only, 3 layers, desktop only
        ========================================================= */
     .lux-hero{
       --hero-name-x:0px;
@@ -1952,50 +1953,26 @@
       --hero-role-y:0px;
       --hero-person-x:0px;
       --hero-person-y:0px;
-      --hero-intro-x:0px;
-      --hero-intro-y:0px;
-      --hero-kicker-x:0px;
-      --hero-kicker-y:0px;
-      --hero-grid-x:0px;
-      --hero-grid-y:0px;
-      --hero-glow-x:0px;
-      --hero-glow-y:0px;
     }
-    .lux-hero-name{
-      transform:translate3d(var(--hero-name-x),var(--hero-name-y),0);
-      will-change:transform;
-    }
-    .lux-role{
-      transform:translate3d(var(--hero-role-x),var(--hero-role-y),0);
-      will-change:transform;
-    }
-    .hero-person{
-      transform:translate3d(calc(-50% + var(--hero-person-x)),var(--hero-person-y),0);
-      will-change:transform;
-    }
-    .lux-intro{
-      transform:translate3d(var(--hero-intro-x),var(--hero-intro-y),0);
-      will-change:transform;
-    }
-    .hero-kicker{
-      transform:translate3d(var(--hero-kicker-x),var(--hero-kicker-y),0);
-      will-change:transform;
-    }
-    .hero-grid{
-      transform:translate3d(var(--hero-grid-x),var(--hero-grid-y),0);
-      will-change:transform;
-    }
-    .hero-glow{
-      transform:translate3d(calc(-50% + var(--hero-glow-x)),var(--hero-glow-y),0);
-      will-change:transform;
-    }
-    @media(prefers-reduced-motion:reduce){
-      .lux-hero-name,.lux-role,.hero-person,.lux-intro,.hero-kicker,.hero-grid,.hero-glow{
-        transform:none!important;
-        will-change:auto;
+    @media(hover:hover) and (pointer:fine) and (min-width:901px){
+      .lux-hero-name{
+        transform:translate3d(var(--hero-name-x),var(--hero-name-y),0);
       }
-      .hero-person{transform:translateX(-50%)!important}
-      .hero-glow{transform:translateX(-50%)!important}
+      .lux-role{
+        transform:translate3d(var(--hero-role-x),var(--hero-role-y),0);
+      }
+      .hero-person{
+        transform:translate3d(calc(-50% + var(--hero-person-x)),var(--hero-person-y),0);
+      }
+      .lux-hero.is-parallax-active .lux-hero-name,
+      .lux-hero.is-parallax-active .lux-role,
+      .lux-hero.is-parallax-active .hero-person{
+        will-change:transform;
+      }
+    }
+    @media(max-width:900px),(prefers-reduced-motion:reduce){
+      .lux-hero-name,.lux-role{transform:none!important;will-change:auto!important}
+      .hero-person{transform:translateX(-50%)!important;will-change:auto!important}
     }
 
   </style>
@@ -2238,59 +2215,37 @@
     document.getElementById('year').textContent = new Date().getFullYear();
 
 
-    // Lightweight hero parallax: one RAF loop, subtle depth, no mobile mouse tracking.
+    // Hero parallax — desktop pointer only. No scroll work.
     const hero = document.getElementById('home');
-    let heroVisible = true;
+    const heroCanParallax = finePointer && innerWidth > 900 && !reduceMotion;
     let heroRaf = 0;
     let heroTargetX = 0;
     let heroTargetY = 0;
     let heroX = 0;
     let heroY = 0;
-    let heroScroll = 0;
-
-    function heroScrollValue(){
-      if(!hero) return 0;
-      const rect = hero.getBoundingClientRect();
-      return Math.max(0,Math.min(1,-rect.top / Math.max(1,rect.height)));
-    }
+    let heroRect = null;
 
     function renderHeroParallax(){
       heroRaf = 0;
-      if(!hero || !heroVisible || reduceMotion) return;
+      if(!hero || !heroCanParallax) return;
 
-      heroX += (heroTargetX - heroX) * .09;
-      heroY += (heroTargetY - heroY) * .09;
-      heroScroll = heroScrollValue();
+      heroX += (heroTargetX - heroX) * .12;
+      heroY += (heroTargetY - heroY) * .12;
 
-      const sx = finePointer ? heroX : 0;
-      const sy = finePointer ? heroY : 0;
-
-      hero.style.setProperty('--hero-name-x',(sx * -9).toFixed(2) + 'px');
-      hero.style.setProperty('--hero-name-y',(sy * -5 - heroScroll * 12).toFixed(2) + 'px');
-
-      hero.style.setProperty('--hero-role-x',(sx * -14).toFixed(2) + 'px');
-      hero.style.setProperty('--hero-role-y',(sy * -7 - heroScroll * 19).toFixed(2) + 'px');
-
-      hero.style.setProperty('--hero-person-x',(sx * 17).toFixed(2) + 'px');
-      hero.style.setProperty('--hero-person-y',(sy * 9 + heroScroll * 24).toFixed(2) + 'px');
-
-      hero.style.setProperty('--hero-intro-x',(sx * -5).toFixed(2) + 'px');
-      hero.style.setProperty('--hero-intro-y',(sy * -3 - heroScroll * 10).toFixed(2) + 'px');
-
-      hero.style.setProperty('--hero-kicker-x',(sx * -4).toFixed(2) + 'px');
-      hero.style.setProperty('--hero-kicker-y',(sy * -2 - heroScroll * 7).toFixed(2) + 'px');
-
-      hero.style.setProperty('--hero-grid-x',(sx * -18).toFixed(2) + 'px');
-      hero.style.setProperty('--hero-grid-y',(sy * -10 - heroScroll * 12).toFixed(2) + 'px');
-
-      hero.style.setProperty('--hero-glow-x',(sx * 12).toFixed(2) + 'px');
-      hero.style.setProperty('--hero-glow-y',(sy * 8 + heroScroll * 14).toFixed(2) + 'px');
+      hero.style.setProperty('--hero-name-x',(heroX * -7).toFixed(2) + 'px');
+      hero.style.setProperty('--hero-name-y',(heroY * -4).toFixed(2) + 'px');
+      hero.style.setProperty('--hero-role-x',(heroX * -11).toFixed(2) + 'px');
+      hero.style.setProperty('--hero-role-y',(heroY * -6).toFixed(2) + 'px');
+      hero.style.setProperty('--hero-person-x',(heroX * 13).toFixed(2) + 'px');
+      hero.style.setProperty('--hero-person-y',(heroY * 7).toFixed(2) + 'px');
 
       if(
-        Math.abs(heroTargetX - heroX) > .002 ||
-        Math.abs(heroTargetY - heroY) > .002
+        Math.abs(heroTargetX - heroX) > .003 ||
+        Math.abs(heroTargetY - heroY) > .003
       ){
         requestHeroParallax();
+      }else if(Math.abs(heroX) < .01 && Math.abs(heroY) < .01){
+        hero.classList.remove('is-parallax-active');
       }
     }
 
@@ -2298,33 +2253,29 @@
       if(!heroRaf) heroRaf = requestAnimationFrame(renderHeroParallax);
     }
 
-    if(hero && !reduceMotion){
-      const heroObserver = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-          heroVisible = entry.isIntersecting;
-          if(heroVisible) requestHeroParallax();
-        });
-      },{threshold:0,rootMargin:'80px 0px'});
-      heroObserver.observe(hero);
+    if(hero && heroCanParallax){
+      const cacheHeroRect=()=>{ heroRect=hero.getBoundingClientRect(); };
 
-      if(finePointer){
-        hero.addEventListener('pointermove',e => {
-          const rect = hero.getBoundingClientRect();
-          heroTargetX = ((e.clientX - rect.left) / Math.max(1,rect.width) - .5) * 2;
-          heroTargetY = ((e.clientY - rect.top) / Math.max(1,rect.height) - .5) * 2;
-          requestHeroParallax();
-        },{passive:true});
+      hero.addEventListener('pointerenter',()=>{
+        cacheHeroRect();
+        hero.classList.add('is-parallax-active');
+      },{passive:true});
 
-        hero.addEventListener('pointerleave',() => {
-          heroTargetX = 0;
-          heroTargetY = 0;
-          requestHeroParallax();
-        },{passive:true});
-      }
+      hero.addEventListener('pointermove',e=>{
+        const rect=heroRect;
+        if(!rect) return;
+        heroTargetX=((e.clientX-rect.left)/Math.max(1,rect.width)-.5)*2;
+        heroTargetY=((e.clientY-rect.top)/Math.max(1,rect.height)-.5)*2;
+        requestHeroParallax();
+      },{passive:true});
 
-      window.addEventListener('scroll',requestHeroParallax,{passive:true});
-      window.addEventListener('resize',requestHeroParallax,{passive:true});
-      requestHeroParallax();
+      hero.addEventListener('pointerleave',()=>{
+        heroTargetX=0;
+        heroTargetY=0;
+        requestHeroParallax();
+      },{passive:true});
+
+      window.addEventListener('resize',cacheHeroRect,{passive:true});
     }
 
     const processSection = document.getElementById('process');
@@ -2370,8 +2321,8 @@
         const target = Math.min(videoDuration - .001,Math.max(0,smoothProgress * videoDuration));
         const now = performance.now();
 
-        // ~30fps seek cap + a small dead-zone avoids decoder thrashing.
-        if(now - lastSeekAt >= 33 && Math.abs(processVideo.currentTime - target) > .018){
+        // ~25fps seek cap + a small dead-zone keeps HD scrubbing smooth without decoder thrashing.
+        if(now - lastSeekAt >= 40 && Math.abs(processVideo.currentTime - target) > .024){
           lastSeekAt = now;
           try{ processVideo.currentTime = target; }catch(e){}
         }
@@ -2406,8 +2357,8 @@
       requestProcessScrub();
     });
 
-    window.addEventListener('scroll',requestProcessScrub,{passive:true});
-    window.addEventListener('resize',requestProcessScrub,{passive:true});
+    window.addEventListener('scroll',()=>{if(processVisible) requestProcessScrub();},{passive:true});
+    window.addEventListener('resize',()=>{if(processVisible) requestProcessScrub();},{passive:true});
 
     if(reduceMotion || saveData){
       videoPlay.style.display = 'inline-flex';
