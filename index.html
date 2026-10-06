@@ -1941,6 +1941,63 @@
       .skills-marquee-set[aria-hidden="true"]{display:none}
     }
 
+  
+    /* =========================================================
+       HERO PARALLAX — lightweight layered depth
+       ========================================================= */
+    .lux-hero{
+      --hero-name-x:0px;
+      --hero-name-y:0px;
+      --hero-role-x:0px;
+      --hero-role-y:0px;
+      --hero-person-x:0px;
+      --hero-person-y:0px;
+      --hero-intro-x:0px;
+      --hero-intro-y:0px;
+      --hero-kicker-x:0px;
+      --hero-kicker-y:0px;
+      --hero-grid-x:0px;
+      --hero-grid-y:0px;
+      --hero-glow-x:0px;
+      --hero-glow-y:0px;
+    }
+    .lux-hero-name{
+      transform:translate3d(var(--hero-name-x),var(--hero-name-y),0);
+      will-change:transform;
+    }
+    .lux-role{
+      transform:translate3d(var(--hero-role-x),var(--hero-role-y),0);
+      will-change:transform;
+    }
+    .hero-person{
+      transform:translate3d(calc(-50% + var(--hero-person-x)),var(--hero-person-y),0);
+      will-change:transform;
+    }
+    .lux-intro{
+      transform:translate3d(var(--hero-intro-x),var(--hero-intro-y),0);
+      will-change:transform;
+    }
+    .hero-kicker{
+      transform:translate3d(var(--hero-kicker-x),var(--hero-kicker-y),0);
+      will-change:transform;
+    }
+    .hero-grid{
+      transform:translate3d(var(--hero-grid-x),var(--hero-grid-y),0);
+      will-change:transform;
+    }
+    .hero-glow{
+      transform:translate3d(calc(-50% + var(--hero-glow-x)),var(--hero-glow-y),0);
+      will-change:transform;
+    }
+    @media(prefers-reduced-motion:reduce){
+      .lux-hero-name,.lux-role,.hero-person,.lux-intro,.hero-kicker,.hero-grid,.hero-glow{
+        transform:none!important;
+        will-change:auto;
+      }
+      .hero-person{transform:translateX(-50%)!important}
+      .hero-glow{transform:translateX(-50%)!important}
+    }
+
   </style>
 </head>
 <body>
@@ -2179,6 +2236,96 @@
     const source = processVideo.querySelector('source');
     const saveData = navigator.connection && navigator.connection.saveData;
     document.getElementById('year').textContent = new Date().getFullYear();
+
+
+    // Lightweight hero parallax: one RAF loop, subtle depth, no mobile mouse tracking.
+    const hero = document.getElementById('home');
+    let heroVisible = true;
+    let heroRaf = 0;
+    let heroTargetX = 0;
+    let heroTargetY = 0;
+    let heroX = 0;
+    let heroY = 0;
+    let heroScroll = 0;
+
+    function heroScrollValue(){
+      if(!hero) return 0;
+      const rect = hero.getBoundingClientRect();
+      return Math.max(0,Math.min(1,-rect.top / Math.max(1,rect.height)));
+    }
+
+    function renderHeroParallax(){
+      heroRaf = 0;
+      if(!hero || !heroVisible || reduceMotion) return;
+
+      heroX += (heroTargetX - heroX) * .09;
+      heroY += (heroTargetY - heroY) * .09;
+      heroScroll = heroScrollValue();
+
+      const sx = finePointer ? heroX : 0;
+      const sy = finePointer ? heroY : 0;
+
+      hero.style.setProperty('--hero-name-x',(sx * -9).toFixed(2) + 'px');
+      hero.style.setProperty('--hero-name-y',(sy * -5 - heroScroll * 12).toFixed(2) + 'px');
+
+      hero.style.setProperty('--hero-role-x',(sx * -14).toFixed(2) + 'px');
+      hero.style.setProperty('--hero-role-y',(sy * -7 - heroScroll * 19).toFixed(2) + 'px');
+
+      hero.style.setProperty('--hero-person-x',(sx * 17).toFixed(2) + 'px');
+      hero.style.setProperty('--hero-person-y',(sy * 9 + heroScroll * 24).toFixed(2) + 'px');
+
+      hero.style.setProperty('--hero-intro-x',(sx * -5).toFixed(2) + 'px');
+      hero.style.setProperty('--hero-intro-y',(sy * -3 - heroScroll * 10).toFixed(2) + 'px');
+
+      hero.style.setProperty('--hero-kicker-x',(sx * -4).toFixed(2) + 'px');
+      hero.style.setProperty('--hero-kicker-y',(sy * -2 - heroScroll * 7).toFixed(2) + 'px');
+
+      hero.style.setProperty('--hero-grid-x',(sx * -18).toFixed(2) + 'px');
+      hero.style.setProperty('--hero-grid-y',(sy * -10 - heroScroll * 12).toFixed(2) + 'px');
+
+      hero.style.setProperty('--hero-glow-x',(sx * 12).toFixed(2) + 'px');
+      hero.style.setProperty('--hero-glow-y',(sy * 8 + heroScroll * 14).toFixed(2) + 'px');
+
+      if(
+        Math.abs(heroTargetX - heroX) > .002 ||
+        Math.abs(heroTargetY - heroY) > .002
+      ){
+        requestHeroParallax();
+      }
+    }
+
+    function requestHeroParallax(){
+      if(!heroRaf) heroRaf = requestAnimationFrame(renderHeroParallax);
+    }
+
+    if(hero && !reduceMotion){
+      const heroObserver = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          heroVisible = entry.isIntersecting;
+          if(heroVisible) requestHeroParallax();
+        });
+      },{threshold:0,rootMargin:'80px 0px'});
+      heroObserver.observe(hero);
+
+      if(finePointer){
+        hero.addEventListener('pointermove',e => {
+          const rect = hero.getBoundingClientRect();
+          heroTargetX = ((e.clientX - rect.left) / Math.max(1,rect.width) - .5) * 2;
+          heroTargetY = ((e.clientY - rect.top) / Math.max(1,rect.height) - .5) * 2;
+          requestHeroParallax();
+        },{passive:true});
+
+        hero.addEventListener('pointerleave',() => {
+          heroTargetX = 0;
+          heroTargetY = 0;
+          requestHeroParallax();
+        },{passive:true});
+      }
+
+      window.addEventListener('scroll',requestHeroParallax,{passive:true});
+      window.addEventListener('resize',requestHeroParallax,{passive:true});
+      requestHeroParallax();
+    }
 
     const processSection = document.getElementById('process');
     const processProgress = document.getElementById('processProgress');
