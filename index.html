@@ -1679,6 +1679,85 @@
       .process-cinema{height:190svh}
     }
 
+  
+    /* PROJECT GRID — 3 cards in one row */
+    @media(min-width:1021px){
+      .lux-projects-list{
+        grid-template-columns:repeat(3,minmax(0,1fr));
+        gap:18px;
+        align-items:stretch;
+      }
+      .lux-projects .lux-project-card,
+      .lux-projects .lux-project-card:nth-child(even){
+        min-height:590px;
+        grid-template-columns:1fr;
+        grid-template-rows:230px 1fr;
+      }
+      .lux-projects .lux-project-card:nth-child(even) .lux-project-media,
+      .lux-projects .lux-project-card:nth-child(even) .lux-project-body{
+        order:initial;
+      }
+      .lux-projects .lux-project-media{
+        height:230px;
+      }
+      .lux-projects .lux-project-media::before,
+      .lux-projects .lux-project-card:nth-child(even) .lux-project-media::before{
+        border-left:0;
+        border-right:0;
+        border-bottom:1px solid rgba(255,255,255,.06);
+      }
+      .lux-projects .lux-project-body{
+        padding:28px 26px 24px;
+        justify-content:flex-start;
+      }
+      .lux-project-meta{
+        margin-bottom:18px;
+      }
+      .lux-projects .lux-project-title{
+        font-size:clamp(2.55rem,3.2vw,3.75rem);
+      }
+      .lux-projects .lux-project-desc{
+        margin-top:16px;
+        font-size:.82rem;
+        line-height:1.62;
+      }
+      .lux-projects .lux-stack{
+        margin-top:20px;
+      }
+      .lux-projects .lux-stack span{
+        padding:6px 8px;
+        font-size:.56rem;
+      }
+      .lux-project-foot{
+        padding-top:27px;
+      }
+      .lux-project-foot::before{
+        left:26px;
+        right:26px;
+        bottom:66px;
+      }
+    }
+
+    @media(min-width:761px) and (max-width:1020px){
+      .lux-projects-list{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+      }
+      .lux-projects .lux-project-card,
+      .lux-projects .lux-project-card:nth-child(even){
+        min-height:560px;
+        grid-template-columns:1fr;
+        grid-template-rows:220px 1fr;
+      }
+      .lux-projects .lux-project-card:nth-child(even) .lux-project-media,
+      .lux-projects .lux-project-card:nth-child(even) .lux-project-body{
+        order:initial;
+      }
+      .lux-projects .lux-project-media{height:220px}
+      .lux-projects .lux-project-body{padding:28px 26px 24px}
+      .lux-projects .lux-project-title{font-size:3rem}
+      .lux-project-foot::before{left:26px;right:26px;bottom:64px}
+    }
+
   </style>
 </head>
 <body>
