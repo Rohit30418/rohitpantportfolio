@@ -13,6 +13,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
   <style>
     :root{
       --bg:#05080b;
@@ -1765,6 +1766,181 @@
       .mobile-nav.open{display:grid}
     }
 
+  
+    /* =========================================================
+       SKILLS MARQUEE — Font Awesome / alternating directions
+       ========================================================= */
+    .skills-marquee-section{
+      position:relative;
+      padding:118px 0 124px;
+      overflow:hidden;
+      border-top:1px solid rgba(255,255,255,.055);
+      background:
+        radial-gradient(circle at 15% 10%,rgba(201,177,116,.055),transparent 28rem),
+        linear-gradient(180deg,#080908 0%,#090a09 48%,#070807 100%);
+    }
+    .skills-marquee-section::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      opacity:.11;
+      background-image:radial-gradient(circle,rgba(255,255,255,.18) .65px,transparent .7px);
+      background-size:9px 9px;
+      -webkit-mask-image:linear-gradient(90deg,transparent,black 18%,black 82%,transparent);
+      mask-image:linear-gradient(90deg,transparent,black 18%,black 82%,transparent);
+    }
+    .skills-marquee-head{
+      position:relative;
+      z-index:2;
+      display:grid;
+      grid-template-columns:1.15fr .65fr;
+      gap:70px;
+      align-items:end;
+      margin-bottom:54px;
+    }
+    .skills-marquee-title{
+      margin:0;
+      display:flex;
+      flex-direction:column;
+      color:#f2f1ec;
+      font-size:clamp(3.8rem,6.8vw,7rem);
+      line-height:.84;
+      letter-spacing:-.072em;
+      font-weight:430;
+      text-transform:uppercase;
+    }
+    .skills-marquee-title span:last-child{
+      color:transparent;
+      -webkit-text-stroke:1px rgba(242,241,236,.45);
+      text-stroke:1px rgba(242,241,236,.45);
+    }
+    .skills-marquee-head>p{
+      justify-self:end;
+      max-width:420px;
+      margin:0 0 4px;
+      color:#979a94;
+      font-size:.9rem;
+      line-height:1.72;
+    }
+    .skills-marquee-wrap{
+      position:relative;
+      z-index:2;
+      display:grid;
+      gap:16px;
+    }
+    .skills-marquee-row{
+      position:relative;
+      width:100%;
+      overflow:hidden;
+      padding:3px 0;
+      -webkit-mask-image:linear-gradient(90deg,transparent 0,black 8%,black 92%,transparent 100%);
+      mask-image:linear-gradient(90deg,transparent 0,black 8%,black 92%,transparent 100%);
+    }
+    .skills-marquee-track{
+      display:flex;
+      width:max-content;
+      will-change:transform;
+    }
+    .skills-marquee-set{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding-right:12px;
+      flex:none;
+    }
+    .skills-marquee-left .skills-marquee-track{
+      animation:skill-marquee-left 34s linear infinite;
+    }
+    .skills-marquee-right .skills-marquee-track{
+      animation:skill-marquee-right 38s linear infinite;
+    }
+    @keyframes skill-marquee-left{
+      from{transform:translate3d(0,0,0)}
+      to{transform:translate3d(-50%,0,0)}
+    }
+    @keyframes skill-marquee-right{
+      from{transform:translate3d(-50%,0,0)}
+      to{transform:translate3d(0,0,0)}
+    }
+    .skill-chip{
+      min-width:max-content;
+      height:68px;
+      padding:0 21px 0 15px;
+      display:inline-flex;
+      align-items:center;
+      gap:13px;
+      border:1px solid rgba(255,255,255,.085);
+      border-radius:16px;
+      background:
+        linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.012)),
+        rgba(12,13,12,.92);
+      color:#d7d8d3;
+      box-shadow:0 12px 32px rgba(0,0,0,.12);
+      transition:border-color .25s ease,background .25s ease,transform .3s var(--ease);
+    }
+    .skill-chip i{
+      width:38px;
+      height:38px;
+      display:grid;
+      place-items:center;
+      flex:none;
+      border-radius:11px;
+      border:1px solid color-mix(in srgb,var(--skill) 34%,transparent);
+      background:color-mix(in srgb,var(--skill) 9%,rgba(255,255,255,.018));
+      color:var(--skill);
+      font-size:1.24rem;
+      filter:drop-shadow(0 0 9px color-mix(in srgb,var(--skill) 22%,transparent));
+    }
+    .skill-chip span{
+      font-size:.78rem;
+      font-weight:650;
+      letter-spacing:-.015em;
+      white-space:nowrap;
+    }
+    .skill-chip:hover{
+      transform:translateY(-2px);
+      border-color:color-mix(in srgb,var(--skill) 36%,rgba(255,255,255,.08));
+      background:color-mix(in srgb,var(--skill) 5%,#0d0e0d);
+    }
+    .skills-marquee-row:hover .skills-marquee-track{
+      animation-play-state:paused;
+    }
+
+    @media(max-width:900px){
+      .skills-marquee-section{padding:94px 0 100px}
+      .skills-marquee-head{
+        grid-template-columns:1fr;
+        gap:22px;
+        margin-bottom:40px;
+      }
+      .skills-marquee-head>p{justify-self:start}
+      .skills-marquee-title{font-size:clamp(3.4rem,11vw,5.8rem)}
+      .skill-chip{height:62px;padding:0 17px 0 12px}
+      .skill-chip i{width:35px;height:35px;font-size:1.12rem}
+    }
+    @media(max-width:560px){
+      .skills-marquee-section{padding:76px 0 82px}
+      .skills-marquee-title{font-size:clamp(3rem,14vw,4.7rem)}
+      .skills-marquee-wrap{gap:12px}
+      .skill-chip{height:56px;border-radius:14px;gap:10px;padding:0 14px 0 10px}
+      .skill-chip i{width:32px;height:32px;border-radius:9px;font-size:1rem}
+      .skill-chip span{font-size:.72rem}
+      .skills-marquee-left .skills-marquee-track{animation-duration:28s}
+      .skills-marquee-right .skills-marquee-track{animation-duration:31s}
+    }
+    @media(prefers-reduced-motion:reduce){
+      .skills-marquee-row{
+        overflow-x:auto;
+        -webkit-mask-image:none;
+        mask-image:none;
+        scrollbar-width:none;
+      }
+      .skills-marquee-row::-webkit-scrollbar{display:none}
+      .skills-marquee-track{animation:none!important;transform:none!important}
+      .skills-marquee-set[aria-hidden="true"]{display:none}
+    }
+
   </style>
 </head>
 <body>
@@ -1775,7 +1951,7 @@
     </a>
     <nav class="nav lux-nav" aria-label="Primary navigation">
       <a href="#work">Projects</a>
-      <a href="#experience">Experience</a>
+      <a href="#skills">Skills</a>
       <a href="#contact">Contact</a>
     </nav>
     <a class="top-cta lux-top-cta" href="#contact">Let’s Talk</a>
@@ -1783,7 +1959,7 @@
   </header>
 
   <nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation">
-    <a href="#work">Projects</a><a href="#experience">Experience</a><a href="#contact">Contact</a>
+    <a href="#work">Projects</a><a href="#skills">Skills</a><a href="#contact">Contact</a>
   </nav>
 
   <main>
@@ -1906,37 +2082,69 @@
       </div>
     </section>
 
-    <section class="section" id="experience">
-      <div class="shell split-head">
-        <div data-reveal>
-          <div class="eyebrow">Experience</div>
-          <h2 class="display">Built for<br />production<span class="dot">.</span></h2>
-          <div class="experience-card">
-            <div class="experience-date">Aug 2022 — Present</div>
-            <h3 class="experience-role">Frontend / UI Developer</h3>
-            <div class="experience-company">Prometheus Solutions Pvt. Ltd.</div>
-            <p>Building production websites, event and member platforms, dashboards and admin interfaces; handling responsive UI, integrations, client changes, live fixes, release support and junior guidance.</p>
+    <section class="skills-marquee-section" id="skills" aria-label="Technology skills">
+      <div class="shell skills-marquee-head" data-reveal>
+        <div>
+          <div class="lux-section-index"><span>03</span> Technology stack</div>
+          <h2 class="skills-marquee-title"><span>TOOLS I USE</span><span>TO BUILD</span></h2>
+        </div>
+        <p>Production-focused frontend tools I use across interfaces, realtime products, APIs, testing and deployment.</p>
+      </div>
+
+      <div class="skills-marquee-wrap" data-reveal>
+        <div class="skills-marquee-row skills-marquee-left">
+          <div class="skills-marquee-track">
+            <div class="skills-marquee-set">
+            <div class="skill-chip" style="--skill:#e34f26"><i class="fa-brands fa-html5"></i><span>HTML5</span></div>
+            <div class="skill-chip" style="--skill:#1572b6"><i class="fa-brands fa-css3-alt"></i><span>CSS3</span></div>
+            <div class="skill-chip" style="--skill:#f7df1e"><i class="fa-brands fa-square-js"></i><span>JavaScript</span></div>
+            <div class="skill-chip" style="--skill:#3178c6"><i class="fa-solid fa-code"></i><span>TypeScript</span></div>
+            <div class="skill-chip" style="--skill:#61dafb"><i class="fa-brands fa-react"></i><span>React</span></div>
+            <div class="skill-chip" style="--skill:#764abc"><i class="fa-solid fa-layer-group"></i><span>Redux Toolkit</span></div>
+            <div class="skill-chip" style="--skill:#38bdf8"><i class="fa-solid fa-wind"></i><span>Tailwind CSS</span></div>
+            <div class="skill-chip" style="--skill:#7952b3"><i class="fa-brands fa-bootstrap"></i><span>Bootstrap</span></div>
+            <div class="skill-chip" style="--skill:#0769ad"><i class="fa-brands fa-square-js"></i><span>jQuery</span></div>
+            </div>
+            <div class="skills-marquee-set" aria-hidden="true">
+            <div class="skill-chip" style="--skill:#e34f26"><i class="fa-brands fa-html5"></i><span>HTML5</span></div>
+            <div class="skill-chip" style="--skill:#1572b6"><i class="fa-brands fa-css3-alt"></i><span>CSS3</span></div>
+            <div class="skill-chip" style="--skill:#f7df1e"><i class="fa-brands fa-square-js"></i><span>JavaScript</span></div>
+            <div class="skill-chip" style="--skill:#3178c6"><i class="fa-solid fa-code"></i><span>TypeScript</span></div>
+            <div class="skill-chip" style="--skill:#61dafb"><i class="fa-brands fa-react"></i><span>React</span></div>
+            <div class="skill-chip" style="--skill:#764abc"><i class="fa-solid fa-layer-group"></i><span>Redux Toolkit</span></div>
+            <div class="skill-chip" style="--skill:#38bdf8"><i class="fa-solid fa-wind"></i><span>Tailwind CSS</span></div>
+            <div class="skill-chip" style="--skill:#7952b3"><i class="fa-brands fa-bootstrap"></i><span>Bootstrap</span></div>
+            <div class="skill-chip" style="--skill:#0769ad"><i class="fa-brands fa-square-js"></i><span>jQuery</span></div>
+            </div>
           </div>
         </div>
 
-        <div class="tech-panel" data-reveal>
-          <div class="tech-panel-head">
-            <span class="eyebrow">Tech stack</span>
-            <span class="tech-panel-note">Tools I use to ship real interfaces</span>
-          </div>
-          <div class="tech-grid" aria-label="Technology stack">
-            <div class="tech-card"><span class="tech-icon tech-html">5</span><span>HTML5</span></div>
-            <div class="tech-card"><span class="tech-icon tech-css">3</span><span>CSS3</span></div>
-            <div class="tech-card"><span class="tech-icon tech-js">JS</span><span>JavaScript</span></div>
-            <div class="tech-card"><span class="tech-icon tech-ts">TS</span><span>TypeScript</span></div>
-            <div class="tech-card"><span class="tech-icon tech-react">⚛</span><span>React</span></div>
-            <div class="tech-card"><span class="tech-icon tech-redux">R</span><span>Redux Toolkit</span></div>
-            <div class="tech-card"><span class="tech-icon tech-tailwind">≈</span><span>Tailwind CSS</span></div>
-            <div class="tech-card"><span class="tech-icon tech-firebase">◆</span><span>Firebase</span></div>
-            <div class="tech-card"><span class="tech-icon tech-webrtc">●</span><span>WebRTC</span></div>
-            <div class="tech-card"><span class="tech-icon tech-jquery">⌁</span><span>jQuery</span></div>
-            <div class="tech-card"><span class="tech-icon tech-playwright">PW</span><span>Playwright</span></div>
-            <div class="tech-card"><span class="tech-icon tech-git">⑂</span><span>Git</span></div>
+        <div class="skills-marquee-row skills-marquee-right">
+          <div class="skills-marquee-track">
+            <div class="skills-marquee-set">
+            <div class="skill-chip" style="--skill:#ffca28"><i class="fa-solid fa-fire-flame-curved"></i><span>Firebase</span></div>
+            <div class="skill-chip" style="--skill:#59c3c3"><i class="fa-solid fa-video"></i><span>WebRTC</span></div>
+            <div class="skill-chip" style="--skill:#68a063"><i class="fa-brands fa-node-js"></i><span>Node.js</span></div>
+            <div class="skill-chip" style="--skill:#f05032"><i class="fa-brands fa-git-alt"></i><span>Git</span></div>
+            <div class="skill-chip" style="--skill:#f2f2f2"><i class="fa-brands fa-github"></i><span>GitHub</span></div>
+            <div class="skill-chip" style="--skill:#2ead33"><i class="fa-solid fa-robot"></i><span>Playwright</span></div>
+            <div class="skill-chip" style="--skill:#a78bfa"><i class="fa-solid fa-bolt"></i><span>Vite</span></div>
+            <div class="skill-chip" style="--skill:#ff4154"><i class="fa-solid fa-database"></i><span>React Query</span></div>
+            <div class="skill-chip" style="--skill:#88ce02"><i class="fa-solid fa-wand-magic-sparkles"></i><span>GSAP</span></div>
+            <div class="skill-chip" style="--skill:#f4a65a"><i class="fa-solid fa-plug"></i><span>REST APIs</span></div>
+            </div>
+            <div class="skills-marquee-set" aria-hidden="true">
+            <div class="skill-chip" style="--skill:#ffca28"><i class="fa-solid fa-fire-flame-curved"></i><span>Firebase</span></div>
+            <div class="skill-chip" style="--skill:#59c3c3"><i class="fa-solid fa-video"></i><span>WebRTC</span></div>
+            <div class="skill-chip" style="--skill:#68a063"><i class="fa-brands fa-node-js"></i><span>Node.js</span></div>
+            <div class="skill-chip" style="--skill:#f05032"><i class="fa-brands fa-git-alt"></i><span>Git</span></div>
+            <div class="skill-chip" style="--skill:#f2f2f2"><i class="fa-brands fa-github"></i><span>GitHub</span></div>
+            <div class="skill-chip" style="--skill:#2ead33"><i class="fa-solid fa-robot"></i><span>Playwright</span></div>
+            <div class="skill-chip" style="--skill:#a78bfa"><i class="fa-solid fa-bolt"></i><span>Vite</span></div>
+            <div class="skill-chip" style="--skill:#ff4154"><i class="fa-solid fa-database"></i><span>React Query</span></div>
+            <div class="skill-chip" style="--skill:#88ce02"><i class="fa-solid fa-wand-magic-sparkles"></i><span>GSAP</span></div>
+            <div class="skill-chip" style="--skill:#f4a65a"><i class="fa-solid fa-plug"></i><span>REST APIs</span></div>
+            </div>
           </div>
         </div>
       </div>
