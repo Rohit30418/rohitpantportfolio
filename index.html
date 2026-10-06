@@ -1758,6 +1758,13 @@
       .lux-project-foot::before{left:26px;right:26px;bottom:64px}
     }
 
+  
+    /* Hide mobile navigation links on desktop; show only when mobile menu is opened */
+    .mobile-nav{display:none}
+    @media(max-width:760px){
+      .mobile-nav.open{display:grid}
+    }
+
   </style>
 </head>
 <body>
