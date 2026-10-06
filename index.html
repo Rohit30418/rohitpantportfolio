@@ -1975,9 +1975,53 @@
       .hero-person{transform:translateX(-50%)!important;will-change:auto!important}
     }
 
+  
+    /* =========================================================
+       PREMIUM CURSOR FOLLOWER — desktop only, transform-only
+       ========================================================= */
+    .cursor-follower{
+      --cursor-scale:1;
+      position:fixed;
+      z-index:9999;
+      top:0;
+      left:0;
+      width:28px;
+      height:28px;
+      border:1px solid rgba(207,181,112,.68);
+      border-radius:50%;
+      pointer-events:none;
+      opacity:0;
+      transform:translate3d(-80px,-80px,0) scale(var(--cursor-scale));
+      transform-origin:center;
+      will-change:transform;
+      contain:layout paint style;
+      transition:opacity .18s ease,border-color .18s ease,background .18s ease;
+    }
+    .cursor-follower::after{
+      content:"";
+      position:absolute;
+      width:4px;
+      height:4px;
+      left:50%;
+      top:50%;
+      border-radius:50%;
+      background:#d5b873;
+      transform:translate(-50%,-50%);
+    }
+    .cursor-follower.is-visible{opacity:1}
+    .cursor-follower.is-active{
+      --cursor-scale:1.55;
+      border-color:rgba(235,211,149,.88);
+      background:rgba(207,181,112,.055);
+    }
+    @media(max-width:900px),(hover:none),(pointer:coarse),(prefers-reduced-motion:reduce){
+      .cursor-follower{display:none!important}
+    }
+
   </style>
 </head>
 <body>
+  <div class="cursor-follower" id="cursorFollower" aria-hidden="true"></div>
   <header class="header lux-header" id="header">
     <a class="brand lux-brand" href="#home" aria-label="Rohit Pant home">
       <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
@@ -2426,6 +2470,59 @@
       });
     },{rootMargin:'-38% 0px -54% 0px'});
     watchedSections.forEach(section => navObserver.observe(section));
+
+    // Premium cursor follower — one tiny transform-only element.
+    const cursorFollower = document.getElementById('cursorFollower');
+    const cursorEnabled = finePointer && innerWidth > 900 && !reduceMotion;
+    if(cursorFollower && cursorEnabled){
+      let cursorX = -80;
+      let cursorY = -80;
+      let cursorTargetX = -80;
+      let cursorTargetY = -80;
+      let cursorRaf = 0;
+
+      const renderCursor = () => {
+        cursorRaf = 0;
+        cursorX += (cursorTargetX - cursorX) * .22;
+        cursorY += (cursorTargetY - cursorY) * .22;
+        cursorFollower.style.transform =
+          'translate3d(' + (cursorX - 14).toFixed(1) + 'px,' + (cursorY - 14).toFixed(1) + 'px,0) scale(var(--cursor-scale))';
+
+        if(Math.abs(cursorTargetX-cursorX) > .08 || Math.abs(cursorTargetY-cursorY) > .08){
+          requestCursor();
+        }
+      };
+
+      const requestCursor = () => {
+        if(!cursorRaf) cursorRaf = requestAnimationFrame(renderCursor);
+      };
+
+      document.addEventListener('pointermove',e => {
+        cursorTargetX = e.clientX;
+        cursorTargetY = e.clientY;
+        cursorFollower.classList.add('is-visible');
+        requestCursor();
+      },{passive:true});
+
+      document.addEventListener('pointerover',e => {
+        if(e.target.closest('a,button,.project-card,.skill-chip')){
+          cursorFollower.classList.add('is-active');
+        }
+      },{passive:true});
+
+      document.addEventListener('pointerout',e => {
+        if(e.target.closest('a,button,.project-card,.skill-chip')){
+          const next=e.relatedTarget;
+          if(!next || !next.closest || !next.closest('a,button,.project-card,.skill-chip')){
+            cursorFollower.classList.remove('is-active');
+          }
+        }
+      },{passive:true});
+
+      document.documentElement.addEventListener('mouseleave',()=>{
+        cursorFollower.classList.remove('is-visible','is-active');
+      },{passive:true});
+    }
 
     document.addEventListener('visibilitychange',() => {
       if(document.hidden && !processVideo.paused) processVideo.pause();
