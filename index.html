@@ -5,6 +5,19 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="theme-color" content="#05080b" />
   <meta name="color-scheme" content="dark" />
+  <script>
+    (function(){
+      try{
+        if(sessionStorage.getItem('rpIntroDone')==='1'){
+          document.documentElement.classList.add('intro-seen');
+        }else{
+          document.documentElement.classList.add('intro-playing');
+        }
+      }catch(e){
+        document.documentElement.classList.add('intro-playing');
+      }
+    })();
+  </script>
   <title>Rohit Pant | Frontend & UI Developer</title>
   <meta name="description" content="Rohit Pant is a Frontend and UI Developer building responsive production interfaces, realtime experiences and polished web products with React, TypeScript and modern frontend tooling." />
   <meta property="og:title" content="Rohit Pant | Frontend & UI Developer" />
@@ -2018,10 +2031,76 @@
       .cursor-follower{display:none!important}
     }
 
+  
+    /* =========================================================
+       FIRST-LOAD SCROLL INTRO
+       Scroll controls the intro once per browser session.
+       At completion it fades into the hero and is removed.
+       ========================================================= */
+    html.intro-playing,html.intro-playing body{overflow:hidden!important;overscroll-behavior:none}
+    html.intro-playing .lux-header,
+    html.intro-playing main,
+    html.intro-playing .footer{opacity:0}
+    html.intro-complete .lux-header,
+    html.intro-complete main,
+    html.intro-complete .footer{opacity:1;transition:opacity .78s cubic-bezier(.22,1,.36,1)}
+    html.intro-seen .intro-loader{display:none!important}
+
+    .intro-loader{
+      position:fixed;z-index:20000;inset:0;width:100%;height:100%;overflow:hidden;
+      background:#030403;isolation:isolate;opacity:1;visibility:visible;touch-action:none;
+      transition:opacity .72s cubic-bezier(.22,1,.36,1),visibility .72s step-end;
+    }
+    .intro-loader.is-done{opacity:0;visibility:hidden;pointer-events:none}
+    .intro-loader-video{
+      position:absolute;z-index:0;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;
+      background:#030403;transform:translateZ(0) scale(1.002);backface-visibility:hidden;
+    }
+    .intro-loader-shade{
+      position:absolute;z-index:1;inset:0;pointer-events:none;
+      background:linear-gradient(180deg,rgba(0,0,0,.08),transparent 60%,rgba(0,0,0,.48)),
+                 radial-gradient(circle at 50% 50%,transparent 48%,rgba(0,0,0,.16) 100%);
+    }
+    .intro-loader-ui{
+      position:absolute;z-index:3;left:50%;bottom:32px;width:min(640px,calc(100vw - 120px));
+      transform:translateX(-50%);display:grid;grid-template-columns:auto minmax(120px,1fr) 42px;
+      align-items:center;gap:14px;color:rgba(244,243,238,.82);font-size:.61rem;font-weight:650;
+      letter-spacing:.13em;text-transform:uppercase;text-shadow:0 2px 15px rgba(0,0,0,.6);
+    }
+    .intro-loader-track{height:1px;overflow:hidden;background:rgba(255,255,255,.23)}
+    .intro-loader-track i{display:block;width:0;height:100%;background:#d1b36d;box-shadow:0 0 12px rgba(209,179,109,.45)}
+    .intro-skip{
+      position:absolute;z-index:4;top:24px;right:26px;min-width:72px;height:36px;padding:0 14px;
+      border:1px solid rgba(255,255,255,.16);border-radius:999px;background:rgba(5,6,5,.38);
+      color:rgba(244,243,238,.80);font-size:.62rem;font-weight:650;letter-spacing:.08em;
+      text-transform:uppercase;cursor:pointer;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+    }
+    .intro-skip:hover{border-color:rgba(209,179,109,.48);color:#fff}
+    @media(max-width:700px){
+      .intro-loader-ui{bottom:22px;width:calc(100vw - 40px);grid-template-columns:auto 1fr 38px;gap:10px;font-size:.56rem}
+      .intro-skip{top:16px;right:16px;height:34px;min-width:64px}
+    }
+    @media(prefers-reduced-motion:reduce){
+      .intro-loader{display:none!important}
+      html.intro-playing .lux-header,html.intro-playing main,html.intro-playing .footer{opacity:1!important}
+    }
+
   </style>
 </head>
 <body>
   <div class="cursor-follower" id="cursorFollower" aria-hidden="true"></div>
+  <div class="intro-loader" id="introLoader" aria-label="Portfolio introduction">
+    <video class="intro-loader-video" id="introLoaderVideo" muted playsinline preload="auto">
+      <source src="assets/portfolio-loader-scroll.mp4" type="video/mp4" />
+    </video>
+    <div class="intro-loader-shade" aria-hidden="true"></div>
+    <div class="intro-loader-ui" aria-hidden="true">
+      <span>Scroll to enter</span>
+      <div class="intro-loader-track"><i id="introLoaderProgress"></i></div>
+      <span id="introLoaderPercent">00%</span>
+    </div>
+    <button class="intro-skip" id="introSkip" type="button">Skip intro</button>
+  </div>
   <header class="header lux-header" id="header">
     <a class="brand lux-brand" href="#home" aria-label="Rohit Pant home">
       <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
@@ -2470,6 +2549,124 @@
       });
     },{rootMargin:'-38% 0px -54% 0px'});
     watchedSections.forEach(section => navObserver.observe(section));
+
+    // FIRST LOAD INTRO CONTROLLER
+    // Scroll/touch scrubs the loader video. At 100% it fades into the website,
+    // removes itself from the DOM, and scrolling back to the top shows only the hero.
+    const introLoader=document.getElementById('introLoader');
+    const introVideo=document.getElementById('introLoaderVideo');
+    const introProgress=document.getElementById('introLoaderProgress');
+    const introPercent=document.getElementById('introLoaderPercent');
+    const introSkip=document.getElementById('introSkip');
+    const introShouldPlay=introLoader&&introVideo&&!document.documentElement.classList.contains('intro-seen')&&!reduceMotion;
+
+    if(introShouldPlay){
+      let introAmount=0,introDuration=0,introReady=false,introDone=false,introSeekRaf=0,introLastSeek=0,introTouchY=null;
+      const introDistance=1900;
+
+      const updateIntroUI=()=>{
+        const p=Math.max(0,Math.min(1,introAmount/introDistance));
+        if(introProgress) introProgress.style.width=(p*100).toFixed(1)+'%';
+        if(introPercent) introPercent.textContent=String(Math.round(p*100)).padStart(2,'0')+'%';
+        return p;
+      };
+
+      const seekIntro=()=>{
+        introSeekRaf=0;
+        if(!introReady||!introDuration||introDone) return;
+        const p=updateIntroUI();
+        const target=Math.min(introDuration-.04,Math.max(0,p*introDuration));
+        const now=performance.now();
+        if(now-introLastSeek>=34&&Math.abs(introVideo.currentTime-target)>.025){
+          introLastSeek=now;
+          try{introVideo.currentTime=target}catch(e){}
+        }
+        if(p>=.995) finishIntro();
+      };
+
+      const requestIntroSeek=()=>{
+        updateIntroUI();
+        if(!introSeekRaf) introSeekRaf=requestAnimationFrame(seekIntro);
+      };
+
+      const addIntroDelta=delta=>{
+        if(introDone) return;
+        introAmount=Math.max(0,Math.min(introDistance,introAmount+delta));
+        requestIntroSeek();
+      };
+
+      const onIntroWheel=e=>{
+        if(introDone) return;
+        e.preventDefault();
+        addIntroDelta(Math.max(-150,Math.min(150,e.deltaY))*1.28);
+      };
+
+      const onIntroTouchStart=e=>{
+        if(e.touches&&e.touches[0]) introTouchY=e.touches[0].clientY;
+      };
+
+      const onIntroTouchMove=e=>{
+        if(introDone||introTouchY===null||!e.touches||!e.touches[0]) return;
+        e.preventDefault();
+        const y=e.touches[0].clientY;
+        addIntroDelta((introTouchY-y)*1.85);
+        introTouchY=y;
+      };
+
+      const onIntroKey=e=>{
+        if(introDone) return;
+        if(['ArrowDown','PageDown',' ','Enter'].includes(e.key)){e.preventDefault();addIntroDelta(220)}
+        else if(['ArrowUp','PageUp'].includes(e.key)){e.preventDefault();addIntroDelta(-180)}
+      };
+
+      function detachIntroInput(){
+        window.removeEventListener('wheel',onIntroWheel);
+        window.removeEventListener('touchstart',onIntroTouchStart);
+        window.removeEventListener('touchmove',onIntroTouchMove);
+        window.removeEventListener('keydown',onIntroKey);
+      }
+
+      function finishIntro(){
+        if(introDone) return;
+        introDone=true;
+        introAmount=introDistance;
+        updateIntroUI();
+        detachIntroInput();
+        try{
+          introVideo.currentTime=Math.max(0,(introDuration||introVideo.duration||0)-.04);
+          introVideo.pause();
+        }catch(e){}
+        try{sessionStorage.setItem('rpIntroDone','1')}catch(e){}
+        window.scrollTo(0,0);
+        document.documentElement.classList.remove('intro-playing');
+        document.documentElement.classList.add('intro-complete');
+        introLoader.classList.add('is-done');
+        setTimeout(()=>{
+          introLoader.remove();
+          document.documentElement.classList.remove('intro-complete');
+          document.documentElement.classList.add('intro-seen');
+        },820);
+      }
+
+      introVideo.addEventListener('loadedmetadata',()=>{
+        introDuration=Number.isFinite(introVideo.duration)?introVideo.duration:0;
+        introReady=true;
+        try{introVideo.pause();introVideo.currentTime=.01}catch(e){}
+        requestIntroSeek();
+      },{once:true});
+
+      introVideo.addEventListener('error',finishIntro,{once:true});
+      introSkip?.addEventListener('click',finishIntro,{once:true});
+      window.addEventListener('wheel',onIntroWheel,{passive:false});
+      window.addEventListener('touchstart',onIntroTouchStart,{passive:true});
+      window.addEventListener('touchmove',onIntroTouchMove,{passive:false});
+      window.addEventListener('keydown',onIntroKey);
+      updateIntroUI();
+    }else if(introLoader){
+      introLoader.remove();
+      document.documentElement.classList.remove('intro-playing');
+      document.documentElement.classList.add('intro-seen');
+    }
 
     // Premium cursor follower — one tiny transform-only element.
     const cursorFollower = document.getElementById('cursorFollower');
