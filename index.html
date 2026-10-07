@@ -2054,7 +2054,8 @@
     .intro-loader.is-done{opacity:0;visibility:hidden;pointer-events:none}
     .intro-loader-video{
       position:absolute;z-index:0;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;
-      background:#030403;transform:translateZ(0) scale(1.002);backface-visibility:hidden;
+      background:#030403;transform:translate3d(0,0,0) scale(1.002);backface-visibility:hidden;
+      will-change:transform;contain:paint;
     }
     .intro-loader-shade{
       position:absolute;z-index:1;inset:0;pointer-events:none;
@@ -2090,7 +2091,7 @@
 <body>
   <div class="cursor-follower" id="cursorFollower" aria-hidden="true"></div>
   <div class="intro-loader" id="introLoader" aria-label="Portfolio introduction">
-    <video class="intro-loader-video" id="introLoaderVideo" muted playsinline preload="auto">
+    <video class="intro-loader-video" id="introLoaderVideo" muted playsinline preload="auto" disablepictureinpicture>
       <source src="assets/portfolio-loader-scroll.mp4" type="video/mp4" />
     </video>
     <div class="intro-loader-shade" aria-hidden="true"></div>
@@ -2551,8 +2552,8 @@
     watchedSections.forEach(section => navObserver.observe(section));
 
     // FIRST LOAD INTRO CONTROLLER
-    // Scroll/touch scrubs the loader video. At 100% it fades into the website,
-    // removes itself from the DOM, and scrolling back to the top shows only the hero.
+    // Smooth sequential playback follows the user's scroll target.
+    // This avoids repeatedly hard-seeking a long compressed video on every wheel event.
     const introLoader=document.getElementById('introLoader');
     const introVideo=document.getElementById('introLoaderVideo');
     const introProgress=document.getElementById('introLoaderProgress');
@@ -2561,44 +2562,83 @@
     const introShouldPlay=introLoader&&introVideo&&!document.documentElement.classList.contains('intro-seen')&&!reduceMotion;
 
     if(introShouldPlay){
-      let introAmount=0,introDuration=0,introReady=false,introDone=false,introSeekRaf=0,introLastSeek=0,introTouchY=null;
-      const introDistance=1900;
+      let introAmount=0;
+      let introDuration=0;
+      let introReady=false;
+      let introDone=false;
+      let introTouchY=null;
+      let driverRaf=0;
+      let targetTime=0;
+      let lastBackwardSeek=0;
+      const introDistance=3600;
+
+      const clamp=(n,min,max)=>Math.max(min,Math.min(max,n));
 
       const updateIntroUI=()=>{
-        const p=Math.max(0,Math.min(1,introAmount/introDistance));
+        const p=clamp(introAmount/introDistance,0,1);
         if(introProgress) introProgress.style.width=(p*100).toFixed(1)+'%';
         if(introPercent) introPercent.textContent=String(Math.round(p*100)).padStart(2,'0')+'%';
+        if(introDuration) targetTime=clamp(p*introDuration,0,Math.max(0,introDuration-.035));
         return p;
       };
 
-      const seekIntro=()=>{
-        introSeekRaf=0;
-        if(!introReady||!introDuration||introDone) return;
-        const p=updateIntroUI();
-        const target=Math.min(introDuration-.04,Math.max(0,p*introDuration));
-        const now=performance.now();
-        if(now-introLastSeek>=34&&Math.abs(introVideo.currentTime-target)>.025){
-          introLastSeek=now;
-          try{introVideo.currentTime=target}catch(e){}
-        }
-        if(p>=.995) finishIntro();
+      const ensureDriver=()=>{
+        if(!driverRaf) driverRaf=requestAnimationFrame(driveIntro);
       };
 
-      const requestIntroSeek=()=>{
-        updateIntroUI();
-        if(!introSeekRaf) introSeekRaf=requestAnimationFrame(seekIntro);
+      const driveIntro=()=>{
+        driverRaf=0;
+        if(!introReady||!introDuration||introDone) return;
+
+        const p=updateIntroUI();
+        const current=introVideo.currentTime||0;
+        const gap=targetTime-current;
+
+        // Downward scrolling: let the decoder play sequential frames instead of seeking.
+        if(gap>.045){
+          const rate=clamp(.85+(gap*1.15),.85,4);
+          if(Math.abs(introVideo.playbackRate-rate)>.08) introVideo.playbackRate=rate;
+          if(introVideo.paused){
+            const playPromise=introVideo.play();
+            if(playPromise&&typeof playPromise.catch==='function') playPromise.catch(()=>{});
+          }
+        }else if(gap>=-.08){
+          if(!introVideo.paused) introVideo.pause();
+        }else{
+          // Reverse scrolling is less common; seek only when the previous seek has settled.
+          if(!introVideo.paused) introVideo.pause();
+          const now=performance.now();
+          if(!introVideo.seeking&&now-lastBackwardSeek>90){
+            lastBackwardSeek=now;
+            try{
+              if(typeof introVideo.fastSeek==='function'&&Math.abs(gap)>.55) introVideo.fastSeek(targetTime);
+              else introVideo.currentTime=targetTime;
+            }catch(e){}
+          }
+        }
+
+        if(p>=.999&&introVideo.currentTime>=introDuration-.12){
+          finishIntro();
+          return;
+        }
+
+        if(Math.abs(targetTime-(introVideo.currentTime||0))>.035||!introVideo.paused||introVideo.seeking){
+          driverRaf=requestAnimationFrame(driveIntro);
+        }
       };
 
       const addIntroDelta=delta=>{
         if(introDone) return;
-        introAmount=Math.max(0,Math.min(introDistance,introAmount+delta));
-        requestIntroSeek();
+        introAmount=clamp(introAmount+delta,0,introDistance);
+        updateIntroUI();
+        ensureDriver();
       };
 
       const onIntroWheel=e=>{
         if(introDone) return;
         e.preventDefault();
-        addIntroDelta(Math.max(-150,Math.min(150,e.deltaY))*1.28);
+        // Smaller increments keep each requested video advance short and fluid.
+        addIntroDelta(clamp(e.deltaY,-90,90)*.90);
       };
 
       const onIntroTouchStart=e=>{
@@ -2609,20 +2649,30 @@
         if(introDone||introTouchY===null||!e.touches||!e.touches[0]) return;
         e.preventDefault();
         const y=e.touches[0].clientY;
-        addIntroDelta((introTouchY-y)*1.85);
+        addIntroDelta((introTouchY-y)*1.05);
         introTouchY=y;
+      };
+
+      const onIntroTouchEnd=()=>{
+        introTouchY=null;
       };
 
       const onIntroKey=e=>{
         if(introDone) return;
-        if(['ArrowDown','PageDown',' ','Enter'].includes(e.key)){e.preventDefault();addIntroDelta(220)}
-        else if(['ArrowUp','PageUp'].includes(e.key)){e.preventDefault();addIntroDelta(-180)}
+        if(['ArrowDown','PageDown',' ','Enter'].includes(e.key)){
+          e.preventDefault();
+          addIntroDelta(170);
+        }else if(['ArrowUp','PageUp'].includes(e.key)){
+          e.preventDefault();
+          addIntroDelta(-145);
+        }
       };
 
       function detachIntroInput(){
         window.removeEventListener('wheel',onIntroWheel);
         window.removeEventListener('touchstart',onIntroTouchStart);
         window.removeEventListener('touchmove',onIntroTouchMove);
+        window.removeEventListener('touchend',onIntroTouchEnd);
         window.removeEventListener('keydown',onIntroKey);
       }
 
@@ -2632,9 +2682,14 @@
         introAmount=introDistance;
         updateIntroUI();
         detachIntroInput();
+        if(driverRaf){
+          cancelAnimationFrame(driverRaf);
+          driverRaf=0;
+        }
         try{
-          introVideo.currentTime=Math.max(0,(introDuration||introVideo.duration||0)-.04);
           introVideo.pause();
+          introVideo.playbackRate=1;
+          introVideo.currentTime=Math.max(0,(introDuration||introVideo.duration||0)-.04);
         }catch(e){}
         try{sessionStorage.setItem('rpIntroDone','1')}catch(e){}
         window.scrollTo(0,0);
@@ -2648,18 +2703,32 @@
         },820);
       }
 
-      introVideo.addEventListener('loadedmetadata',()=>{
+      const prepareIntro=()=>{
         introDuration=Number.isFinite(introVideo.duration)?introVideo.duration:0;
-        introReady=true;
-        try{introVideo.pause();introVideo.currentTime=.01}catch(e){}
-        requestIntroSeek();
-      },{once:true});
+        introReady=introDuration>0;
+        if(!introReady){
+          finishIntro();
+          return;
+        }
+        try{
+          introVideo.pause();
+          introVideo.currentTime=.001;
+          introVideo.playbackRate=1;
+        }catch(e){}
+        updateIntroUI();
+      };
 
+      if(introVideo.readyState>=1) prepareIntro();
+      else introVideo.addEventListener('loadedmetadata',prepareIntro,{once:true});
+
+      // Restart the driver after browser seeks complete during reverse scrolling.
+      introVideo.addEventListener('seeked',ensureDriver);
       introVideo.addEventListener('error',finishIntro,{once:true});
       introSkip?.addEventListener('click',finishIntro,{once:true});
       window.addEventListener('wheel',onIntroWheel,{passive:false});
       window.addEventListener('touchstart',onIntroTouchStart,{passive:true});
       window.addEventListener('touchmove',onIntroTouchMove,{passive:false});
+      window.addEventListener('touchend',onIntroTouchEnd,{passive:true});
       window.addEventListener('keydown',onIntroKey);
       updateIntroUI();
     }else if(introLoader){
