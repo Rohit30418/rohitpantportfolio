@@ -2052,10 +2052,13 @@
       transition:opacity .72s cubic-bezier(.22,1,.36,1),visibility .72s step-end;
     }
     .intro-loader.is-done{opacity:0;visibility:hidden;pointer-events:none}
-    .intro-loader-video{
-      position:absolute;z-index:0;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;
+    .intro-loader-canvas{
+      position:absolute;z-index:0;inset:0;width:100%;height:100%;display:block;
       background:#030403;transform:translate3d(0,0,0) scale(1.002);backface-visibility:hidden;
       will-change:transform;contain:paint;
+    }
+    .intro-loader-fallback-video{
+      position:absolute;width:1px;height:1px;left:-9999px;top:-9999px;opacity:0;pointer-events:none;
     }
     .intro-loader-shade{
       position:absolute;z-index:1;inset:0;pointer-events:none;
@@ -2091,7 +2094,8 @@
 <body>
   <div class="cursor-follower" id="cursorFollower" aria-hidden="true"></div>
   <div class="intro-loader" id="introLoader" aria-label="Portfolio introduction">
-    <video class="intro-loader-video" id="introLoaderVideo" muted playsinline preload="auto" disablepictureinpicture>
+    <canvas class="intro-loader-canvas" id="introLoaderCanvas" aria-hidden="true"></canvas>
+    <video class="intro-loader-fallback-video" id="introLoaderFallbackVideo" muted playsinline preload="auto" disablepictureinpicture aria-hidden="true">
       <source src="assets/portfolio-loader-scroll.mp4" type="video/mp4" />
     </video>
     <div class="intro-loader-shade" aria-hidden="true"></div>
@@ -2551,93 +2555,193 @@
     },{rootMargin:'-38% 0px -54% 0px'});
     watchedSections.forEach(section => navObserver.observe(section));
 
-    // FIRST LOAD INTRO CONTROLLER
-    // Smooth sequential playback follows the user's scroll target.
-    // This avoids repeatedly hard-seeking a long compressed video on every wheel event.
+    // FIRST LOAD INTRO CONTROLLER — CANVAS
+    // Primary mode: 120 WebP frames rendered directly into canvas.
+    // Safe fallback: the existing MP4 is drawn into the same canvas if frame assets are unavailable.
     const introLoader=document.getElementById('introLoader');
-    const introVideo=document.getElementById('introLoaderVideo');
+    const introCanvas=document.getElementById('introLoaderCanvas');
+    const introFallbackVideo=document.getElementById('introLoaderFallbackVideo');
     const introProgress=document.getElementById('introLoaderProgress');
     const introPercent=document.getElementById('introLoaderPercent');
     const introSkip=document.getElementById('introSkip');
-    const introShouldPlay=introLoader&&introVideo&&!document.documentElement.classList.contains('intro-seen')&&!reduceMotion;
+    const introShouldPlay=introLoader&&introCanvas&&!document.documentElement.classList.contains('intro-seen')&&!reduceMotion;
 
     if(introShouldPlay){
+      const ctx=introCanvas.getContext('2d',{alpha:false,desynchronized:true});
+      const FRAME_COUNT=120;
+      const FRAME_DIR='assets/loader-frames/';
+      const introDistance=3600;
+      const frameCache=new Map();
+
+      let introMode='detecting';
       let introAmount=0;
-      let introDuration=0;
-      let introReady=false;
       let introDone=false;
       let introTouchY=null;
-      let driverRaf=0;
-      let targetTime=0;
-      let lastBackwardSeek=0;
-      const introDistance=3600;
+      let targetFrame=0;
+      let currentFrame=0;
+      let lastDrawn=-1;
+      let rafId=0;
+      let fallbackDuration=0;
+      let fallbackTargetTime=0;
+      let fallbackLastSeek=0;
 
       const clamp=(n,min,max)=>Math.max(min,Math.min(max,n));
+      const frameUrl=index=>FRAME_DIR+'frame-'+String(index+1).padStart(3,'0')+'.webp';
+
+      const resizeIntroCanvas=()=>{
+        const dpr=Math.min(window.devicePixelRatio||1,2);
+        introCanvas.width=Math.max(1,Math.round(innerWidth*dpr));
+        introCanvas.height=Math.max(1,Math.round(innerHeight*dpr));
+        introCanvas.style.width=innerWidth+'px';
+        introCanvas.style.height=innerHeight+'px';
+        if(introMode==='frames') drawFrame(Math.round(currentFrame),true);
+        else if(introMode==='video') drawFallbackVideo();
+      };
+
+      const drawCover=(source,sourceWidth,sourceHeight)=>{
+        if(!sourceWidth||!sourceHeight) return;
+        const cw=introCanvas.width,ch=introCanvas.height;
+        const scale=Math.max(cw/sourceWidth,ch/sourceHeight);
+        const w=sourceWidth*scale,h=sourceHeight*scale;
+        ctx.fillStyle='#030403';
+        ctx.fillRect(0,0,cw,ch);
+        ctx.drawImage(source,(cw-w)/2,(ch-h)/2,w,h);
+      };
+
+      const loadFrame=index=>{
+        index=clamp(index,0,FRAME_COUNT-1);
+        if(frameCache.has(index)) return frameCache.get(index);
+
+        const img=new Image();
+        img.decoding='async';
+        img.src=frameUrl(index);
+
+        const promise=(img.decode?img.decode():Promise.resolve())
+          .then(()=>img)
+          .catch(()=>new Promise((resolve,reject)=>{
+            img.onload=()=>resolve(img);
+            img.onerror=reject;
+          }));
+
+        frameCache.set(index,promise);
+        return promise;
+      };
+
+      const drawFrame=async(index,force=false)=>{
+        index=clamp(index,0,FRAME_COUNT-1);
+        if(!force&&index===lastDrawn) return;
+        try{
+          const img=await loadFrame(index);
+          if(introDone||introMode!=='frames') return;
+          drawCover(img,img.naturalWidth,img.naturalHeight);
+          lastDrawn=index;
+
+          // Keep a compact decoded window around the current frame.
+          for(const key of frameCache.keys()){
+            if(Math.abs(key-index)>16) frameCache.delete(key);
+          }
+        }catch(e){}
+      };
+
+      const drawFallbackVideo=()=>{
+        if(introMode!=='video'||!introFallbackVideo||introFallbackVideo.readyState<2) return;
+        drawCover(introFallbackVideo,introFallbackVideo.videoWidth,introFallbackVideo.videoHeight);
+      };
 
       const updateIntroUI=()=>{
         const p=clamp(introAmount/introDistance,0,1);
+        targetFrame=p*(FRAME_COUNT-1);
+        if(fallbackDuration) fallbackTargetTime=clamp(p*fallbackDuration,0,Math.max(0,fallbackDuration-.04));
         if(introProgress) introProgress.style.width=(p*100).toFixed(1)+'%';
         if(introPercent) introPercent.textContent=String(Math.round(p*100)).padStart(2,'0')+'%';
-        if(introDuration) targetTime=clamp(p*introDuration,0,Math.max(0,introDuration-.035));
         return p;
       };
 
-      const ensureDriver=()=>{
-        if(!driverRaf) driverRaf=requestAnimationFrame(driveIntro);
+      const warmFrames=center=>{
+        // Current + next frames first; previous frames help reverse scrolling.
+        for(let d=-4;d<=10;d++) loadFrame(center+d).catch(()=>{});
       };
 
-      const driveIntro=()=>{
-        driverRaf=0;
-        if(!introReady||!introDuration||introDone) return;
+      const tickFrames=()=>{
+        rafId=0;
+        if(introDone||introMode!=='frames') return;
 
-        const p=updateIntroUI();
-        const current=introVideo.currentTime||0;
-        const gap=targetTime-current;
+        currentFrame+=(targetFrame-currentFrame)*.20;
+        const frame=Math.round(currentFrame);
+        drawFrame(frame);
+        warmFrames(frame);
 
-        // Downward scrolling: let the decoder play sequential frames instead of seeking.
-        if(gap>.045){
-          const rate=clamp(.85+(gap*1.15),.85,4);
-          if(Math.abs(introVideo.playbackRate-rate)>.08) introVideo.playbackRate=rate;
-          if(introVideo.paused){
-            const playPromise=introVideo.play();
-            if(playPromise&&typeof playPromise.catch==='function') playPromise.catch(()=>{});
-          }
-        }else if(gap>=-.08){
-          if(!introVideo.paused) introVideo.pause();
-        }else{
-          // Reverse scrolling is less common; seek only when the previous seek has settled.
-          if(!introVideo.paused) introVideo.pause();
-          const now=performance.now();
-          if(!introVideo.seeking&&now-lastBackwardSeek>90){
-            lastBackwardSeek=now;
-            try{
-              if(typeof introVideo.fastSeek==='function'&&Math.abs(gap)>.55) introVideo.fastSeek(targetTime);
-              else introVideo.currentTime=targetTime;
-            }catch(e){}
-          }
-        }
-
-        if(p>=.999&&introVideo.currentTime>=introDuration-.12){
+        const p=clamp(introAmount/introDistance,0,1);
+        if(p>=.999&&frame>=FRAME_COUNT-1){
           finishIntro();
           return;
         }
 
-        if(Math.abs(targetTime-(introVideo.currentTime||0))>.035||!introVideo.paused||introVideo.seeking){
-          driverRaf=requestAnimationFrame(driveIntro);
+        if(Math.abs(targetFrame-currentFrame)>.055){
+          rafId=requestAnimationFrame(tickFrames);
+        }else{
+          currentFrame=targetFrame;
+          drawFrame(Math.round(currentFrame));
         }
+      };
+
+      const tickVideo=()=>{
+        rafId=0;
+        if(introDone||introMode!=='video'||!introFallbackVideo) return;
+
+        const current=introFallbackVideo.currentTime||0;
+        const gap=fallbackTargetTime-current;
+
+        // Forward motion remains sequential for smooth decoding.
+        if(gap>.045){
+          introFallbackVideo.playbackRate=clamp(.9+(gap*1.15),.9,4);
+          if(introFallbackVideo.paused){
+            const p=introFallbackVideo.play();
+            if(p&&typeof p.catch==='function') p.catch(()=>{});
+          }
+        }else if(gap>=-.08){
+          if(!introFallbackVideo.paused) introFallbackVideo.pause();
+        }else{
+          if(!introFallbackVideo.paused) introFallbackVideo.pause();
+          const now=performance.now();
+          if(!introFallbackVideo.seeking&&now-fallbackLastSeek>90){
+            fallbackLastSeek=now;
+            try{
+              if(typeof introFallbackVideo.fastSeek==='function'&&Math.abs(gap)>.55) introFallbackVideo.fastSeek(fallbackTargetTime);
+              else introFallbackVideo.currentTime=fallbackTargetTime;
+            }catch(e){}
+          }
+        }
+
+        drawFallbackVideo();
+
+        const p=clamp(introAmount/introDistance,0,1);
+        if(p>=.999&&introFallbackVideo.currentTime>=fallbackDuration-.12){
+          finishIntro();
+          return;
+        }
+
+        if(Math.abs(fallbackTargetTime-(introFallbackVideo.currentTime||0))>.035||!introFallbackVideo.paused||introFallbackVideo.seeking){
+          rafId=requestAnimationFrame(tickVideo);
+        }
+      };
+
+      const ensureTick=()=>{
+        if(rafId) return;
+        if(introMode==='frames') rafId=requestAnimationFrame(tickFrames);
+        else if(introMode==='video') rafId=requestAnimationFrame(tickVideo);
       };
 
       const addIntroDelta=delta=>{
         if(introDone) return;
         introAmount=clamp(introAmount+delta,0,introDistance);
         updateIntroUI();
-        ensureDriver();
+        ensureTick();
       };
 
       const onIntroWheel=e=>{
         if(introDone) return;
         e.preventDefault();
-        // Smaller increments keep each requested video advance short and fluid.
         addIntroDelta(clamp(e.deltaY,-90,90)*.90);
       };
 
@@ -2653,27 +2757,24 @@
         introTouchY=y;
       };
 
-      const onIntroTouchEnd=()=>{
-        introTouchY=null;
-      };
+      const onIntroTouchEnd=()=>{introTouchY=null};
 
       const onIntroKey=e=>{
         if(introDone) return;
         if(['ArrowDown','PageDown',' ','Enter'].includes(e.key)){
-          e.preventDefault();
-          addIntroDelta(170);
+          e.preventDefault();addIntroDelta(170);
         }else if(['ArrowUp','PageUp'].includes(e.key)){
-          e.preventDefault();
-          addIntroDelta(-145);
+          e.preventDefault();addIntroDelta(-145);
         }
       };
 
       function detachIntroInput(){
-        window.removeEventListener('wheel',onIntroWheel);
-        window.removeEventListener('touchstart',onIntroTouchStart);
-        window.removeEventListener('touchmove',onIntroTouchMove);
-        window.removeEventListener('touchend',onIntroTouchEnd);
-        window.removeEventListener('keydown',onIntroKey);
+        removeEventListener('wheel',onIntroWheel);
+        removeEventListener('touchstart',onIntroTouchStart);
+        removeEventListener('touchmove',onIntroTouchMove);
+        removeEventListener('touchend',onIntroTouchEnd);
+        removeEventListener('keydown',onIntroKey);
+        removeEventListener('resize',resizeIntroCanvas);
       }
 
       function finishIntro(){
@@ -2682,17 +2783,13 @@
         introAmount=introDistance;
         updateIntroUI();
         detachIntroInput();
-        if(driverRaf){
-          cancelAnimationFrame(driverRaf);
-          driverRaf=0;
+        if(rafId){cancelAnimationFrame(rafId);rafId=0}
+        if(introFallbackVideo){
+          try{introFallbackVideo.pause()}catch(e){}
         }
-        try{
-          introVideo.pause();
-          introVideo.playbackRate=1;
-          introVideo.currentTime=Math.max(0,(introDuration||introVideo.duration||0)-.04);
-        }catch(e){}
+        frameCache.clear();
         try{sessionStorage.setItem('rpIntroDone','1')}catch(e){}
-        window.scrollTo(0,0);
+        scrollTo(0,0);
         document.documentElement.classList.remove('intro-playing');
         document.documentElement.classList.add('intro-complete');
         introLoader.classList.add('is-done');
@@ -2703,33 +2800,57 @@
         },820);
       }
 
-      const prepareIntro=()=>{
-        introDuration=Number.isFinite(introVideo.duration)?introVideo.duration:0;
-        introReady=introDuration>0;
-        if(!introReady){
-          finishIntro();
-          return;
-        }
-        try{
-          introVideo.pause();
-          introVideo.currentTime=.001;
-          introVideo.playbackRate=1;
-        }catch(e){}
-        updateIntroUI();
+      const activateVideoFallback=()=>{
+        if(introDone||introMode==='video') return;
+        introMode='video';
+
+        const prepare=()=>{
+          fallbackDuration=Number.isFinite(introFallbackVideo.duration)?introFallbackVideo.duration:0;
+          if(!fallbackDuration){finishIntro();return}
+          try{
+            introFallbackVideo.pause();
+            introFallbackVideo.currentTime=.001;
+            introFallbackVideo.playbackRate=1;
+          }catch(e){}
+          updateIntroUI();
+          drawFallbackVideo();
+        };
+
+        if(introFallbackVideo.readyState>=1) prepare();
+        else introFallbackVideo.addEventListener('loadedmetadata',prepare,{once:true});
+
+        introFallbackVideo.addEventListener('seeked',()=>{
+          drawFallbackVideo();
+          ensureTick();
+        });
+        introFallbackVideo.addEventListener('timeupdate',drawFallbackVideo);
+        introFallbackVideo.addEventListener('error',finishIntro,{once:true});
       };
 
-      if(introVideo.readyState>=1) prepareIntro();
-      else introVideo.addEventListener('loadedmetadata',prepareIntro,{once:true});
+      const activateFrameMode=async()=>{
+        try{
+          const first=await loadFrame(0);
+          if(introDone) return;
+          introMode='frames';
+          resizeIntroCanvas();
+          drawCover(first,first.naturalWidth,first.naturalHeight);
+          lastDrawn=0;
+          // Preload only the opening window; remaining frames are loaded near scroll position.
+          for(let i=1;i<18;i++) loadFrame(i).catch(()=>{});
+        }catch(e){
+          activateVideoFallback();
+        }
+      };
 
-      // Restart the driver after browser seeks complete during reverse scrolling.
-      introVideo.addEventListener('seeked',ensureDriver);
-      introVideo.addEventListener('error',finishIntro,{once:true});
+      resizeIntroCanvas();
+      activateFrameMode();
       introSkip?.addEventListener('click',finishIntro,{once:true});
-      window.addEventListener('wheel',onIntroWheel,{passive:false});
-      window.addEventListener('touchstart',onIntroTouchStart,{passive:true});
-      window.addEventListener('touchmove',onIntroTouchMove,{passive:false});
-      window.addEventListener('touchend',onIntroTouchEnd,{passive:true});
-      window.addEventListener('keydown',onIntroKey);
+      addEventListener('wheel',onIntroWheel,{passive:false});
+      addEventListener('touchstart',onIntroTouchStart,{passive:true});
+      addEventListener('touchmove',onIntroTouchMove,{passive:false});
+      addEventListener('touchend',onIntroTouchEnd,{passive:true});
+      addEventListener('keydown',onIntroKey);
+      addEventListener('resize',resizeIntroCanvas,{passive:true});
       updateIntroUI();
     }else if(introLoader){
       introLoader.remove();
