@@ -2417,8 +2417,140 @@
     let targetProgress = 0;
     let processVisible = false;
 
+    // WebP frame renderer. The existing MP4 is retained as a fallback until
+    // the new assets/process-frames/ files have been uploaded to GitHub.
+    const processFrameCanvas = document.createElement('canvas');
+    processFrameCanvas.id = 'processFrameCanvas';
+    processFrameCanvas.className = 'process-video';
+    processFrameCanvas.style.display = 'none';
+    processFrameCanvas.setAttribute('role','img');
+    processFrameCanvas.setAttribute('aria-label','Scroll controlled development animation');
+    processVideo.insertAdjacentElement('afterend',processFrameCanvas);
+    const processFrameCtx = processFrameCanvas.getContext('2d',{alpha:false});
+    const processFrameCount = 90;
+    const processFrameCache = new Map();
+    let processFrameQueue = [];
+    let processFrameLoading = 0;
+    let processFramesReady = false;
+    let processFrameProbed = false;
+    let processFrameWanted = 0;
+    let processFramePainted = -1;
+
+    const processFrameUrl = i =>
+      'assets/process-frames/frame-' + String(i+1).padStart(3,'0') + '.webp';
+
+    function resizeProcessFrames(){
+      if(!processFramesReady || !processFrameCtx) return;
+      const rect = processFrameCanvas.getBoundingClientRect();
+      const mobile = matchMedia('(pointer:coarse)').matches;
+      const dpr = Math.min(devicePixelRatio||1,mobile?1.15:1.5);
+      const w = Math.max(1,Math.round(rect.width*dpr));
+      const h = Math.max(1,Math.round(rect.height*dpr));
+      if(processFrameCanvas.width!==w || processFrameCanvas.height!==h){
+        processFrameCanvas.width=w;
+        processFrameCanvas.height=h;
+        processFramePainted=-1;
+      }
+      paintProcessFrame();
+    }
+
+    function paintProcessFrame(){
+      if(!processFramesReady || !processFrameCtx) return;
+      let best = -1, closest = Infinity;
+      for(const [i, item] of processFrameCache){
+        if(item.status!=='ready') continue;
+        const gap = Math.abs(i-processFrameWanted);
+        if(gap < closest){ best=i; closest=gap; }
+      }
+      if(best<0 || best===processFramePainted) return;
+      const img=processFrameCache.get(best).img;
+      const cw=processFrameCanvas.width, ch=processFrameCanvas.height;
+      if(!cw || !ch || !img.naturalWidth) return;
+      const scale=Math.max(cw/img.naturalWidth,ch/img.naturalHeight);
+      const dw=img.naturalWidth*scale, dh=img.naturalHeight*scale;
+      processFrameCtx.fillStyle='#020304';
+      processFrameCtx.fillRect(0,0,cw,ch);
+      processFrameCtx.drawImage(img,(cw-dw)/2,(ch-dh)/2,dw,dh);
+      processFramePainted=best;
+    }
+
+    function queueProcessFrame(index,priority){
+      if(index<0 || index>=processFrameCount || processFrameCache.has(index)) return;
+      const queued=processFrameQueue.find(item=>item.index===index);
+      if(queued){queued.priority=Math.max(queued.priority,priority);return}
+      processFrameQueue.push({index,priority});
+    }
+
+    function pumpProcessFrames(){
+      processFrameQueue.sort((a,b)=>b.priority-a.priority);
+      while(processFrameLoading<4 && processFrameQueue.length){
+        const {index}=processFrameQueue.shift();
+        if(processFrameCache.has(index) || Math.abs(index-processFrameWanted)>14) continue;
+        const img=new Image();
+        img.decoding='async';
+        const item={img,status:'loading'};
+        processFrameCache.set(index,item);
+        processFrameLoading++;
+        img.onload=()=>{
+          processFrameLoading--;
+          item.status='ready';
+          paintProcessFrame();
+          pumpProcessFrames();
+        };
+        img.onerror=()=>{
+          processFrameLoading--;
+          item.status='error';
+          pumpProcessFrames();
+        };
+        img.src=processFrameUrl(index);
+      }
+    }
+
+    function setProcessFrame(index){
+      if(!processFramesReady) return;
+      const previous=processFrameWanted;
+      processFrameWanted=Math.max(0,Math.min(processFrameCount-1,index));
+      const direction=processFrameWanted>=previous?1:-1;
+      processFrameQueue=processFrameQueue.filter(item=>Math.abs(item.index-processFrameWanted)<=14);
+      queueProcessFrame(processFrameWanted,1000);
+      for(let d=1;d<=6;d++) queueProcessFrame(processFrameWanted+d*direction,100-d);
+      for(let d=1;d<=4;d++) queueProcessFrame(processFrameWanted-d*direction,70-d);
+      if(processFrameCache.size>32){
+        const candidates=[...processFrameCache.entries()]
+          .filter(([i,v])=>v.status!=='loading' && i!==processFrameWanted)
+          .sort((a,b)=>Math.abs(b[0]-processFrameWanted)-Math.abs(a[0]-processFrameWanted));
+        for(const [i] of candidates){
+          if(processFrameCache.size<=24) break;
+          processFrameCache.delete(i);
+        }
+      }
+      paintProcessFrame();
+      pumpProcessFrames();
+    }
+
+    function activateProcessFrames(){
+      if(processFrameProbed || reduceMotion || saveData || !processFrameCtx) return;
+      processFrameProbed=true;
+      const poster=new Image();
+      poster.decoding='async';
+      poster.onload=()=>{
+        processFramesReady=true;
+        try{processVideo.pause()}catch(e){}
+        processVideo.style.display='none';
+        processFrameCanvas.style.display='block';
+        processFrameCache.set(0,{img:poster,status:'ready'});
+        resizeProcessFrames();
+        requestProcessScrub();
+      };
+      poster.onerror=()=>{
+        // GitHub assets aren't uploaded yet; keep the current working MP4.
+        loadVideo();
+      };
+      poster.src=processFrameUrl(0);
+    }
+
     function loadVideo(){
-      if(videoLoaded || saveData || reduceMotion) return;
+      if(processFramesReady || videoLoaded || saveData || reduceMotion) return;
       const src = source.dataset.src;
       if(!src) return;
       source.src = src;
@@ -2445,7 +2577,9 @@
       processProgress.style.width = (smoothProgress * 100).toFixed(1) + '%';
       processPercent.textContent = String(Math.round(smoothProgress * 100)).padStart(2,'0') + '%';
 
-      if(videoLoaded && videoDuration && !reduceMotion && !saveData){
+      if(processFramesReady){
+        setProcessFrame(Math.round(smoothProgress*(processFrameCount-1)));
+      }else if(videoLoaded && videoDuration && !reduceMotion && !saveData){
         const target = Math.min(videoDuration - .001,Math.max(0,smoothProgress * videoDuration));
         const now = performance.now();
 
@@ -2470,7 +2604,7 @@
       entries.forEach(entry => {
         processVisible = entry.isIntersecting;
         if(entry.isIntersecting){
-          loadVideo();
+          if(!reduceMotion && !saveData) activateProcessFrames();
           requestProcessScrub();
         }
       });
@@ -2486,7 +2620,10 @@
     });
 
     window.addEventListener('scroll',()=>{if(processVisible) requestProcessScrub();},{passive:true});
-    window.addEventListener('resize',()=>{if(processVisible) requestProcessScrub();},{passive:true});
+    window.addEventListener('resize',()=>{
+      if(processFramesReady) resizeProcessFrames();
+      if(processVisible) requestProcessScrub();
+    },{passive:true});
 
     if(reduceMotion || saveData){
       videoPlay.style.display = 'inline-flex';
@@ -2568,8 +2705,8 @@
 
     if(introShouldPlay){
       const ctx=introCanvas.getContext('2d',{alpha:false,desynchronized:true});
-      const FRAME_COUNT=120;
-      const FRAME_DIR='assets/loader-frames/';
+      const FRAME_COUNT=196;
+      const FRAME_DIR='assets/intro-frames/';
       const introDistance=3600;
       const frameCache=new Map();
 
@@ -2637,6 +2774,7 @@
         try{
           const img=await loadFrame(index);
           if(introDone||introMode!=='frames') return;
+          if(!force && index!==Math.round(currentFrame)) return; // ignore outdated async image loads
           drawCover(img,img.naturalWidth,img.naturalHeight);
           lastDrawn=index;
 
