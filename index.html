@@ -157,7 +157,7 @@
     .process-step b{width:26px;color:var(--amber);font-size:.69rem}
     .video-shell{position:relative;border-radius:32px;overflow:hidden;background:#060a0d;border:1px solid rgba(255,255,255,.11);box-shadow:0 36px 90px rgba(0,0,0,.32);isolation:isolate}
     .video-shell::before{content:"";position:absolute;z-index:2;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(4,7,10,.04),rgba(4,7,10,.16)),linear-gradient(90deg,rgba(51,214,255,.09),transparent 28%,transparent 75%,rgba(244,166,90,.08))}
-    .process-video{width:100%;aspect-ratio:16/9;object-fit:cover;background:#090d10}
+    .process-canvas{width:100%;aspect-ratio:16/9;object-fit:cover;background:#090d10}
     .video-caption{position:absolute;z-index:3;left:20px;right:20px;bottom:18px;display:flex;justify-content:space-between;align-items:center;gap:18px;color:#dce4e8;font-size:.69rem;text-transform:uppercase;letter-spacing:.14em;text-shadow:0 2px 15px rgba(0,0,0,.6)}
     .video-status{display:flex;align-items:center;gap:8px}.video-status::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 15px rgba(51,214,255,.8)}
     .video-play{position:absolute;z-index:4;inset:auto auto 20px 20px;display:none;align-items:center;gap:8px;padding:9px 12px;border:1px solid rgba(255,255,255,.16);border-radius:999px;background:rgba(4,7,10,.7);color:#fff}
@@ -285,7 +285,7 @@
       box-shadow:0 0 14px rgba(244,166,90,.18),0 0 28px rgba(244,166,90,.08);
     }
 
-    /* Full-screen scroll controlled process video */
+    /* Full-screen scroll controlled WebP animation */
     .process-cinema{
       position:relative;
       height:300svh;
@@ -303,7 +303,7 @@
       background:#020304;
       isolation:isolate;
     }
-    .process-sticky .process-video{
+    .process-sticky .process-canvas{
       position:absolute;
       inset:0;
       width:100%;
@@ -735,7 +735,7 @@
       background:rgba(255,255,255,.016);
     }
 
-    /* process video: let the video be the star */
+    /* Process section canvas */
     .process-cinema{height:270svh}
     .process-shade{
       background:
@@ -1681,10 +1681,10 @@
     }
 
   
-    /* Lightweight scroll-video performance tuning */
+    /* Lightweight canvas painting */
     .process-sticky{contain:layout paint;transform:translateZ(0)}
-    .process-sticky .process-video{
-      will-change:contents;
+    .process-sticky .process-canvas{
+      /* No forced will-change layer: canvas updates only when its frame changes. */
       backface-visibility:hidden;
       transform:translateZ(0) scale(1.008);
       background:#050605;
@@ -2057,9 +2057,6 @@
       background:#030403;transform:translate3d(0,0,0) scale(1.002);backface-visibility:hidden;
       will-change:transform;contain:paint;
     }
-    .intro-loader-fallback-video{
-      position:absolute;width:1px;height:1px;left:-9999px;top:-9999px;opacity:0;pointer-events:none;
-    }
     .intro-loader-shade{
       position:absolute;z-index:1;inset:0;pointer-events:none;
       background:linear-gradient(180deg,rgba(0,0,0,.08),transparent 60%,rgba(0,0,0,.48)),
@@ -2095,9 +2092,6 @@
   <div class="cursor-follower" id="cursorFollower" aria-hidden="true"></div>
   <div class="intro-loader" id="introLoader" aria-label="Portfolio introduction">
     <canvas class="intro-loader-canvas" id="introLoaderCanvas" aria-hidden="true"></canvas>
-    <video class="intro-loader-fallback-video" id="introLoaderFallbackVideo" muted playsinline preload="auto" disablepictureinpicture aria-hidden="true">
-      <source src="assets/portfolio-loader-scroll.mp4" type="video/mp4" />
-    </video>
     <div class="intro-loader-shade" aria-hidden="true"></div>
     <div class="intro-loader-ui" aria-hidden="true">
       <span>Scroll to enter</span>
@@ -2221,9 +2215,7 @@
 
     <section class="process-cinema" id="process" aria-label="Behind the code">
       <div class="process-sticky" id="videoShell">
-        <video class="process-video" id="processVideo" muted playsinline preload="none" aria-label="Scroll controlled portfolio process video">
-          <source data-src="assets/process-scroll-hd-light.mp4" type="video/mp4" />
-        </video>
+        <canvas class="process-canvas" id="processCanvas" role="img" aria-label="Scroll-controlled WebP animation showing the development process"></canvas>
         <div class="process-shade" aria-hidden="true"></div>
 
         <div class="process-overlay shell">
@@ -2240,7 +2232,6 @@
           </div>
         </div>
 
-        <button class="video-play" id="videoPlay" type="button">▶ Play video</button>
       </div>
     </section>
 
@@ -2336,9 +2327,6 @@
     const header = document.getElementById('header');
     const menuButton = document.getElementById('menuButton');
     const mobileNav = document.getElementById('mobileNav');
-    const processVideo = document.getElementById('processVideo');
-    const videoPlay = document.getElementById('videoPlay');
-    const source = processVideo.querySelector('source');
     const saveData = navigator.connection && navigator.connection.saveData;
     document.getElementById('year').textContent = new Date().getFullYear();
 
@@ -2406,242 +2394,173 @@
       window.addEventListener('resize',cacheHeroRect,{passive:true});
     }
 
-    const processSection = document.getElementById('process');
-    const processProgress = document.getElementById('processProgress');
-    const processPercent = document.getElementById('processPercent');
-    let videoLoaded = false;
-    let videoDuration = 0;
-    let scrubRaf = 0;
-    let lastSeekAt = 0;
-    let smoothProgress = 0;
-    let targetProgress = 0;
-    let processVisible = false;
 
-    // WebP frame renderer. The existing MP4 is retained as a fallback until
-    // the new assets/process-frames/ files have been uploaded to GitHub.
-    const processFrameCanvas = document.createElement('canvas');
-    processFrameCanvas.id = 'processFrameCanvas';
-    processFrameCanvas.className = 'process-video';
-    processFrameCanvas.style.display = 'none';
-    processFrameCanvas.setAttribute('role','img');
-    processFrameCanvas.setAttribute('aria-label','Scroll controlled development animation');
-    processVideo.insertAdjacentElement('afterend',processFrameCanvas);
-    const processFrameCtx = processFrameCanvas.getContext('2d',{alpha:false});
-    const processFrameCount = 90;
-    const processFrameCache = new Map();
-    let processFrameQueue = [];
-    let processFrameLoading = 0;
-    let processFramesReady = false;
-    let processFrameProbed = false;
-    let processFrameWanted = 0;
-    let processFramePainted = -1;
-
-    const processFrameUrl = i =>
-      'assets/process-frames/frame-' + String(i+1).padStart(3,'0') + '.webp';
-
-    function resizeProcessFrames(){
-      if(!processFramesReady || !processFrameCtx) return;
-      const rect = processFrameCanvas.getBoundingClientRect();
-      const mobile = matchMedia('(pointer:coarse)').matches;
-      const dpr = Math.min(devicePixelRatio||1,mobile?1.15:1.5);
-      const w = Math.max(1,Math.round(rect.width*dpr));
-      const h = Math.max(1,Math.round(rect.height*dpr));
-      if(processFrameCanvas.width!==w || processFrameCanvas.height!==h){
-        processFrameCanvas.width=w;
-        processFrameCanvas.height=h;
-        processFramePainted=-1;
+    // Canvas + WebP only. No video seek, player, MP4 download, or fallback.
+    const frameClamp=(n,low,high)=>Math.min(high,Math.max(low,n));
+    class WebPFrameSequence {
+      constructor(canvas,folder,count,onError){
+        this.canvas=canvas;
+        this.ctx=canvas.getContext('2d',{alpha:false});
+        this.folder=folder;
+        this.count=count;
+        this.onError=onError||(()=>{});
+        this.target=0;
+        this.painted=-1;
+        this.cache=new Map();
+        this.failed=new Set();
+        this.queue=[];
+        this.active=0;
+        this.dead=false;
+        this.mobile=matchMedia('(pointer:coarse)').matches;
+        this.parallel=this.mobile?3:4;
+        this.limit=this.mobile?15:26;
+        this.resize();
       }
-      paintProcessFrame();
-    }
-
-    function paintProcessFrame(){
-      if(!processFramesReady || !processFrameCtx) return;
-      let best = -1, closest = Infinity;
-      for(const [i, item] of processFrameCache){
-        if(item.status!=='ready') continue;
-        const gap = Math.abs(i-processFrameWanted);
-        if(gap < closest){ best=i; closest=gap; }
+      url(i){
+        return this.folder+'frame-'+String(i+1).padStart(3,'0')+'.webp';
       }
-      if(best<0 || best===processFramePainted) return;
-      const img=processFrameCache.get(best).img;
-      const cw=processFrameCanvas.width, ch=processFrameCanvas.height;
-      if(!cw || !ch || !img.naturalWidth) return;
-      const scale=Math.max(cw/img.naturalWidth,ch/img.naturalHeight);
-      const dw=img.naturalWidth*scale, dh=img.naturalHeight*scale;
-      processFrameCtx.fillStyle='#020304';
-      processFrameCtx.fillRect(0,0,cw,ch);
-      processFrameCtx.drawImage(img,(cw-dw)/2,(ch-dh)/2,dw,dh);
-      processFramePainted=best;
-    }
-
-    function queueProcessFrame(index,priority){
-      if(index<0 || index>=processFrameCount || processFrameCache.has(index)) return;
-      const queued=processFrameQueue.find(item=>item.index===index);
-      if(queued){queued.priority=Math.max(queued.priority,priority);return}
-      processFrameQueue.push({index,priority});
-    }
-
-    function pumpProcessFrames(){
-      processFrameQueue.sort((a,b)=>b.priority-a.priority);
-      while(processFrameLoading<4 && processFrameQueue.length){
-        const {index}=processFrameQueue.shift();
-        if(processFrameCache.has(index) || Math.abs(index-processFrameWanted)>14) continue;
-        const img=new Image();
-        img.decoding='async';
-        const item={img,status:'loading'};
-        processFrameCache.set(index,item);
-        processFrameLoading++;
-        img.onload=()=>{
-          processFrameLoading--;
-          item.status='ready';
-          paintProcessFrame();
-          pumpProcessFrames();
-        };
-        img.onerror=()=>{
-          processFrameLoading--;
-          item.status='error';
-          pumpProcessFrames();
-        };
-        img.src=processFrameUrl(index);
+      resize(){
+        if(this.dead||!this.ctx)return;
+        const rect=this.canvas.getBoundingClientRect();
+        const ratio=Math.min(devicePixelRatio||1,this.mobile?1.15:1.5);
+        const width=Math.max(1,Math.round(rect.width*ratio));
+        const height=Math.max(1,Math.round(rect.height*ratio));
+        if(this.canvas.width!==width||this.canvas.height!==height){
+          this.canvas.width=width;
+          this.canvas.height=height;
+          this.painted=-1;
+        }
+        this.draw();
       }
-    }
-
-    function setProcessFrame(index){
-      if(!processFramesReady) return;
-      const previous=processFrameWanted;
-      processFrameWanted=Math.max(0,Math.min(processFrameCount-1,index));
-      const direction=processFrameWanted>=previous?1:-1;
-      processFrameQueue=processFrameQueue.filter(item=>Math.abs(item.index-processFrameWanted)<=14);
-      queueProcessFrame(processFrameWanted,1000);
-      for(let d=1;d<=6;d++) queueProcessFrame(processFrameWanted+d*direction,100-d);
-      for(let d=1;d<=4;d++) queueProcessFrame(processFrameWanted-d*direction,70-d);
-      if(processFrameCache.size>32){
-        const candidates=[...processFrameCache.entries()]
-          .filter(([i,v])=>v.status!=='loading' && i!==processFrameWanted)
-          .sort((a,b)=>Math.abs(b[0]-processFrameWanted)-Math.abs(a[0]-processFrameWanted));
+      enqueue(i,priority){
+        if(i<0||i>=this.count||this.cache.has(i)||this.failed.has(i))return;
+        const found=this.queue.find(q=>q.i===i);
+        if(found){found.priority=Math.max(found.priority,priority);return}
+        this.queue.push({i,priority});
+      }
+      setFrame(value){
+        if(this.dead)return;
+        const next=frameClamp(Math.round(value),0,this.count-1);
+        const direction=next>=this.target?1:-1;
+        this.target=next;
+        this.queue=this.queue.filter(q=>Math.abs(q.i-next)<=12);
+        this.enqueue(next,1000);
+        for(let d=1;d<=(this.mobile?3:5);d++)this.enqueue(next+d*direction,100-d);
+        for(let d=1;d<=(this.mobile?2:4);d++)this.enqueue(next-d*direction,60-d);
+        this.draw();
+        this.pump();
+      }
+      pump(){
+        if(this.dead)return;
+        this.queue.sort((a,b)=>b.priority-a.priority);
+        while(this.active<this.parallel&&this.queue.length){
+          const {i}=this.queue.shift();
+          if(this.cache.has(i)||this.failed.has(i)||Math.abs(i-this.target)>12)continue;
+          const img=new Image();
+          img.decoding='async';
+          const entry={img,ready:false};
+          this.cache.set(i,entry);
+          this.active++;
+          img.onload=()=>{
+            this.active--;
+            if(this.dead)return;
+            entry.ready=true;
+            this.draw();
+            this.trim();
+            this.pump();
+          };
+          img.onerror=()=>{
+            this.active--;
+            if(this.dead)return;
+            this.cache.delete(i);
+            this.failed.add(i);
+            this.onError(i);
+            this.pump();
+          };
+          img.src=this.url(i);
+        }
+      }
+      draw(){
+        if(this.dead||!this.ctx)return;
+        let best=-1,gap=Infinity;
+        for(const [i,item] of this.cache){
+          if(!item.ready)continue;
+          const dist=Math.abs(i-this.target);
+          if(dist<gap){gap=dist;best=i}
+        }
+        if(best<0||best===this.painted)return;
+        const img=this.cache.get(best).img;
+        if(!img.naturalWidth||!img.naturalHeight)return;
+        const cw=this.canvas.width,ch=this.canvas.height;
+        const scale=Math.max(cw/img.naturalWidth,ch/img.naturalHeight);
+        const w=img.naturalWidth*scale,h=img.naturalHeight*scale;
+        this.ctx.fillStyle='#030403';
+        this.ctx.fillRect(0,0,cw,ch);
+        this.ctx.drawImage(img,(cw-w)/2,(ch-h)/2,w,h);
+        this.painted=best;
+      }
+      trim(){
+        if(this.cache.size<=this.limit)return;
+        const candidates=[...this.cache.entries()]
+          .filter(([i,item])=>item.ready&&i!==this.target)
+          .sort((a,b)=>Math.abs(b[0]-this.target)-Math.abs(a[0]-this.target));
         for(const [i] of candidates){
-          if(processFrameCache.size<=24) break;
-          processFrameCache.delete(i);
+          if(this.cache.size<=this.limit)break;
+          this.cache.delete(i);
         }
       }
-      paintProcessFrame();
-      pumpProcessFrames();
+      dispose(){
+        this.dead=true;
+        this.queue.length=0;
+        for(const item of this.cache.values()){
+          item.img.onload=null;item.img.onerror=null;
+          if(!item.ready)item.img.src='';
+        }
+        this.cache.clear();
+      }
     }
 
-    function activateProcessFrames(){
-      if(processFrameProbed || reduceMotion || saveData || !processFrameCtx) return;
-      processFrameProbed=true;
-      const poster=new Image();
-      poster.decoding='async';
-      poster.onload=()=>{
-        processFramesReady=true;
-        try{processVideo.pause()}catch(e){}
-        processVideo.style.display='none';
-        processFrameCanvas.style.display='block';
-        processFrameCache.set(0,{img:poster,status:'ready'});
-        resizeProcessFrames();
-        requestProcessScrub();
+    // Only initiate the process sequence as it approaches the viewport.
+    const processSection=document.getElementById('process');
+    const processCanvas=document.getElementById('processCanvas');
+    const processProgress=document.getElementById('processProgress');
+    const processPercent=document.getElementById('processPercent');
+    if(processSection&&processCanvas){
+      const sequence=new WebPFrameSequence(processCanvas,'assets/process-frames/',90);
+      let visible=false,frameRaf=0,eased=0,target=0,first=true;
+      const getProcessProgress=()=>{
+        const rect=processSection.getBoundingClientRect();
+        return frameClamp(-rect.top/Math.max(1,processSection.offsetHeight-innerHeight),0,1);
       };
-      poster.onerror=()=>{
-        // GitHub assets aren't uploaded yet; keep the current working MP4.
-        loadVideo();
+      function paintProcess(){
+        frameRaf=0;
+        if(!visible)return;
+        target=reduceMotion||saveData?0:getProcessProgress();
+        if(first){eased=target;first=false}
+        eased+=(target-eased)*.34;
+        if(Math.abs(eased-target)<.001)eased=target;
+        sequence.setFrame(eased*89);
+        processSection.style.setProperty('--process-p',eased.toFixed(4));
+        processProgress.style.width=(eased*100).toFixed(1)+'%';
+        processPercent.textContent=String(Math.round(eased*100)).padStart(2,'0')+'%';
+        if(Math.abs(eased-target)>.001)frameRaf=requestAnimationFrame(paintProcess);
+      }
+      const requestProcess=()=>{
+        if(visible&&!frameRaf)frameRaf=requestAnimationFrame(paintProcess);
       };
-      poster.src=processFrameUrl(0);
-    }
-
-    function loadVideo(){
-      if(processFramesReady || videoLoaded || saveData || reduceMotion) return;
-      const src = source.dataset.src;
-      if(!src) return;
-      source.src = src;
-      processVideo.load();
-      videoLoaded = true;
-    }
-
-    function processProgressValue(){
-      const rect = processSection.getBoundingClientRect();
-      const distance = Math.max(1, processSection.offsetHeight - innerHeight);
-      return Math.max(0,Math.min(1,-rect.top / distance));
-    }
-
-    function renderProcessScrub(){
-      scrubRaf = 0;
-      targetProgress = processProgressValue();
-
-      // Eased interpolation keeps trackpad / wheel scrolling visually light
-      // instead of snapping the video to every raw scroll event.
-      smoothProgress += (targetProgress - smoothProgress) * 0.24;
-      if(Math.abs(targetProgress - smoothProgress) < 0.0008) smoothProgress = targetProgress;
-
-      processSection.style.setProperty('--process-p',smoothProgress.toFixed(4));
-      processProgress.style.width = (smoothProgress * 100).toFixed(1) + '%';
-      processPercent.textContent = String(Math.round(smoothProgress * 100)).padStart(2,'0') + '%';
-
-      if(processFramesReady){
-        setProcessFrame(Math.round(smoothProgress*(processFrameCount-1)));
-      }else if(videoLoaded && videoDuration && !reduceMotion && !saveData){
-        const target = Math.min(videoDuration - .001,Math.max(0,smoothProgress * videoDuration));
-        const now = performance.now();
-
-        // ~25fps seek cap + a small dead-zone keeps HD scrubbing smooth without decoder thrashing.
-        if(now - lastSeekAt >= 40 && Math.abs(processVideo.currentTime - target) > .024){
-          lastSeekAt = now;
-          try{ processVideo.currentTime = target; }catch(e){}
+      const processObserver=new IntersectionObserver(entries=>{
+        for(const entry of entries){
+          visible=entry.isIntersecting;
+          if(visible){sequence.resize();requestProcess()}
+          else if(frameRaf){cancelAnimationFrame(frameRaf);frameRaf=0}
         }
-      }
-
-      if(processVisible && Math.abs(targetProgress - smoothProgress) > 0.0015){
-        scrubRaf = requestAnimationFrame(renderProcessScrub);
-      }
+      },{rootMargin:'120px 0px',threshold:0});
+      processObserver.observe(processSection);
+      addEventListener('scroll',requestProcess,{passive:true});
+      addEventListener('resize',()=>{
+        if(visible){sequence.resize();requestProcess()}
+      },{passive:true});
     }
-
-    function requestProcessScrub(){
-      targetProgress = processProgressValue();
-      if(!scrubRaf) scrubRaf = requestAnimationFrame(renderProcessScrub);
-    }
-
-    const videoObserver = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        processVisible = entry.isIntersecting;
-        if(entry.isIntersecting){
-          if(!reduceMotion && !saveData) activateProcessFrames();
-          requestProcessScrub();
-        }
-      });
-    },{rootMargin:'160px 0px',threshold:0});
-    videoObserver.observe(processSection);
-
-    processVideo.addEventListener('loadedmetadata',() => {
-      videoDuration = Number.isFinite(processVideo.duration) ? processVideo.duration : 0;
-      try{ processVideo.pause(); }catch(e){}
-      smoothProgress = processProgressValue();
-      targetProgress = smoothProgress;
-      requestProcessScrub();
-    });
-
-    window.addEventListener('scroll',()=>{if(processVisible) requestProcessScrub();},{passive:true});
-    window.addEventListener('resize',()=>{
-      if(processFramesReady) resizeProcessFrames();
-      if(processVisible) requestProcessScrub();
-    },{passive:true});
-
-    if(reduceMotion || saveData){
-      videoPlay.style.display = 'inline-flex';
-    }
-
-    videoPlay.addEventListener('click',() => {
-      if(!videoLoaded){
-        const src = source.dataset.src;
-        if(src){
-          source.src = src;
-          processVideo.load();
-          videoLoaded = true;
-        }
-      }
-      processVideo.controls = true;
-      processVideo.play().catch(() => {});
-      videoPlay.style.display='none';
-    });
 
     const revealEls = document.querySelectorAll('[data-reveal]');
     if(reduceMotion){
@@ -2692,244 +2611,89 @@
     },{rootMargin:'-38% 0px -54% 0px'});
     watchedSections.forEach(section => navObserver.observe(section));
 
-    // FIRST LOAD INTRO CONTROLLER — CANVAS
-    // Primary mode: 120 WebP frames rendered directly into canvas.
-    // Safe fallback: the existing MP4 is drawn into the same canvas if frame assets are unavailable.
+
+    // Session-only scroll intro. WebP frames exclusively, including offline fallback.
     const introLoader=document.getElementById('introLoader');
     const introCanvas=document.getElementById('introLoaderCanvas');
-    const introFallbackVideo=document.getElementById('introLoaderFallbackVideo');
     const introProgress=document.getElementById('introLoaderProgress');
     const introPercent=document.getElementById('introLoaderPercent');
     const introSkip=document.getElementById('introSkip');
-    const introShouldPlay=introLoader&&introCanvas&&!document.documentElement.classList.contains('intro-seen')&&!reduceMotion;
+    const introShouldPlay=!!introLoader&&!!introCanvas&&
+      !document.documentElement.classList.contains('intro-seen')&&!reduceMotion&&!saveData;
 
     if(introShouldPlay){
-      const ctx=introCanvas.getContext('2d',{alpha:false,desynchronized:true});
-      const FRAME_COUNT=196;
-      const FRAME_DIR='assets/intro-frames/';
-      const introDistance=3600;
-      const frameCache=new Map();
-
-      let introMode='detecting';
-      let introAmount=0;
-      let introDone=false;
-      let introTouchY=null;
-      let targetFrame=0;
-      let currentFrame=0;
-      let lastDrawn=-1;
-      let rafId=0;
-      let fallbackDuration=0;
-      let fallbackTargetTime=0;
-      let fallbackLastSeek=0;
-
-      const clamp=(n,min,max)=>Math.max(min,Math.min(max,n));
-      const frameUrl=index=>FRAME_DIR+'frame-'+String(index+1).padStart(3,'0')+'.webp';
-
-      const resizeIntroCanvas=()=>{
-        const dpr=Math.min(window.devicePixelRatio||1,2);
-        introCanvas.width=Math.max(1,Math.round(innerWidth*dpr));
-        introCanvas.height=Math.max(1,Math.round(innerHeight*dpr));
-        introCanvas.style.width=innerWidth+'px';
-        introCanvas.style.height=innerHeight+'px';
-        if(introMode==='frames') drawFrame(Math.round(currentFrame),true);
-        else if(introMode==='video') drawFallbackVideo();
-      };
-
-      const drawCover=(source,sourceWidth,sourceHeight)=>{
-        if(!sourceWidth||!sourceHeight) return;
-        const cw=introCanvas.width,ch=introCanvas.height;
-        const scale=Math.max(cw/sourceWidth,ch/sourceHeight);
-        const w=sourceWidth*scale,h=sourceHeight*scale;
-        ctx.fillStyle='#030403';
-        ctx.fillRect(0,0,cw,ch);
-        ctx.drawImage(source,(cw-w)/2,(ch-h)/2,w,h);
-      };
-
-      const loadFrame=index=>{
-        index=clamp(index,0,FRAME_COUNT-1);
-        if(frameCache.has(index)) return frameCache.get(index);
-
-        const img=new Image();
-        img.decoding='async';
-
-        const promise=new Promise((resolve,reject)=>{
-          img.onload=()=>{
-            if(typeof img.decode==='function'){
-              img.decode().catch(()=>{}).finally(()=>resolve(img));
-            }else{
-              resolve(img);
-            }
-          };
-          img.onerror=()=>reject(new Error('Loader frame unavailable: '+frameUrl(index)));
-          img.src=frameUrl(index);
-        });
-
-        frameCache.set(index,promise);
-        return promise;
-      };
-
-      const drawFrame=async(index,force=false)=>{
-        index=clamp(index,0,FRAME_COUNT-1);
-        if(!force&&index===lastDrawn) return;
-        try{
-          const img=await loadFrame(index);
-          if(introDone||introMode!=='frames') return;
-          if(!force && index!==Math.round(currentFrame)) return; // ignore outdated async image loads
-          drawCover(img,img.naturalWidth,img.naturalHeight);
-          lastDrawn=index;
-
-          // Keep a compact decoded window around the current frame.
-          for(const key of frameCache.keys()){
-            if(Math.abs(key-index)>16) frameCache.delete(key);
-          }
-        }catch(e){}
-      };
-
-      const drawFallbackVideo=()=>{
-        if(introMode!=='video'||!introFallbackVideo||introFallbackVideo.readyState<2) return;
-        drawCover(introFallbackVideo,introFallbackVideo.videoWidth,introFallbackVideo.videoHeight);
-      };
-
-      const updateIntroUI=()=>{
-        const p=clamp(introAmount/introDistance,0,1);
-        targetFrame=p*(FRAME_COUNT-1);
-        if(fallbackDuration) fallbackTargetTime=clamp(p*fallbackDuration,0,Math.max(0,fallbackDuration-.04));
-        if(introProgress) introProgress.style.width=(p*100).toFixed(1)+'%';
-        if(introPercent) introPercent.textContent=String(Math.round(p*100)).padStart(2,'0')+'%';
+      const DISTANCE=3600;
+      let distance=0,frame=0,raf=0,touchY=null,done=false,endTimer=0,player=null;
+      let frameCount=120;
+      const applyProgress=()=>{
+        const p=frameClamp(distance/DISTANCE,0,1);
+        introProgress.style.width=(p*100).toFixed(1)+'%';
+        introPercent.textContent=String(Math.round(p*100)).padStart(2,'0')+'%';
+        if(p>=1&&!endTimer)endTimer=setTimeout(finishIntro,800);
+        if(p<1&&endTimer){clearTimeout(endTimer);endTimer=0}
         return p;
       };
-
-      const warmFrames=center=>{
-        // Current + next frames first; previous frames help reverse scrolling.
-        for(let d=-4;d<=10;d++) loadFrame(center+d).catch(()=>{});
+      function useFrames(dir,count,allowRetry){
+        if(done)return;
+        if(player)player.dispose();
+        frameCount=count;
+        player=new WebPFrameSequence(introCanvas,dir,count,(index)=>{
+          if(index!==0)return;
+          if(allowRetry)useFrames('assets/loader-frames/',120,false);
+          else finishIntro(); // never trap anyone on a missing asset
+        });
+        player.setFrame(applyProgress()*(frameCount-1));
+      }
+      const tickIntro=()=>{
+        raf=0;
+        if(done||!player)return;
+        const target=distance/DISTANCE*(frameCount-1);
+        frame+=(target-frame)*.38;
+        if(Math.abs(target-frame)<.1)frame=target;
+        player.setFrame(frame);
+        if(Math.abs(target-frame)>.1)raf=requestAnimationFrame(tickIntro);
       };
-
-      const tickFrames=()=>{
-        rafId=0;
-        if(introDone||introMode!=='frames') return;
-
-        currentFrame+=(targetFrame-currentFrame)*.20;
-        const frame=Math.round(currentFrame);
-        drawFrame(frame);
-        warmFrames(frame);
-
-        const p=clamp(introAmount/introDistance,0,1);
-        if(p>=.999&&frame>=FRAME_COUNT-1){
-          finishIntro();
-          return;
-        }
-
-        if(Math.abs(targetFrame-currentFrame)>.055){
-          rafId=requestAnimationFrame(tickFrames);
-        }else{
-          currentFrame=targetFrame;
-          drawFrame(Math.round(currentFrame));
-        }
+      const addIntro=delta=>{
+        if(done)return;
+        distance=frameClamp(distance+delta,0,DISTANCE);
+        applyProgress();
+        if(!raf)raf=requestAnimationFrame(tickIntro);
       };
-
-      const tickVideo=()=>{
-        rafId=0;
-        if(introDone||introMode!=='video'||!introFallbackVideo) return;
-
-        const current=introFallbackVideo.currentTime||0;
-        const gap=fallbackTargetTime-current;
-
-        // Forward motion remains sequential for smooth decoding.
-        if(gap>.045){
-          introFallbackVideo.playbackRate=clamp(.9+(gap*1.15),.9,4);
-          if(introFallbackVideo.paused){
-            const p=introFallbackVideo.play();
-            if(p&&typeof p.catch==='function') p.catch(()=>{});
-          }
-        }else if(gap>=-.08){
-          if(!introFallbackVideo.paused) introFallbackVideo.pause();
-        }else{
-          if(!introFallbackVideo.paused) introFallbackVideo.pause();
-          const now=performance.now();
-          if(!introFallbackVideo.seeking&&now-fallbackLastSeek>90){
-            fallbackLastSeek=now;
-            try{
-              if(typeof introFallbackVideo.fastSeek==='function'&&Math.abs(gap)>.55) introFallbackVideo.fastSeek(fallbackTargetTime);
-              else introFallbackVideo.currentTime=fallbackTargetTime;
-            }catch(e){}
-          }
-        }
-
-        drawFallbackVideo();
-
-        const p=clamp(introAmount/introDistance,0,1);
-        if(p>=.999&&introFallbackVideo.currentTime>=fallbackDuration-.12){
-          finishIntro();
-          return;
-        }
-
-        if(Math.abs(fallbackTargetTime-(introFallbackVideo.currentTime||0))>.035||!introFallbackVideo.paused||introFallbackVideo.seeking){
-          rafId=requestAnimationFrame(tickVideo);
-        }
-      };
-
-      const ensureTick=()=>{
-        if(rafId) return;
-        if(introMode==='frames') rafId=requestAnimationFrame(tickFrames);
-        else if(introMode==='video') rafId=requestAnimationFrame(tickVideo);
-      };
-
-      const addIntroDelta=delta=>{
-        if(introDone) return;
-        introAmount=clamp(introAmount+delta,0,introDistance);
-        updateIntroUI();
-        ensureTick();
-      };
-
-      const onIntroWheel=e=>{
-        if(introDone) return;
+      const wheelIntro=e=>{
+        if(done)return;
         e.preventDefault();
-        addIntroDelta(clamp(e.deltaY,-90,90)*.90);
+        const unit=e.deltaMode===1?16:e.deltaMode===2?innerHeight:1;
+        addIntro(frameClamp(e.deltaY*unit,-110,110)*.94);
       };
-
-      const onIntroTouchStart=e=>{
-        if(e.touches&&e.touches[0]) introTouchY=e.touches[0].clientY;
-      };
-
-      const onIntroTouchMove=e=>{
-        if(introDone||introTouchY===null||!e.touches||!e.touches[0]) return;
+      const touchStart=e=>{touchY=e.touches[0]?e.touches[0].clientY:null};
+      const touchMove=e=>{
+        if(done||touchY===null||!e.touches[0])return;
         e.preventDefault();
         const y=e.touches[0].clientY;
-        addIntroDelta((introTouchY-y)*1.05);
-        introTouchY=y;
+        addIntro((touchY-y)*1.25);
+        touchY=y;
       };
-
-      const onIntroTouchEnd=()=>{introTouchY=null};
-
-      const onIntroKey=e=>{
-        if(introDone) return;
+      const touchEnd=()=>{touchY=null};
+      const keyIntro=e=>{
         if(['ArrowDown','PageDown',' ','Enter'].includes(e.key)){
-          e.preventDefault();addIntroDelta(170);
+          e.preventDefault();addIntro(200);
         }else if(['ArrowUp','PageUp'].includes(e.key)){
-          e.preventDefault();addIntroDelta(-145);
+          e.preventDefault();addIntro(-170);
         }
       };
-
-      function detachIntroInput(){
-        removeEventListener('wheel',onIntroWheel);
-        removeEventListener('touchstart',onIntroTouchStart);
-        removeEventListener('touchmove',onIntroTouchMove);
-        removeEventListener('touchend',onIntroTouchEnd);
-        removeEventListener('keydown',onIntroKey);
-        removeEventListener('resize',resizeIntroCanvas);
-      }
-
+      const resizeIntro=()=>{if(player)player.resize()};
       function finishIntro(){
-        if(introDone) return;
-        introDone=true;
-        introAmount=introDistance;
-        updateIntroUI();
-        detachIntroInput();
-        if(rafId){cancelAnimationFrame(rafId);rafId=0}
-        if(introFallbackVideo){
-          try{introFallbackVideo.pause()}catch(e){}
-        }
-        frameCache.clear();
+        if(done)return;
+        done=true;
+        removeEventListener('wheel',wheelIntro);
+        removeEventListener('touchstart',touchStart);
+        removeEventListener('touchmove',touchMove);
+        removeEventListener('touchend',touchEnd);
+        removeEventListener('keydown',keyIntro);
+        removeEventListener('resize',resizeIntro);
+        if(raf)cancelAnimationFrame(raf);
+        if(endTimer)clearTimeout(endTimer);
+        if(player)player.dispose();
         try{sessionStorage.setItem('rpIntroDone','1')}catch(e){}
         scrollTo(0,0);
         document.documentElement.classList.remove('intro-playing');
@@ -2941,59 +2705,21 @@
           document.documentElement.classList.add('intro-seen');
         },820);
       }
-
-      const activateVideoFallback=()=>{
-        if(introDone||introMode==='video') return;
-        introMode='video';
-
-        const prepare=()=>{
-          fallbackDuration=Number.isFinite(introFallbackVideo.duration)?introFallbackVideo.duration:0;
-          if(!fallbackDuration){finishIntro();return}
-          try{
-            introFallbackVideo.pause();
-            introFallbackVideo.currentTime=.001;
-            introFallbackVideo.playbackRate=1;
-          }catch(e){}
-          updateIntroUI();
-          drawFallbackVideo();
-        };
-
-        if(introFallbackVideo.readyState>=1) prepare();
-        else introFallbackVideo.addEventListener('loadedmetadata',prepare,{once:true});
-
-        introFallbackVideo.addEventListener('seeked',()=>{
-          drawFallbackVideo();
-          ensureTick();
-        });
-        introFallbackVideo.addEventListener('timeupdate',drawFallbackVideo);
-        introFallbackVideo.addEventListener('error',finishIntro,{once:true});
-      };
-
-      const activateFrameMode=async()=>{
-        try{
-          const first=await loadFrame(0);
-          if(introDone) return;
-          introMode='frames';
-          resizeIntroCanvas();
-          drawCover(first,first.naturalWidth,first.naturalHeight);
-          lastDrawn=0;
-          // Preload only the opening window; remaining frames are loaded near scroll position.
-          for(let i=1;i<18;i++) loadFrame(i).catch(()=>{});
-        }catch(e){
-          activateVideoFallback();
-        }
-      };
-
-      resizeIntroCanvas();
-      activateFrameMode();
-      introSkip?.addEventListener('click',finishIntro,{once:true});
-      addEventListener('wheel',onIntroWheel,{passive:false});
-      addEventListener('touchstart',onIntroTouchStart,{passive:true});
-      addEventListener('touchmove',onIntroTouchMove,{passive:false});
-      addEventListener('touchend',onIntroTouchEnd,{passive:true});
-      addEventListener('keydown',onIntroKey);
-      addEventListener('resize',resizeIntroCanvas,{passive:true});
-      updateIntroUI();
+      introSkip.addEventListener('click',finishIntro,{once:true});
+      addEventListener('wheel',wheelIntro,{passive:false});
+      addEventListener('touchstart',touchStart,{passive:true});
+      addEventListener('touchmove',touchMove,{passive:false});
+      addEventListener('touchend',touchEnd,{passive:true});
+      addEventListener('keydown',keyIntro);
+      addEventListener('resize',resizeIntro,{passive:true});
+      useFrames('assets/loader-frames/',120,false);
+      // Upgrades itself to the 196-frame HD set when your upload is complete.
+      // No MP4 path, and no dependency on the new folder before it is uploaded.
+      const hdProbe=new Image();
+      hdProbe.decoding='async';
+      hdProbe.onload=()=>{if(!done){frame=distance/DISTANCE*195;useFrames('assets/intro-frames/',196,true)}};
+      hdProbe.src='assets/intro-frames/frame-196.webp';
+      applyProgress();
     }else if(introLoader){
       introLoader.remove();
       document.documentElement.classList.remove('intro-playing');
@@ -3053,9 +2779,6 @@
       },{passive:true});
     }
 
-    document.addEventListener('visibilitychange',() => {
-      if(document.hidden && !processVideo.paused) processVideo.pause();
-    });
   </script>
 </body>
 </html>
