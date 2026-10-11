@@ -6,17 +6,8 @@
   <meta name="theme-color" content="#05080b" />
   <meta name="color-scheme" content="dark" />
   <script>
-    (function(){
-      try{
-        if(sessionStorage.getItem('rpIntroDone')==='1'){
-          document.documentElement.classList.add('intro-seen');
-        }else{
-          document.documentElement.classList.add('intro-playing');
-        }
-      }catch(e){
-        document.documentElement.classList.add('intro-playing');
-      }
-    })();
+    // Display the scroll introduction on each page load; never inherit a stale session skip.
+    document.documentElement.classList.add('intro-playing');
   </script>
   <title>Rohit Pant | Frontend & UI Developer</title>
   <meta name="description" content="Rohit Pant is a Frontend and UI Developer building responsive production interfaces, realtime experiences and polished web products with React, TypeScript and modern frontend tooling." />
@@ -2612,7 +2603,7 @@
     watchedSections.forEach(section => navObserver.observe(section));
 
 
-    // Session-only scroll intro. WebP frames exclusively, including offline fallback.
+    // Scroll-controlled intro. Use the uploaded 196-frame WebP sequence directly.
     const introLoader=document.getElementById('introLoader');
     const introCanvas=document.getElementById('introLoaderCanvas');
     const introProgress=document.getElementById('introLoaderProgress');
@@ -2624,7 +2615,7 @@
     if(introShouldPlay){
       const DISTANCE=3600;
       let distance=0,frame=0,raf=0,touchY=null,done=false,endTimer=0,player=null;
-      let frameCount=120;
+      let frameCount=196;
       const applyProgress=()=>{
         const p=frameClamp(distance/DISTANCE,0,1);
         introProgress.style.width=(p*100).toFixed(1)+'%';
@@ -2633,16 +2624,14 @@
         if(p<1&&endTimer){clearTimeout(endTimer);endTimer=0}
         return p;
       };
-      function useFrames(dir,count,allowRetry){
+      function useFrames(){
         if(done)return;
         if(player)player.dispose();
-        frameCount=count;
-        player=new WebPFrameSequence(introCanvas,dir,count,(index)=>{
-          if(index!==0)return;
-          if(allowRetry)useFrames('assets/loader-frames/',120,false);
-          else finishIntro(); // never trap anyone on a missing asset
+        player=new WebPFrameSequence(introCanvas,'assets/intro-frames/',frameCount,(index)=>{
+          // Keep the skip control usable. If the first image is missing, exit cleanly.
+          if(index===0)finishIntro();
         });
-        player.setFrame(applyProgress()*(frameCount-1));
+        player.setFrame(0);
       }
       const tickIntro=()=>{
         raf=0;
@@ -2694,8 +2683,7 @@
         if(raf)cancelAnimationFrame(raf);
         if(endTimer)clearTimeout(endTimer);
         if(player)player.dispose();
-        try{sessionStorage.setItem('rpIntroDone','1')}catch(e){}
-        scrollTo(0,0);
+         scrollTo(0,0);
         document.documentElement.classList.remove('intro-playing');
         document.documentElement.classList.add('intro-complete');
         introLoader.classList.add('is-done');
@@ -2712,13 +2700,7 @@
       addEventListener('touchend',touchEnd,{passive:true});
       addEventListener('keydown',keyIntro);
       addEventListener('resize',resizeIntro,{passive:true});
-      useFrames('assets/loader-frames/',120,false);
-      // Upgrades itself to the 196-frame HD set when your upload is complete.
-      // No MP4 path, and no dependency on the new folder before it is uploaded.
-      const hdProbe=new Image();
-      hdProbe.decoding='async';
-      hdProbe.onload=()=>{if(!done){frame=distance/DISTANCE*195;useFrames('assets/intro-frames/',196,true)}};
-      hdProbe.src='assets/intro-frames/frame-196.webp';
+      useFrames();
       applyProgress();
     }else if(introLoader){
       introLoader.remove();
