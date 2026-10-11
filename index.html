@@ -2396,6 +2396,7 @@
         this.count=count;
         this.onError=onError||(()=>{});
         this.target=0;
+        this.previousTarget=0;
         this.painted=-1;
         this.cache=new Map();
         this.failed=new Set();
@@ -2404,7 +2405,10 @@
         this.dead=false;
         this.mobile=matchMedia('(pointer:coarse)').matches;
         this.parallel=this.mobile?3:4;
-        this.limit=this.mobile?15:26;
+        // A bounded cache retains nearby decoded images for reverse scrolling.
+        this.limit=this.mobile?22:48;
+        this.window=this.mobile?15:26;
+        this.lastTrim=0;
         this.resize();
       }
       url(i){
@@ -2413,7 +2417,7 @@
       resize(){
         if(this.dead||!this.ctx)return;
         const rect=this.canvas.getBoundingClientRect();
-        const ratio=Math.min(devicePixelRatio||1,this.mobile?1.15:1.5);
+        const ratio=Math.min(devicePixelRatio||1,this.mobile?1:1.25);
         const width=Math.max(1,Math.round(rect.width*ratio));
         const height=Math.max(1,Math.round(rect.height*ratio));
         if(this.canvas.width!==width||this.canvas.height!==height){
@@ -2433,20 +2437,26 @@
         if(this.dead)return;
         const next=frameClamp(Math.round(value),0,this.count-1);
         const direction=next>=this.target?1:-1;
+        const changed=next!==this.target;
+        this.previousTarget=this.target;
         this.target=next;
-        this.queue=this.queue.filter(q=>Math.abs(q.i-next)<=12);
-        this.enqueue(next,1000);
-        for(let d=1;d<=(this.mobile?3:5);d++)this.enqueue(next+d*direction,100-d);
-        for(let d=1;d<=(this.mobile?2:4);d++)this.enqueue(next-d*direction,60-d);
+        if(changed || !this.cache.has(next)){
+          this.queue=this.queue.filter(q=>Math.abs(q.i-next)<=this.window);
+          this.enqueue(next,1000);
+          // Prioritize direction of travel without abandoning frames behind us.
+          const ahead=this.mobile?9:15,behind=this.mobile?5:9;
+          for(let d=1;d<=ahead;d++)this.enqueue(next+d*direction,450-d*7);
+          for(let d=1;d<=behind;d++)this.enqueue(next-d*direction,260-d*6);
+          this.pump();
+        }
         this.draw();
-        this.pump();
       }
       pump(){
         if(this.dead)return;
         this.queue.sort((a,b)=>b.priority-a.priority);
         while(this.active<this.parallel&&this.queue.length){
           const {i}=this.queue.shift();
-          if(this.cache.has(i)||this.failed.has(i)||Math.abs(i-this.target)>12)continue;
+          if(this.cache.has(i)||this.failed.has(i)||Math.abs(i-this.target)>this.window)continue;
           const img=new Image();
           img.decoding='async';
           const entry={img,ready:false};
@@ -2493,7 +2503,7 @@
       trim(){
         if(this.cache.size<=this.limit)return;
         const candidates=[...this.cache.entries()]
-          .filter(([i,item])=>item.ready&&i!==this.target)
+          .filter(([i,item])=>item.ready&&i!==this.target&&i!==this.painted)
           .sort((a,b)=>Math.abs(b[0]-this.target)-Math.abs(a[0]-this.target));
         for(const [i] of candidates){
           if(this.cache.size<=this.limit)break;
@@ -2528,7 +2538,7 @@
         if(!visible)return;
         target=reduceMotion||saveData?0:getProcessProgress();
         if(first){eased=target;first=false}
-        eased+=(target-eased)*.34;
+        eased+=(target-eased)*.48;
         if(Math.abs(eased-target)<.001)eased=target;
         sequence.setFrame(eased*89);
         processSection.style.setProperty('--process-p',eased.toFixed(4));
@@ -2637,7 +2647,7 @@
         raf=0;
         if(done||!player)return;
         const target=distance/DISTANCE*(frameCount-1);
-        frame+=(target-frame)*.38;
+        frame+=(target-frame)*.5;
         if(Math.abs(target-frame)<.1)frame=target;
         player.setFrame(frame);
         if(Math.abs(target-frame)>.1)raf=requestAnimationFrame(tickIntro);
