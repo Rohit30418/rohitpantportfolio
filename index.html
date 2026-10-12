@@ -2087,7 +2087,7 @@
     <canvas class="intro-loader-canvas" id="introLoaderCanvas" aria-hidden="true"></canvas>
     <div class="intro-loader-shade" aria-hidden="true"></div>
     <div class="intro-loader-ui" aria-hidden="true">
-      <span>Scroll to enter</span>
+      <span id="introLoaderLabel">Preparing intro</span>
       <div class="intro-loader-track"><i id="introLoaderProgress"></i></div>
       <span id="introLoaderPercent">00%</span>
     </div>
@@ -2417,6 +2417,8 @@
         this.raf=0;
         this.dead=false;
         this.started=false;
+        this.previewProcessed=0;
+        this.onPreviewProgress=null;
         this.resize();
         if(autoStart)this.warm();
       }
@@ -2522,7 +2524,12 @@
               if(!this.dead){this.failed.add(i);this.onError(i)}
             }finally{
               this.lowBusy.delete(i);
-              if(!this.dead)this.pumpLow();
+              if(!this.dead){
+                this.previewProcessed++;
+                if(this.onPreviewProgress)
+                  this.onPreviewProgress(this.previewProcessed,this.count);
+                this.pumpLow();
+              }
             }
           })();
         }
@@ -2763,50 +2770,64 @@
     watchedSections.forEach(section => navObserver.observe(section));
 
 
-    // Scroll-controlled intro. Use the uploaded 196-frame WebP sequence directly.
+    // Intro-only playback: prepare all 196 small previews before accepting
+    // wheel/touch input, then advance at a bounded, refresh-rate-aware speed.
+    // The below-the-fold process animation still uses its existing renderer.
     const introLoader=document.getElementById('introLoader');
     const introCanvas=document.getElementById('introLoaderCanvas');
     const introProgress=document.getElementById('introLoaderProgress');
     const introPercent=document.getElementById('introLoaderPercent');
+    const introLabel=document.getElementById('introLoaderLabel');
     const introSkip=document.getElementById('introSkip');
     const introShouldPlay=!!introLoader&&!!introCanvas&&
       !document.documentElement.classList.contains('intro-seen')&&!reduceMotion&&!saveData;
 
     if(introShouldPlay){
       const DISTANCE=3600;
+      const frameCount=196;
       let distance=0,frame=0,raf=0,touchY=null,done=false,endTimer=0,player=null;
-      let frameCount=196;
-      const applyProgress=()=>{
-        const p=frameClamp(distance/DISTANCE,0,1);
+      let prepared=false,lastTime=0,lastPercent=-1;
+      const updateIntroDisplay=(progress)=>{
+        const p=frameClamp(progress,0,1);
         introProgress.style.transform='scaleX('+p.toFixed(4)+')';
-        introPercent.textContent=String(Math.round(p*100)).padStart(2,'0')+'%';
-        if(p>=1&&!endTimer)endTimer=setTimeout(finishIntro,800);
-        if(p<1&&endTimer){clearTimeout(endTimer);endTimer=0}
-        return p;
+        const percent=Math.round(p*100);
+        if(percent!==lastPercent){
+          introPercent.textContent=String(percent).padStart(2,'0')+'%';
+          lastPercent=percent;
+        }
       };
-      function useFrames(){
-        if(done)return;
-        if(player)player.dispose();
-        player=new WebPFrameSequence(introCanvas,'assets/intro-frames/',frameCount,(index)=>{
-          // Keep the skip control usable. If the first image is missing, exit cleanly.
-          if(index===0)finishIntro();
-        });
-        player.setFrame(0);
-      }
-      const tickIntro=()=>{
+      const tickIntro=now=>{
         raf=0;
-        if(done||!player)return;
+        if(done||!player||!prepared)return;
         const target=distance/DISTANCE*(frameCount-1);
-        frame+=(target-frame)*.38;
-        if(Math.abs(target-frame)<.1)frame=target;
+        const elapsed=lastTime?Math.min(50,now-lastTime):16.7;
+        lastTime=now;
+        const diff=target-frame;
+        // Never skip several source frames in one refresh, even if the wheel
+        // sends multiple large deltas at once.
+        const maxStep=1.15*elapsed/16.7;
+        const easing=1-Math.exp(-elapsed/75);
+        const step=Math.sign(diff)*Math.min(Math.abs(diff),maxStep,Math.max(.04,Math.abs(diff)*easing));
+        frame+=step;
+        if(Math.abs(target-frame)<.02)frame=target;
         player.setFrame(frame);
-        if(Math.abs(target-frame)>.1)raf=requestAnimationFrame(tickIntro);
+        updateIntroDisplay(frame/(frameCount-1));
+        if(frame>=frameCount-1-.02&&distance>=DISTANCE){
+          if(!endTimer)endTimer=setTimeout(finishIntro,650);
+        }else if(endTimer){
+          clearTimeout(endTimer);
+          endTimer=0;
+        }
+        if(Math.abs(target-frame)>.02)raf=requestAnimationFrame(tickIntro);
+        else lastTime=0;
+      };
+      const queueIntro=()=>{
+        if(!done&&prepared&&!raf)raf=requestAnimationFrame(tickIntro);
       };
       const addIntro=delta=>{
-        if(done)return;
+        if(done||!prepared)return;
         distance=frameClamp(distance+delta,0,DISTANCE);
-        applyProgress();
-        if(!raf)raf=requestAnimationFrame(tickIntro);
+        queueIntro();
       };
       const wheelIntro=e=>{
         if(done)return;
@@ -2825,9 +2846,11 @@
       const touchEnd=()=>{touchY=null};
       const keyIntro=e=>{
         if(['ArrowDown','PageDown',' ','Enter'].includes(e.key)){
-          e.preventDefault();addIntro(200);
+          e.preventDefault();
+          addIntro(200);
         }else if(['ArrowUp','PageUp'].includes(e.key)){
-          e.preventDefault();addIntro(-170);
+          e.preventDefault();
+          addIntro(-170);
         }
       };
       const resizeIntro=()=>{if(player)player.resize()};
@@ -2843,7 +2866,7 @@
         if(raf)cancelAnimationFrame(raf);
         if(endTimer)clearTimeout(endTimer);
         if(player)player.dispose();
-         scrollTo(0,0);
+        scrollTo(0,0);
         document.documentElement.classList.remove('intro-playing');
         document.documentElement.classList.add('intro-complete');
         introLoader.classList.add('is-done');
@@ -2861,8 +2884,24 @@
       addEventListener('touchend',touchEnd,{passive:true});
       addEventListener('keydown',keyIntro);
       addEventListener('resize',resizeIntro,{passive:true});
-      useFrames();
-      applyProgress();
+      // Avoid a competition between full-resolution decoding and preparing
+      // previews. Full frames load near the cursor as the intro advances.
+      player=new WebPFrameSequence(introCanvas,'assets/intro-frames/',frameCount,(index)=>{
+        if(index===0)finishIntro();
+      },false);
+      player.onPreviewProgress=(complete,total)=>{
+        if(done)return;
+        if(!prepared)updateIntroDisplay(complete/total);
+        if(complete>=total){
+          prepared=true;
+          introLabel.textContent='Scroll to enter';
+          lastPercent=-1;
+          updateIntroDisplay(0);
+          player.setFrame(0);
+        }
+      };
+      player.warm();
+      updateIntroDisplay(0);
     }else if(introLoader){
       introLoader.remove();
       document.documentElement.classList.remove('intro-playing');
