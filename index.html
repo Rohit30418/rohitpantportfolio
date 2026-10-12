@@ -2392,7 +2392,7 @@
     // and a bounded set of sharp full-resolution frames near the scroll target.
     const frameClamp=(n,low,high)=>Math.min(high,Math.max(low,n));
     class WebPFrameSequence {
-      constructor(canvas,folder,count,onError){
+      constructor(canvas,folder,count,onError,autoStart=true){
         this.canvas=canvas;
         this.ctx=canvas.getContext('2d',{alpha:false});
         this.folder=folder;
@@ -2416,12 +2416,18 @@
         this.painted=null;
         this.raf=0;
         this.dead=false;
+        this.started=false;
         this.resize();
-        // A coverage-first warmup avoids long blank gaps when users scroll fast.
-        for(let i=0;i<count;i++)this.enqueueLow(i,i%8===0?30:1);
+        if(autoStart)this.warm();
+      }
+      warm(){
+        if(this.dead||this.started)return;
+        this.started=true;
+        // Start with nearby frames and coarse timeline coverage.
+        for(let i=0;i<this.count;i++)this.enqueueLow(i,i%8===0?30:1);
         for(let i=0;i<8;i++)this.enqueueLow(i,2000-i);
         this.pumpLow();
-        this.enqueueHigh(0,1000);
+        this.enqueueHigh(this.target,1000);
         this.pumpHigh();
       }
       url(i){
@@ -2559,6 +2565,7 @@
       }
       setFrame(value){
         if(this.dead)return;
+        if(!this.started)this.warm();
         const next=frameClamp(Math.round(value),0,this.count-1);
         if(next!==this.target){
           const direction=next>this.target?1:-1;
@@ -2652,7 +2659,9 @@
     const processProgress=document.getElementById('processProgress');
     const processPercent=document.getElementById('processPercent');
     if(processSection&&processCanvas){
-      const sequence=new WebPFrameSequence(processCanvas,'assets/process-frames/',90);
+      // Avoid competing with the 196-frame intro on first load.
+      const sequence=new WebPFrameSequence(processCanvas,'assets/process-frames/',90,null,false);
+      document.addEventListener('portfolio:intro-ended',()=>sequence.warm(),{once:true});
       let visible=false,frameRaf=0,eased=0,target=0,first=true,lastTime=0,lastPercent=-1;
       const getProcessProgress=()=>{
         const rect=processSection.getBoundingClientRect();
@@ -2838,6 +2847,7 @@
         document.documentElement.classList.remove('intro-playing');
         document.documentElement.classList.add('intro-complete');
         introLoader.classList.add('is-done');
+        document.dispatchEvent(new Event('portfolio:intro-ended'));
         setTimeout(()=>{
           introLoader.remove();
           document.documentElement.classList.remove('intro-complete');
@@ -2857,6 +2867,7 @@
       introLoader.remove();
       document.documentElement.classList.remove('intro-playing');
       document.documentElement.classList.add('intro-seen');
+      document.dispatchEvent(new Event('portfolio:intro-ended'));
     }
 
     // Premium cursor follower — one tiny transform-only element.
