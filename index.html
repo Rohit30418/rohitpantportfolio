@@ -2417,6 +2417,7 @@
         this.raf=0;
         this.dead=false;
         this.started=false;
+        this.highEnabled=true;
         this.previewProcessed=0;
         this.onPreviewProgress=null;
         this.resize();
@@ -2429,8 +2430,10 @@
         for(let i=0;i<this.count;i++)this.enqueueLow(i,i%8===0?30:1);
         for(let i=0;i<8;i++)this.enqueueLow(i,2000-i);
         this.pumpLow();
-        this.enqueueHigh(this.target,1000);
-        this.pumpHigh();
+        if(this.highEnabled){
+          this.enqueueHigh(this.target,1000);
+          this.pumpHigh();
+        }
       }
       url(i){
         return this.folder+'frame-'+String(i+1).padStart(3,'0')+'.webp';
@@ -2535,6 +2538,7 @@
         }
       }
       pumpHigh(){
+        if(!this.highEnabled)return;
         while(!this.dead&&this.highBusy.size<1&&this.highJobs.size){
           const i=this.pop(this.highJobs);
           if(i<0||this.full.has(i)||this.failed.has(i))continue;
@@ -2583,12 +2587,14 @@
           for(let d=1;d<=5;d++)this.enqueueLow(next-direction*d,3000-d*100);
           for(const i of this.highJobs.keys())
             if(Math.abs(i-next)>3)this.highJobs.delete(i);
-          this.enqueueHigh(next,10000);
-          for(let d=1;d<=2;d++)this.enqueueHigh(next+direction*d,4500-d*500);
-          this.trimHigh();
+          if(this.highEnabled){
+            this.enqueueHigh(next,10000);
+            for(let d=1;d<=2;d++)this.enqueueHigh(next+direction*d,4500-d*500);
+            this.trimHigh();
+          }
           this.pumpLow();
           this.pumpHigh();
-        }else if(!this.full.has(next)&&!this.highBusy.has(next)){
+        }else if(this.highEnabled&&!this.full.has(next)&&!this.highBusy.has(next)){
           this.enqueueHigh(next,10000);
           this.pumpHigh();
         }
@@ -2805,7 +2811,7 @@
         const diff=target-frame;
         // Never skip several source frames in one refresh, even if the wheel
         // sends multiple large deltas at once.
-        const maxStep=1.15*elapsed/16.7;
+        const maxStep=Math.min(1,elapsed/16.7);
         const easing=1-Math.exp(-elapsed/75);
         const step=Math.sign(diff)*Math.min(Math.abs(diff),maxStep,Math.max(.04,Math.abs(diff)*easing));
         frame+=step;
@@ -2889,6 +2895,7 @@
       player=new WebPFrameSequence(introCanvas,'assets/intro-frames/',frameCount,(index)=>{
         if(index===0)finishIntro();
       },false);
+      player.highEnabled=false;
       player.onPreviewProgress=(complete,total)=>{
         if(done)return;
         if(!prepared)updateIntroDisplay(complete/total);
@@ -2897,6 +2904,7 @@
           introLabel.textContent='Scroll to enter';
           lastPercent=-1;
           updateIntroDisplay(0);
+          player.highEnabled=true;
           player.setFrame(0);
         }
       };
