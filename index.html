@@ -2388,7 +2388,8 @@
     }
 
 
-    // Canvas + WebP only. No video seek, player, MP4 download, or fallback.
+    // Progressive WebP playback: small ImageBitmap previews across the timeline
+    // and a bounded set of sharp full-resolution frames near the scroll target.
     const frameClamp=(n,low,high)=>Math.min(high,Math.max(low,n));
     class WebPFrameSequence {
       constructor(canvas,folder,count,onError){
@@ -2397,138 +2398,251 @@
         this.folder=folder;
         this.count=count;
         this.onError=onError||(()=>{});
-        this.target=0;
-        this.previousTarget=0;
-        this.painted=-1;
-        this.cache=new Map();
-        this.failed=new Set();
-        this.queue=[];
-        this.active=0;
-        this.dead=false;
         this.mobile=matchMedia('(pointer:coarse)').matches;
-        this.parallel=this.mobile?3:5;
-        // A bounded cache retains nearby decoded images for reverse scrolling.
-        this.limit=this.mobile?18:34;
-        this.window=this.mobile?16:26;
-        this.lastTrim=0;
+        this.smallWidth=this.mobile?256:384;
+        this.smallHeight=this.mobile?144:216;
+        this.preview=new Array(count);
+        this.full=new Map();
+        this.blobs=new Map();
+        this.requests=new Map();
+        this.lowJobs=new Map();
+        this.highJobs=new Map();
+        this.lowBusy=new Set();
+        this.highBusy=new Set();
+        this.failed=new Set();
+        this.abort=new AbortController();
+        this.target=0;
+        this.lastTarget=0;
+        this.painted=null;
+        this.raf=0;
+        this.dead=false;
         this.resize();
+        // A coverage-first warmup avoids long blank gaps when users scroll fast.
+        for(let i=0;i<count;i++)this.enqueueLow(i,i%8===0?30:1);
+        for(let i=0;i<8;i++)this.enqueueLow(i,2000-i);
+        this.pumpLow();
+        this.enqueueHigh(0,1000);
+        this.pumpHigh();
       }
       url(i){
         return this.folder+'frame-'+String(i+1).padStart(3,'0')+'.webp';
+      }
+      fetchBlob(i){
+        if(this.blobs.has(i))return Promise.resolve(this.blobs.get(i));
+        if(this.requests.has(i))return this.requests.get(i);
+        const promise=fetch(this.url(i),{signal:this.abort.signal})
+          .then(r=>{
+            if(!r.ok)throw Error('WebP frame '+i+': '+r.status);
+            return r.blob();
+          }).then(blob=>{
+            if(!this.dead)this.blobs.set(i,blob);
+            return blob;
+          }).finally(()=>this.requests.delete(i));
+        this.requests.set(i,promise);
+        return promise;
+      }
+      async bitmap(blob,small){
+        if(typeof createImageBitmap==='function'){
+          let img;
+          try{
+            img=small
+              ?await createImageBitmap(blob,{resizeWidth:this.smallWidth,resizeHeight:this.smallHeight,resizeQuality:'medium'})
+              :await createImageBitmap(blob);
+          }catch(e){
+            img=await createImageBitmap(blob);
+          }
+          if(!small||(img.width===this.smallWidth&&img.height===this.smallHeight))return img;
+          // Resize manually when a browser ignores ImageBitmap resize options.
+          const scaled=document.createElement('canvas');
+          scaled.width=this.smallWidth;
+          scaled.height=this.smallHeight;
+          scaled.getContext('2d').drawImage(img,0,0,scaled.width,scaled.height);
+          if(img.close)img.close();
+          return scaled;
+        }
+        const url=URL.createObjectURL(blob);
+        const img=new Image();
+        img.decoding='async';
+        try{
+          if(typeof img.decode==='function'){
+            img.src=url;
+            await img.decode();
+          }else{
+            await new Promise((resolve,reject)=>{
+              img.onload=resolve;
+              img.onerror=reject;
+              img.src=url;
+            });
+          }
+          if(!small)return img;
+          const scaled=document.createElement('canvas');
+          scaled.width=this.smallWidth;
+          scaled.height=this.smallHeight;
+          scaled.getContext('2d').drawImage(img,0,0,scaled.width,scaled.height);
+          return scaled;
+        }finally{
+          URL.revokeObjectURL(url);
+        }
+      }
+      close(img){
+        if(img&&typeof img.close==='function')img.close();
+      }
+      enqueueLow(i,p){
+        if(i<0||i>=this.count||this.preview[i]||this.lowBusy.has(i)||this.failed.has(i))return;
+        this.lowJobs.set(i,Math.max(p,this.lowJobs.get(i)||0));
+      }
+      enqueueHigh(i,p){
+        if(i<0||i>=this.count||this.full.has(i)||this.highBusy.has(i)||this.failed.has(i))return;
+        this.highJobs.set(i,Math.max(p,this.highJobs.get(i)||0));
+      }
+      pop(jobs){
+        let best=-1,priority=-1;
+        for(const [i,p] of jobs)if(p>priority){best=i;priority=p}
+        jobs.delete(best);
+        return best;
+      }
+      pumpLow(){
+        const max=this.mobile?2:3;
+        while(!this.dead&&this.lowBusy.size<max&&this.lowJobs.size){
+          const i=this.pop(this.lowJobs);
+          if(i<0||this.preview[i]||this.failed.has(i))continue;
+          this.lowBusy.add(i);
+          (async()=>{
+            try{
+              const img=await this.bitmap(await this.fetchBlob(i),true);
+              if(this.dead)this.close(img);
+              else{this.preview[i]=img;this.requestPaint()}
+            }catch(e){
+              if(!this.dead){this.failed.add(i);this.onError(i)}
+            }finally{
+              this.lowBusy.delete(i);
+              if(!this.dead)this.pumpLow();
+            }
+          })();
+        }
+      }
+      pumpHigh(){
+        while(!this.dead&&this.highBusy.size<1&&this.highJobs.size){
+          const i=this.pop(this.highJobs);
+          if(i<0||this.full.has(i)||this.failed.has(i))continue;
+          this.highBusy.add(i);
+          (async()=>{
+            try{
+              const img=await this.bitmap(await this.fetchBlob(i),false);
+              if(this.dead)this.close(img);
+              else{
+                this.full.set(i,img);
+                this.trimHigh();
+                this.requestPaint();
+              }
+            }catch(e){
+              // Keep the preview if a full-resolution decode cannot be completed.
+              if(!this.dead)this.enqueueLow(i,1000);
+            }finally{
+              this.highBusy.delete(i);
+              if(!this.dead)this.pumpHigh();
+            }
+          })();
+        }
+      }
+      trimHigh(){
+        const limit=this.mobile?3:6;
+        if(this.full.size<=limit)return;
+        const removable=[...this.full.keys()]
+          .filter(i=>i!==this.target)
+          .sort((a,b)=>Math.abs(b-this.target)-Math.abs(a-this.target));
+        for(const i of removable){
+          if(this.full.size<=limit)break;
+          this.close(this.full.get(i));
+          this.full.delete(i);
+        }
+      }
+      setFrame(value){
+        if(this.dead)return;
+        const next=frameClamp(Math.round(value),0,this.count-1);
+        if(next!==this.target){
+          const direction=next>this.target?1:-1;
+          this.lastTarget=this.target;
+          this.target=next;
+          this.enqueueLow(next,10000);
+          for(let d=1;d<=10;d++)this.enqueueLow(next+direction*d,6000-d*100);
+          for(let d=1;d<=5;d++)this.enqueueLow(next-direction*d,3000-d*100);
+          for(const i of this.highJobs.keys())
+            if(Math.abs(i-next)>3)this.highJobs.delete(i);
+          this.enqueueHigh(next,10000);
+          for(let d=1;d<=2;d++)this.enqueueHigh(next+direction*d,4500-d*500);
+          this.trimHigh();
+          this.pumpLow();
+          this.pumpHigh();
+        }else if(!this.full.has(next)&&!this.highBusy.has(next)){
+          this.enqueueHigh(next,10000);
+          this.pumpHigh();
+        }
+        this.requestPaint();
       }
       resize(){
         if(this.dead||!this.ctx)return;
         const rect=this.canvas.getBoundingClientRect();
         const ratio=Math.min(devicePixelRatio||1,this.mobile?1:1.25);
-        const width=Math.max(1,Math.round(rect.width*ratio));
-        const height=Math.max(1,Math.round(rect.height*ratio));
-        if(this.canvas.width!==width||this.canvas.height!==height){
-          this.canvas.width=width;
-          this.canvas.height=height;
-          this.painted=-1;
+        const w=Math.max(1,Math.round(rect.width*ratio));
+        const h=Math.max(1,Math.round(rect.height*ratio));
+        if(this.canvas.width!==w||this.canvas.height!==h){
+          this.canvas.width=w;
+          this.canvas.height=h;
+          this.painted=null;
         }
-        this.draw();
+        this.requestPaint();
       }
-      enqueue(i,priority){
-        if(i<0||i>=this.count||this.cache.has(i)||this.failed.has(i))return;
-        const found=this.queue.find(q=>q.i===i);
-        if(found){found.priority=Math.max(found.priority,priority);return}
-        this.queue.push({i,priority});
-      }
-      setFrame(value){
-        if(this.dead)return;
-        const next=frameClamp(Math.round(value),0,this.count-1);
-        const direction=next>=this.target?1:-1;
-        const changed=next!==this.target;
-        this.previousTarget=this.target;
-        this.target=next;
-        if(changed || !this.cache.has(next)){
-          this.queue=this.queue.filter(q=>Math.abs(q.i-next)<=this.window);
-          this.enqueue(next,1000);
-          // Prioritize direction of travel without abandoning frames behind us.
-          const ahead=this.mobile?8:14,behind=this.mobile?5:7;
-          for(let d=1;d<=ahead;d++)this.enqueue(next+d*direction,450-d*7);
-          for(let d=1;d<=behind;d++)this.enqueue(next-d*direction,260-d*6);
-          this.pump();
-        }
-        this.draw();
-      }
-      pump(){
-        if(this.dead)return;
-        this.queue.sort((a,b)=>b.priority-a.priority);
-        while(this.active<this.parallel&&this.queue.length){
-          const {i}=this.queue.shift();
-          if(this.cache.has(i)||this.failed.has(i)||Math.abs(i-this.target)>this.window)continue;
-          const img=new Image();
-          img.decoding='async';
-          const entry={img,ready:false};
-          this.cache.set(i,entry);
-          this.active++;
-          img.onload=()=>{
-            // Wait for browser decoding before allowing drawImage to paint this frame.
-            const ready=()=>{
-              this.active--;
-              if(this.dead)return;
-              entry.ready=true;
-              this.draw();
-              this.trim();
-              this.pump();
-            };
-            if(typeof img.decode==='function'){
-              img.decode().then(ready,ready);
-            }else ready();
-          };
-          img.onerror=()=>{
-            this.active--;
-            if(this.dead)return;
-            this.cache.delete(i);
-            this.failed.add(i);
-            this.onError(i);
-            this.pump();
-          };
-          img.src=this.url(i);
-        }
+      requestPaint(){
+        if(this.dead||this.raf)return;
+        this.raf=requestAnimationFrame(()=>{
+          this.raf=0;
+          this.draw();
+        });
       }
       draw(){
         if(this.dead||!this.ctx)return;
-        let best=-1,gap=Infinity;
-        for(const [i,item] of this.cache){
-          if(!item.ready)continue;
-          const dist=Math.abs(i-this.target);
-          if(dist<gap){gap=dist;best=i}
+        let i=this.target;
+        let img=this.full.get(i)||this.preview[i];
+        if(!img){
+          let distance=Infinity;
+          for(let j=0;j<this.count;j++){
+            const candidate=this.full.get(j)||this.preview[j];
+            if(candidate&&Math.abs(j-this.target)<distance){
+              distance=Math.abs(j-this.target);
+              i=j;
+              img=candidate;
+            }
+          }
         }
-        if(best<0||best===this.painted)return;
-        // Keep the last displayed frame until a closer frame is ready.
-        if(this.painted>=0&&best!==this.target&&
-           Math.abs(best-this.target)>=Math.abs(this.painted-this.target))return;
-        const img=this.cache.get(best).img;
-        if(!img.naturalWidth||!img.naturalHeight)return;
+        if(!img)return;
+        // Preserve the last frame until something closer is decoded.
+        if(this.painted&&i!==this.target&&
+          Math.abs(this.painted.i-this.target)<=Math.abs(i-this.target))return;
+        if(this.painted&&this.painted.i===i&&this.painted.img===img)return;
+        const iw=img.naturalWidth||img.width,ih=img.naturalHeight||img.height;
+        if(!iw||!ih)return;
         const cw=this.canvas.width,ch=this.canvas.height;
-        const scale=Math.max(cw/img.naturalWidth,ch/img.naturalHeight);
-        const w=img.naturalWidth*scale,h=img.naturalHeight*scale;
+        const scale=Math.max(cw/iw,ch/ih);
+        const w=iw*scale,h=ih*scale;
         this.ctx.fillStyle='#030403';
         this.ctx.fillRect(0,0,cw,ch);
         this.ctx.drawImage(img,(cw-w)/2,(ch-h)/2,w,h);
-        this.painted=best;
-      }
-      trim(){
-        if(this.cache.size<=this.limit)return;
-        const candidates=[...this.cache.entries()]
-          .filter(([i,item])=>item.ready&&i!==this.target&&i!==this.painted)
-          .sort((a,b)=>Math.abs(b[0]-this.target)-Math.abs(a[0]-this.target));
-        for(const [i] of candidates){
-          if(this.cache.size<=this.limit)break;
-          this.cache.delete(i);
-        }
+        this.painted={i,img};
       }
       dispose(){
+        if(this.dead)return;
         this.dead=true;
-        this.queue.length=0;
-        for(const item of this.cache.values()){
-          item.img.onload=null;item.img.onerror=null;
-          if(!item.ready)item.img.src='';
-        }
-        this.cache.clear();
+        this.abort.abort();
+        if(this.raf)cancelAnimationFrame(this.raf);
+        this.lowJobs.clear();
+        this.highJobs.clear();
+        this.requests.clear();
+        this.blobs.clear();
+        this.preview.forEach(img=>this.close(img));
+        this.preview.length=0;
+        for(const img of this.full.values())this.close(img);
+        this.full.clear();
       }
     }
 
@@ -2674,7 +2788,7 @@
         raf=0;
         if(done||!player)return;
         const target=distance/DISTANCE*(frameCount-1);
-        frame+=(target-frame)*.28;
+        frame+=(target-frame)*.38;
         if(Math.abs(target-frame)<.1)frame=target;
         player.setFrame(frame);
         if(Math.abs(target-frame)>.1)raf=requestAnimationFrame(tickIntro);
