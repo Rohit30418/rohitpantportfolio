@@ -361,7 +361,9 @@
     }
     .process-track i{
       display:block;
-      width:0;
+      width:100%;
+      transform:scaleX(0);
+      transform-origin:left center;
       height:100%;
       background:linear-gradient(90deg,var(--amber),#ffd09b);
       box-shadow:0 0 14px rgba(244,166,90,.8);
@@ -2060,7 +2062,7 @@
       letter-spacing:.13em;text-transform:uppercase;text-shadow:0 2px 15px rgba(0,0,0,.6);
     }
     .intro-loader-track{height:1px;overflow:hidden;background:rgba(255,255,255,.23)}
-    .intro-loader-track i{display:block;width:0;height:100%;background:#d1b36d;box-shadow:0 0 12px rgba(209,179,109,.45)}
+    .intro-loader-track i{display:block;width:100%;height:100%;transform:scaleX(0);transform-origin:left center;background:#d1b36d;box-shadow:0 0 12px rgba(209,179,109,.45)}
     .intro-skip{
       position:absolute;z-index:4;top:24px;right:26px;min-width:72px;height:36px;padding:0 14px;
       border:1px solid rgba(255,255,255,.16);border-radius:999px;background:rgba(5,6,5,.38);
@@ -2404,10 +2406,10 @@
         this.active=0;
         this.dead=false;
         this.mobile=matchMedia('(pointer:coarse)').matches;
-        this.parallel=this.mobile?3:4;
+        this.parallel=this.mobile?3:5;
         // A bounded cache retains nearby decoded images for reverse scrolling.
-        this.limit=this.mobile?22:48;
-        this.window=this.mobile?15:26;
+        this.limit=this.mobile?18:34;
+        this.window=this.mobile?16:26;
         this.lastTrim=0;
         this.resize();
       }
@@ -2444,7 +2446,7 @@
           this.queue=this.queue.filter(q=>Math.abs(q.i-next)<=this.window);
           this.enqueue(next,1000);
           // Prioritize direction of travel without abandoning frames behind us.
-          const ahead=this.mobile?9:15,behind=this.mobile?5:9;
+          const ahead=this.mobile?8:14,behind=this.mobile?5:7;
           for(let d=1;d<=ahead;d++)this.enqueue(next+d*direction,450-d*7);
           for(let d=1;d<=behind;d++)this.enqueue(next-d*direction,260-d*6);
           this.pump();
@@ -2463,12 +2465,18 @@
           this.cache.set(i,entry);
           this.active++;
           img.onload=()=>{
-            this.active--;
-            if(this.dead)return;
-            entry.ready=true;
-            this.draw();
-            this.trim();
-            this.pump();
+            // Wait for browser decoding before allowing drawImage to paint this frame.
+            const ready=()=>{
+              this.active--;
+              if(this.dead)return;
+              entry.ready=true;
+              this.draw();
+              this.trim();
+              this.pump();
+            };
+            if(typeof img.decode==='function'){
+              img.decode().then(ready,ready);
+            }else ready();
           };
           img.onerror=()=>{
             this.active--;
@@ -2490,6 +2498,9 @@
           if(dist<gap){gap=dist;best=i}
         }
         if(best<0||best===this.painted)return;
+        // Keep the last displayed frame until a closer frame is ready.
+        if(this.painted>=0&&best!==this.target&&
+           Math.abs(best-this.target)>=Math.abs(this.painted-this.target))return;
         const img=this.cache.get(best).img;
         if(!img.naturalWidth||!img.naturalHeight)return;
         const cw=this.canvas.width,ch=this.canvas.height;
@@ -2528,38 +2539,54 @@
     const processPercent=document.getElementById('processPercent');
     if(processSection&&processCanvas){
       const sequence=new WebPFrameSequence(processCanvas,'assets/process-frames/',90);
-      let visible=false,frameRaf=0,eased=0,target=0,first=true;
+      let visible=false,frameRaf=0,eased=0,target=0,first=true,lastTime=0,lastPercent=-1;
       const getProcessProgress=()=>{
         const rect=processSection.getBoundingClientRect();
-        return frameClamp(-rect.top/Math.max(1,processSection.offsetHeight-innerHeight),0,1);
+        return frameClamp(-rect.top/Math.max(1,rect.height-innerHeight),0,1);
       };
-      function paintProcess(){
-        frameRaf=0;
-        if(!visible)return;
-        target=reduceMotion||saveData?0:getProcessProgress();
-        if(first){eased=target;first=false}
-        eased+=(target-eased)*.48;
-        if(Math.abs(eased-target)<.001)eased=target;
-        sequence.setFrame(eased*89);
-        processSection.style.setProperty('--process-p',eased.toFixed(4));
-        processProgress.style.width=(eased*100).toFixed(1)+'%';
-        processPercent.textContent=String(Math.round(eased*100)).padStart(2,'0')+'%';
-        if(Math.abs(eased-target)>.001)frameRaf=requestAnimationFrame(paintProcess);
-      }
       const requestProcess=()=>{
         if(visible&&!frameRaf)frameRaf=requestAnimationFrame(paintProcess);
       };
+      const updateProcessTarget=()=>{
+        if(!visible)return;
+        // Read layout on scroll, not repeatedly during every easing frame.
+        target=reduceMotion||saveData?0:getProcessProgress();
+        if(first){eased=target;first=false}
+        requestProcess();
+      };
+      function paintProcess(now){
+        frameRaf=0;
+        if(!visible)return;
+        const elapsed=lastTime?Math.min(64,now-lastTime):16.7;
+        lastTime=now;
+        // Frame-rate independent damping for 60Hz and high-refresh monitors.
+        eased+=(target-eased)*(1-Math.exp(-elapsed/80));
+        if(Math.abs(eased-target)<.0006)eased=target;
+        sequence.setFrame(eased*89);
+        const progress=eased.toFixed(4);
+        processSection.style.setProperty('--process-p',progress);
+        processProgress.style.transform='scaleX('+progress+')';
+        const percent=Math.round(eased*100);
+        if(percent!==lastPercent){
+          processPercent.textContent=String(percent).padStart(2,'0')+'%';
+          lastPercent=percent;
+        }
+        if(eased!==target)requestProcess();
+      }
       const processObserver=new IntersectionObserver(entries=>{
         for(const entry of entries){
           visible=entry.isIntersecting;
-          if(visible){sequence.resize();requestProcess()}
-          else if(frameRaf){cancelAnimationFrame(frameRaf);frameRaf=0}
+          if(visible){sequence.resize();updateProcessTarget()}
+          else{
+            lastTime=0;
+            if(frameRaf){cancelAnimationFrame(frameRaf);frameRaf=0}
+          }
         }
-      },{rootMargin:'120px 0px',threshold:0});
+      },{rootMargin:(matchMedia('(pointer:coarse)').matches?'600px':'1000px')+' 0px',threshold:0});
       processObserver.observe(processSection);
-      addEventListener('scroll',requestProcess,{passive:true});
+      addEventListener('scroll',updateProcessTarget,{passive:true});
       addEventListener('resize',()=>{
-        if(visible){sequence.resize();requestProcess()}
+        if(visible){sequence.resize();updateProcessTarget()}
       },{passive:true});
     }
 
@@ -2628,7 +2655,7 @@
       let frameCount=196;
       const applyProgress=()=>{
         const p=frameClamp(distance/DISTANCE,0,1);
-        introProgress.style.width=(p*100).toFixed(1)+'%';
+        introProgress.style.transform='scaleX('+p.toFixed(4)+')';
         introPercent.textContent=String(Math.round(p*100)).padStart(2,'0')+'%';
         if(p>=1&&!endTimer)endTimer=setTimeout(finishIntro,800);
         if(p<1&&endTimer){clearTimeout(endTimer);endTimer=0}
@@ -2647,7 +2674,7 @@
         raf=0;
         if(done||!player)return;
         const target=distance/DISTANCE*(frameCount-1);
-        frame+=(target-frame)*.5;
+        frame+=(target-frame)*.28;
         if(Math.abs(target-frame)<.1)frame=target;
         player.setFrame(frame);
         if(Math.abs(target-frame)>.1)raf=requestAnimationFrame(tickIntro);
