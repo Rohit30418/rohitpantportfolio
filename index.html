@@ -2058,59 +2058,53 @@
                  radial-gradient(circle at 50% 50%,transparent 48%,rgba(0,0,0,.16) 100%);
     }
 
-    /* Clear, intentional desktop loading state while 196 WebP frames prepare. */
+    /* Minimal progress indicator, without a card or background overlay. */
     .intro-prepare{
-      position:absolute;z-index:2;inset:0;display:grid;place-items:center;
-      padding:24px;background:rgba(3,5,6,.90);
-      opacity:1;visibility:visible;pointer-events:auto;
+      position:absolute;
+      z-index:2;
+      left:50%;
+      bottom:110px;
+      width:min(560px,calc(100vw - 100px));
+      transform:translateX(-50%);
+      color:#f4f2ec;
+      opacity:1;
+      visibility:visible;
+      pointer-events:none;
       transition:opacity .35s ease,visibility .35s ease;
     }
-    .intro-prepare-card{
-      position:relative;width:min(460px,100%);padding:40px 38px 34px;
-      text-align:center;border:1px solid rgba(255,255,255,.14);
-      border-radius:22px;
-      background:linear-gradient(155deg,rgba(28,32,33,.96),rgba(9,14,17,.97));
-      box-shadow:0 24px 110px rgba(0,0,0,.72),0 0 65px rgba(51,214,255,.055);
-      color:#f4f2ec;
+    .intro-prepare-inline{width:100%}
+    .intro-prepare-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:13px;
+      font-size:.94rem;
+      font-weight:700;
+      letter-spacing:-.01em;
+      text-shadow:0 2px 12px rgba(0,0,0,.55);
     }
-    .intro-prepare-mark{
-      display:grid;place-items:center;margin:0 auto 24px;
-      width:72px;height:72px;border-radius:20px;
-      background:rgba(244,166,90,.08);
-      border:1px solid rgba(244,166,90,.28);
-      color:#ffd09b;font-weight:800;font-size:1.3rem;letter-spacing:-.06em;
-      box-shadow:0 0 28px rgba(244,166,90,.1);
-      animation:introPreparePulse 2s ease-in-out infinite;
+    .intro-prepare-percent{
+      color:#ffd09b;
+      font-size:1rem;
+      font-weight:800;
+      font-variant-numeric:tabular-nums;
     }
-    @keyframes introPreparePulse{
-      0%,100%{box-shadow:0 0 20px rgba(244,166,90,.05);transform:scale(1)}
-      50%{box-shadow:0 0 36px rgba(244,166,90,.18);transform:scale(1.035)}
-    }
-    .intro-prepare-eyebrow{
-      display:block;margin-bottom:12px;color:#f4a65a;
-      font-size:.69rem;letter-spacing:.18em;text-transform:uppercase;font-weight:800;
-    }
-    .intro-prepare-title{
-      margin:0;font-size:clamp(1.6rem,2.5vw,2rem);line-height:1.2;
-      font-weight:800;letter-spacing:-.045em;color:#fff;
-    }
-    .intro-prepare-desc{
-      margin:14px auto 26px;max-width:330px;font-size:.88rem;
-      line-height:1.65;color:#b4bec5;
-    }
-    .intro-prepare-meter{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px}
-    .intro-prepare-meter span:first-child{font-size:.72rem;color:#c4cfd4;font-weight:700}
-    .intro-prepare-percent{font-size:.85rem;color:#ffd09b;font-weight:800;font-variant-numeric:tabular-nums}
     .intro-prepare-track{
-      overflow:hidden;height:5px;border-radius:99px;background:rgba(255,255,255,.1);
+      height:6px;
+      overflow:hidden;
+      border-radius:999px;
+      background:rgba(255,255,255,.15);
     }
     .intro-prepare-track i{
-      display:block;width:100%;height:100%;transform:scaleX(0);
-      transform-origin:left center;border-radius:inherit;
+      display:block;
+      width:100%;
+      height:100%;
+      border-radius:inherit;
+      transform:scaleX(0);
+      transform-origin:left center;
       background:linear-gradient(90deg,#f4a65a,#ffd7a8);
-      box-shadow:0 0 14px rgba(244,166,90,.4);
     }
-    .intro-prepare-hint{margin:20px 0 0;font-size:.73rem;color:#91a0a8}
     .intro-loader:not(.is-ready) .intro-loader-ui{opacity:0;pointer-events:none}
     .intro-loader.is-ready .intro-prepare{opacity:0;visibility:hidden;pointer-events:none}
     .intro-loader.is-ready .intro-loader-ui{opacity:1;transition:opacity .35s ease}
@@ -2138,9 +2132,6 @@
       html.intro-playing .footer{opacity:1!important}
     }
     @media(prefers-reduced-motion:reduce){
-      .intro-prepare-mark{animation:none}
-    }
-    @media(prefers-reduced-motion:reduce){
       .intro-loader{display:none!important}
       html.intro-playing .lux-header,html.intro-playing main,html.intro-playing .footer{opacity:1!important}
     }
@@ -2152,20 +2143,15 @@
   <div class="intro-loader" id="introLoader" aria-label="Portfolio introduction">
     <canvas class="intro-loader-canvas" id="introLoaderCanvas" aria-hidden="true"></canvas>
     <div class="intro-loader-shade" aria-hidden="true"></div>
-    <div class="intro-prepare" id="introPrepare" role="status" aria-live="polite" aria-label="Preparing portfolio introduction">
-      <div class="intro-prepare-card">
-        <div class="intro-prepare-mark" aria-hidden="true">RP/</div>
-        <span class="intro-prepare-eyebrow">Portfolio experience</span>
-        <h2 class="intro-prepare-title">Getting things ready</h2>
-        <p class="intro-prepare-desc">Preparing the animation for smooth scrolling. You'll be able to explore in a moment.</p>
-        <div class="intro-prepare-meter">
-          <span>Loading animation</span>
+    <div class="intro-prepare" id="introPrepare" role="status" aria-live="polite" aria-label="Loading portfolio introduction">
+      <div class="intro-prepare-inline">
+        <div class="intro-prepare-row">
+          <span>Loading</span>
           <span class="intro-prepare-percent" id="introPreparePercent" aria-hidden="true">0%</span>
         </div>
-        <div class="intro-prepare-track" role="progressbar" aria-label="Animation preparation" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="introPrepareMeter">
+        <div class="intro-prepare-track" role="progressbar" aria-label="Loading animation" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="introPrepareMeter">
           <i id="introPrepareProgress"></i>
         </div>
-        <p class="intro-prepare-hint">Prefer to skip? Use “Skip intro” at the top right.</p>
       </div>
     </div>
     <div class="intro-loader-ui" aria-hidden="true">
