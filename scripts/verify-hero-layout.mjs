@@ -84,6 +84,11 @@ try {
         introBottom:Math.round(intro.bottom),portraitTop:Math.round(portrait.top),
         portraitBottom:Math.round(portrait.bottom),heroBottom:Math.round(hero.bottom),
         contentWidth:Math.round(get('#home .lux-hero-inner').width),
+        introLeft:Math.round(intro.left),introRight:Math.round(intro.right),
+        roleLeft:Math.round(role.left),roleRight:Math.round(role.right),
+        portraitLeft:Math.round(portrait.left),portraitRight:Math.round(portrait.right),
+        viewportWidth:innerWidth,
+        introWidth:Math.round(intro.width),portraitWidth:Math.round(portrait.width),
         totalHeight:Math.round(hero.height),bodyOverflow:Math.round(document.documentElement.scrollWidth-innerWidth)
       };
       return {viewport,checks,inspect};
