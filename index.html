@@ -2291,6 +2291,7 @@
     }
   </style>
   <link rel="stylesheet" href="assets/hero-cinematic.css" />
+  <link rel="stylesheet" href="assets/hero-fluid.css" />
   <link rel="stylesheet" href="assets/project-hologram.css" />
   <link rel="stylesheet" href="assets/project-hologram-one-screen.css" />
 </head>
@@ -2340,10 +2341,6 @@
       <div class="hero-grid" aria-hidden="true"></div>
       <div class="hero-glow" aria-hidden="true"></div>
       <div class="hero-portrait-glow" aria-hidden="true"></div>
-      <div class="hero-atom-platform" aria-hidden="true"></div>
-      <div class="hero-react-3d" id="heroReact3D" aria-hidden="true"></div>
-      <div class="hero-side-caption" aria-hidden="true">BUILD<br />BEAUTIFUL<br />EXPERIENCES</div>
-
       <div class="shell hero-inner lux-hero-inner">
         <p class="hero-kicker">Frontend / UI Developer</p>
 
@@ -2363,6 +2360,9 @@
         </div>
 
         <img class="hero-person" src="assets/rohit-hero.webp" width="336" height="420" alt="Rohit Pant, Frontend and UI Developer" fetchpriority="high" decoding="async" />
+        <div class="hero-atom-platform" aria-hidden="true"></div>
+        <div class="hero-react-3d" id="heroReact3D" aria-hidden="true"></div>
+        <div class="hero-side-caption" aria-hidden="true">BUILD<br />BEAUTIFUL<br />EXPERIENCES</div>
 
         <div class="hero-skillrail" aria-label="Core technologies">
           <span>React</span><span>TypeScript</span><span>JavaScript</span><span>Realtime UI</span>
@@ -3240,7 +3240,7 @@
     const reactHeroHost = document.getElementById('heroReact3D');
     const reactHeroSection = document.getElementById('home');
     const reactHeroEligible =
-      matchMedia('(min-width:1051px) and (hover:hover) and (pointer:fine)').matches &&
+      matchMedia('(min-width:1101px) and (hover:hover) and (pointer:fine)').matches &&
       !matchMedia('(prefers-reduced-motion:reduce)').matches &&
       !(navigator.connection && navigator.connection.saveData) &&
       (!navigator.deviceMemory || navigator.deviceMemory >= 4) &&
