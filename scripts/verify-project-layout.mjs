@@ -59,8 +59,56 @@ try{
       desktopRightVisible:!desktop || (data.browser.top>=0&&data.browser.bottom<=height+2&&data.projector.bottom<=height+2),
       desktopOneScreen:!desktop || data.section.height<=height+2
     };
+    // Open the full project case study for each featured project.
+    const caseChecks={};
+    const projectNames={vaani:'Vaani',eventhive:'EventHive',argus:'ARGUS'};
+    for(const key of Object.keys(projectNames)){
+      await page.locator('#holoSelector [data-project-key="'+key+'"]').click();
+      await page.waitForTimeout(220);
+      await page.locator('#holoCaseButton').click();
+      const caseData=await page.evaluate(()=>{
+        const dialog=document.querySelector('#holoCaseDialog');
+        const image=dialog.querySelector('#holoCaseImage');
+        const rect=dialog.getBoundingClientRect();
+        return {
+          open:dialog.open,
+          title:dialog.querySelector('#holoDialogTitle').textContent,
+          challenge:dialog.querySelector('#holoDialogChallenge').textContent,
+          work:dialog.querySelector('#holoDialogWork').textContent,
+          features:dialog.querySelectorAll('#holoDialogFeatures li').length,
+          engineering:dialog.querySelectorAll('#holoDialogEngineering li').length,
+          tech:dialog.querySelectorAll('#holoDialogTech span').length,
+          actualImage:image.complete && image.naturalWidth>0,
+          imageSource:image.getAttribute('src'),
+          liveLink:dialog.querySelector('#holoCaseLiveLink').href,
+          bounded:rect.top>=-2 && rect.bottom<=innerHeight+2 &&
+            rect.left>=-2 && rect.right<=innerWidth+2,
+          scrollAccessible:dialog.scrollHeight<=dialog.clientHeight+2 ||
+            getComputedStyle(dialog).overflowY==='auto'
+        };
+      });
+      caseChecks[key]={
+        correctTitle:caseData.title.includes(projectNames[key]),
+        opens:caseData.open,
+        challenge:caseData.challenge.length>=70,
+        work:caseData.work.length>=100,
+        features:caseData.features>=3,
+        engineering:caseData.engineering>=3,
+        technology:caseData.tech>=3,
+        realScreenshot:caseData.actualImage,
+        rightScreenshot:caseData.imageSource==='assets/project-shots/'+key+'.jpg',
+        linksToProject:caseData.liveLink.startsWith('https://'),
+        dialogWithinViewport:caseData.bounded,
+        scrollingAvailable:caseData.scrollAccessible
+      };
+      await page.locator('#holoCaseClose').click();
+      caseChecks[key].closes=await page.evaluate(()=>!document.querySelector('#holoCaseDialog').open);
+    }
+    checks.githubRemoved=!await page.locator('#work a[href*="github.com"]').count();
+    checks.twoActions=await page.locator('#work .holo-actions > *').count()===2;
+    checks.caseStudies=Object.values(caseChecks).every(record=>Object.values(record).every(Boolean));
     const passed=Object.values(checks).every(Boolean);
-    console.log(JSON.stringify({width,height,desktop,passed,checks,rects:data}));
+    console.log(JSON.stringify({width,height,desktop,passed,checks,caseChecks,rects:data}));
     results.push({width,height,passed});
     await page.close();
   }
