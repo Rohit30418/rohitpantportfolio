@@ -1,0 +1,49 @@
+name: Capture real project screenshots
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/capture-project-previews.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: project-preview-capture
+  cancel-in-progress: false
+
+jobs:
+  screenshots:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout current portfolio
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Prepare Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install browser capture dependencies
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install chromium --with-deps
+
+      - name: Capture real public project screens
+        run: node scripts/capture-project-previews.mjs
+
+      - name: Commit captured screenshots
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/project-shots/
+          if ! git diff --staged --quiet; then
+            git commit -m "assets(projects): capture public website screenshots"
+            git push
+          else
+            echo "No new screenshots to publish"
+          fi
