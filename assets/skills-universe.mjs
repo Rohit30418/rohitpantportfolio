@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Canvas, useFrame } from '@react-three/fiber';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { gsap } from 'gsap';
 
@@ -34,11 +34,11 @@ const faceGeometry = new THREE.PlaneGeometry(2.7, 1.5);
 
 function makeLabel(data, index) {
   const el = document.createElement('canvas');
-  // 768 x 426 keeps label textures crisp without wasting GPU memory.
-  el.width = 768;
-  el.height = 426;
+  // 512 x 284 labels are sharp at card size and use ~55% less GPU texture memory.
+  el.width = 512;
+  el.height = 284;
   const ctx = el.getContext('2d');
-  ctx.scale(.75, .75);
+  ctx.scale(.5, .5);
   ctx.clearRect(0, 0, 1024, 568);
   ctx.fillStyle = '#0c1417';
   ctx.strokeStyle = 'rgba(233,245,237,.19)';
@@ -72,7 +72,7 @@ function makeLabel(data, index) {
   ctx.textAlign = 'left';
   const tex = new THREE.CanvasTexture(el);
   tex.colorSpace = THREE.SRGBColorSpace;
-  tex.anisotropy = 4;
+  tex.anisotropy = 2;
   return tex;
 }
 
@@ -130,6 +130,18 @@ function SkillRing({ selected }) {
   );
 }
 
+// Explicit frame budget: render only while in view, at roughly 30 FPS.
+function SkillFrameBudget({ enabled }) {
+  const invalidate = useThree(state => state.invalidate);
+  useEffect(() => {
+    if (!enabled) return;
+    invalidate();
+    const id = setInterval(() => invalidate(), 33);
+    return () => clearInterval(id);
+  }, [enabled, invalidate]);
+  return null;
+}
+
 function SkillUniverse({ host, section }) {
   const [selected, setSelected] = useState(0);
   const [visible, setVisible] = useState(document.visibilityState === 'visible');
@@ -177,14 +189,15 @@ function SkillUniverse({ host, section }) {
     h('div', { className: 'skills-3d-stage', 'aria-hidden': true },
       h(Canvas, {
         camera: { position: [0, 1.1, 11.5], fov: 46, near: 0.1, far: 80 },
-        dpr: [1, 1.3],
-        frameloop: visible ? 'always' : 'never',
+        dpr: [1, 1.1],
+        frameloop: 'demand',
         gl: { alpha: true, antialias: true, powerPreference: 'low-power' },
         onCreated: ({ camera }) => {
           camera.lookAt(0, 0, 0);
           section.classList.add('skills-universe-ready');
         }
       },
+        h(SkillFrameBudget, { enabled: visible }),
         h('ambientLight', { intensity: 1.3 }),
         h('directionalLight', { position: [2, 5, 7], intensity: 2.3, color: '#d9ffff' }),
         h('pointLight', { position: [-4, 2, 3], intensity: 22, color: '#e6a963', distance: 12 }),
