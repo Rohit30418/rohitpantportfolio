@@ -2194,6 +2194,7 @@
   <link rel="stylesheet" href="assets/hero-cinematic.css" />
   <link rel="stylesheet" href="assets/hero-fluid.css" />
   <link rel="stylesheet" href="assets/skills-showcase.css" />
+  <link rel="stylesheet" href="assets/contact-journey.css" />
   <link rel="stylesheet" href="assets/project-hologram.css" />
   <link rel="stylesheet" href="assets/project-hologram-one-screen.css" />
 </head>
@@ -2474,17 +2475,61 @@
       </div>
     </section>
 
-    <section class="section contact" id="contact">
-      <div class="shell contact-grid">
-        <div data-reveal>
-          <div class="eyebrow">Get in touch</div>
-          <h2 class="display">Let’s have<br />a chat<span class="dot">.</span></h2>
-          <p class="contact-lede">Have a frontend opportunity, an interesting product, or simply want to talk about something worth building? Reach out.</p>
+    <section class="section contact contact-journey" id="contact" aria-labelledby="contactHeading">
+      <div class="contact-journey-art" aria-hidden="true">
+        <svg class="contact-journey-lines" viewBox="0 0 1600 750" preserveAspectRatio="xMidYMid slice" focusable="false">
+          <defs>
+            <linearGradient id="contact-journey-trail" x1="0" y1="630" x2="1040" y2="200" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#0b668e" stop-opacity=".1"/>
+              <stop offset=".39" stop-color="#03c9e7" stop-opacity=".8"/>
+              <stop offset=".76" stop-color="#05bbdc" stop-opacity=".52"/>
+              <stop offset="1" stop-color="#0981b1" stop-opacity=".15"/>
+            </linearGradient>
+            <linearGradient id="contact-journey-warm" x1="450" y1="580" x2="845" y2="340" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#0cc7df" stop-opacity=".10"/>
+              <stop offset=".42" stop-color="#11c7e5" stop-opacity=".78"/>
+              <stop offset=".8" stop-color="#e7b35a"/>
+              <stop offset="1" stop-color="#fbc073" stop-opacity=".08"/>
+            </linearGradient>
+          </defs>
+          <g opacity=".84">
+            <path d="M-90 710 C95 448 227 657 372 608 C526 561 575 343 730 279 C811 245 915 239 1071 274" stroke="#08799f" opacity=".42"/>
+            <path d="M-120 753 C104 466 245 697 408 609 C592 512 574 332 765 229 C888 164 1001 200 1124 238" stroke="url(#contact-journey-trail)" class="contact-path-bright"/>
+            <path d="M-45 723 C135 510 261 690 425 629 C562 578 620 426 716 348 C796 286 842 310 913 325" stroke="#03aac9" opacity=".52"/>
+            <path d="M-70 770 C127 540 229 708 404 670 C598 626 648 400 776 318 C854 268 939 260 1013 285" stroke="#0d6286" opacity=".38"/>
+            <path class="contact-path-gold" d="M310 643 C466 648 559 693 683 508 C723 445 730 367 794 343 C819 334 839 336 858 333" stroke="url(#contact-journey-warm)"/>
+          </g>
+        </svg>
+        <span class="contact-journey-spark contact-journey-spark--one"></span>
+        <span class="contact-journey-spark contact-journey-spark--two"></span>
+        <span class="contact-journey-star contact-journey-star--one"></span>
+        <span class="contact-journey-star contact-journey-star--two"></span>
+        <span class="contact-journey-plane"><i class="fa-solid fa-paper-plane"></i></span>
+      </div>
+
+      <div class="shell contact-journey-inner">
+        <div class="contact-journey-copy" data-reveal>
+          <div class="contact-journey-index"><strong>05</strong><span>/ GET IN TOUCH</span></div>
+          <h2 class="contact-journey-title" id="contactHeading">Let’s have<br />a chat<span class="contact-journey-dot">.</span></h2>
+          <p class="contact-journey-lede">Have a project, opportunity, or collaboration in mind? I’d love to hear about it. Let’s build something great together.</p>
         </div>
-        <div class="contact-links" data-reveal>
-          <a class="contact-link" href="mailto:rohitpant090@gmail.com"><span><small>Email</small><strong>rohitpant090@gmail.com</strong></span><span class="arrow">↗</span></a>
-          <a class="contact-link" href="https://www.linkedin.com/in/rohitpantdev/" target="_blank" rel="noreferrer"><span><small>LinkedIn</small><strong>linkedin.com/in/rohitpantdev</strong></span><span class="arrow">↗</span></a>
-          <a class="contact-link" href="https://github.com/Rohit30418" target="_blank" rel="noreferrer"><span><small>GitHub</small><strong>github.com/Rohit30418</strong></span><span class="arrow">↗</span></a>
+
+        <div class="contact-journey-panel" aria-label="Contact methods" data-reveal>
+          <a class="contact-journey-link" href="mailto:rohitpant090@gmail.com">
+            <span class="contact-journey-icon" aria-hidden="true"><i class="fa-solid fa-envelope"></i></span>
+            <span class="contact-journey-meta"><small>Email</small><strong>rohitpant090@gmail.com</strong></span>
+            <span class="contact-journey-arrow" aria-hidden="true"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+          </a>
+          <a class="contact-journey-link" href="https://www.linkedin.com/in/rohitpantdev/" target="_blank" rel="noopener noreferrer">
+            <span class="contact-journey-icon" aria-hidden="true"><i class="fa-brands fa-linkedin"></i></span>
+            <span class="contact-journey-meta"><small>LinkedIn</small><strong>linkedin.com/in/rohitpantdev</strong></span>
+            <span class="contact-journey-arrow" aria-hidden="true"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+          </a>
+          <a class="contact-journey-link" href="https://github.com/Rohit30418" target="_blank" rel="noopener noreferrer">
+            <span class="contact-journey-icon" aria-hidden="true"><i class="fa-brands fa-github"></i></span>
+            <span class="contact-journey-meta"><small>GitHub</small><strong>github.com/Rohit30418</strong></span>
+            <span class="contact-journey-arrow" aria-hidden="true"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+          </a>
         </div>
       </div>
     </section>
