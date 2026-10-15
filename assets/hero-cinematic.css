@@ -295,11 +295,11 @@
 }
 @media (min-width:1051px) and (max-width:1360px) {
   #home .lux-hero-name {font-size:clamp(5.2rem,9.2vw,8rem);}
-  #home .lux-intro {width:355px;bottom:114px;}
+  #home .lux-intro {width:355px;bottom:92px;}
   #home .lux-intro p {font-size:.9rem;}
   #home .lux-primary {min-width:150px;padding:0 19px;}
   #home .lux-text-link.hero-contact-button {min-width:139px;padding:0 14px;}
-  #home .hero-person {width:42vw;left:51%;}
+  #home .hero-person {width:38vw;left:49%;}
   #home .hero-side-caption {right:2%;font-size:.5rem;}
 }
 @media (min-width:761px) and (max-width:1050px) {
