@@ -9,7 +9,9 @@
     // Phones and touch-first devices land directly on the portfolio.
     // Decide before first paint so the hero is never hidden behind the intro.
     const skipPortfolioIntro = matchMedia('(max-width:767px), (hover:none) and (pointer:coarse)').matches;
-    document.documentElement.classList.add(skipPortfolioIntro ? 'intro-seen' : 'intro-playing');
+    let introAlreadySeen = false;
+    try { introAlreadySeen = sessionStorage.getItem('rp-portfolio-intro-seen') === '1'; } catch (_) {}
+    document.documentElement.classList.add(skipPortfolioIntro || introAlreadySeen ? 'intro-seen' : 'intro-playing');
   </script>
   <title>Rohit Pant | Frontend & UI Developer</title>
   <meta name="description" content="Rohit Pant is a Frontend and UI Developer building responsive production interfaces, realtime experiences and polished web products with React, TypeScript and modern frontend tooling." />
@@ -2644,6 +2646,7 @@
         this.started=false;
         this.highEnabled=true;
         this.previewProcessed=0;
+        this.previewGoal=0;
         this.onPreviewProgress=null;
         this.resize();
         if(autoStart)this.warm();
@@ -2651,9 +2654,12 @@
       warm(){
         if(this.dead||this.started)return;
         this.started=true;
-        // Start with nearby frames and coarse timeline coverage.
-        for(let i=0;i<this.count;i++)this.enqueueLow(i,i%8===0?30:1);
-        for(let i=0;i<8;i++)this.enqueueLow(i,2000-i);
+        // Decode a sparse overview first instead of fetching every frame at once.
+        // Missing frames are fetched on demand around the active scroll position.
+        const step=this.folder.includes('intro-frames')?4:6;
+        for(let i=0;i<this.count;i+=step)this.enqueueLow(i,50);
+        for(let i=0;i<Math.min(12,this.count);i++)this.enqueueLow(i,2000-i);
+        this.previewGoal=this.lowJobs.size;
         this.pumpLow();
         if(this.highEnabled){
           this.enqueueHigh(this.target,1000);
@@ -2755,7 +2761,7 @@
               if(!this.dead){
                 this.previewProcessed++;
                 if(this.onPreviewProgress)
-                  this.onPreviewProgress(this.previewProcessed,this.count);
+                  this.onPreviewProgress(this.previewProcessed,this.previewGoal);
                 this.pumpLow();
               }
             }
@@ -2828,7 +2834,8 @@
       resize(){
         if(this.dead||!this.ctx)return;
         const rect=this.canvas.getBoundingClientRect();
-        const ratio=Math.min(devicePixelRatio||1,this.mobile?1:1.25);
+        // Single CSS pixel per canvas pixel: much less upload/memory on retina screens.
+        const ratio=1;
         const w=Math.max(1,Math.round(rect.width*ratio));
         const h=Math.max(1,Math.round(rect.height*ratio));
         if(this.canvas.width!==w||this.canvas.height!==h){
@@ -2899,7 +2906,8 @@
     if(processSection&&processCanvas){
       // Avoid competing with the 196-frame intro on first load.
       const sequence=new WebPFrameSequence(processCanvas,'assets/process-frames/',90,null,false);
-      document.addEventListener('portfolio:intro-ended',()=>sequence.warm(),{once:true});
+      // No eager warm on intro completion. setFrame() warms only when the
+      // process section approaches the viewport via IntersectionObserver.
       let visible=false,frameRaf=0,eased=0,target=0,first=true,lastTime=0,lastPercent=-1;
       const getProcessProgress=()=>{
         const rect=processSection.getBoundingClientRect();
@@ -2943,7 +2951,7 @@
             if(frameRaf){cancelAnimationFrame(frameRaf);frameRaf=0}
           }
         }
-      },{rootMargin:(matchMedia('(pointer:coarse)').matches?'600px':'1000px')+' 0px',threshold:0});
+      },{rootMargin:(matchMedia('(pointer:coarse)').matches?'160px':'300px')+' 0px',threshold:0});
       processObserver.observe(processSection);
       addEventListener('scroll',updateProcessTarget,{passive:true});
       addEventListener('resize',()=>{
@@ -3102,6 +3110,7 @@
         if(raf)cancelAnimationFrame(raf);
         if(endTimer)clearTimeout(endTimer);
         if(player)player.dispose();
+        try { sessionStorage.setItem('rp-portfolio-intro-seen','1'); } catch (_) {}
         scrollTo(0,0);
         document.documentElement.classList.remove('intro-playing');
         document.documentElement.classList.add('intro-complete');
@@ -3157,7 +3166,8 @@
 
     // Premium cursor follower — one tiny transform-only element.
     const cursorFollower = document.getElementById('cursorFollower');
-    const cursorEnabled = finePointer && innerWidth > 900 && !reduceMotion;
+    // Avoid a second pointer-follow animation competing with the 3D hero.
+    const cursorEnabled = false;
     if(cursorFollower && cursorEnabled){
       let cursorX = -80;
       let cursorY = -80;
