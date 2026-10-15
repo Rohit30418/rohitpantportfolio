@@ -1,0 +1,348 @@
+/* Cinematic hero v2: close match to the approved design concept.
+   Scoped to the hero so projects, skills, intro and contact are unaffected. */
+@media (min-width: 1051px) {
+  #home.lux-hero {
+    min-height: max(815px, 100svh);
+  }
+  #home .lux-hero-inner {
+    width: min(1490px, calc(100% - 11.5vw));
+    min-height: max(815px, 100svh);
+    padding: 0;
+  }
+  #home .lux-hero-name {
+    top: clamp(164px, 21.7vh, 218px);
+    font-size: clamp(5.2rem, 9.85vw, 10.4rem);
+    font-weight: 770;
+    letter-spacing: -.085em;
+    line-height: .9;
+    gap: .2em;
+    color: #f6f5f0;
+    z-index: 3;
+    text-shadow: 0 12px 45px rgba(0,0,0,.18);
+  }
+  #home .lux-hero-name span:last-child {
+    color: #eef5f5;
+    background: linear-gradient(120deg, #f8f9f4 28%, #e2f9fb 67%, #b0e1ec);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  #home .hero-kicker {
+    top: clamp(126px, 17vh, 162px);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: #c4c7c9;
+    font-weight: 680;
+    letter-spacing: .29em;
+  }
+  #home .hero-kicker::before {
+    content:"";
+    width: 28px;
+    height: 2px;
+    flex: none;
+    background: #edc17e;
+    box-shadow: 0 0 14px rgba(244,166,90,.35);
+  }
+  #home .lux-role.hero-design-role {
+    top: clamp(300px, 38.8vh, 384px);
+    left:0;
+    right:auto;
+    display: block;
+    white-space: nowrap;
+    text-transform: none;
+    font-size: clamp(1.7rem, 3.2vw, 3.1rem);
+    font-weight: 625;
+    letter-spacing: -.055em;
+    color: #f2f1ee;
+    z-index: 4;
+  }
+  #home .hero-design-role span {
+    color: #55cde9;
+    background: linear-gradient(90deg, #4ac7ec, #93ecff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  #home .hero-person {
+    left: 51.5%;
+    bottom: -2px;
+    width: min(40vw, 600px);
+    z-index: 4;
+    filter: drop-shadow(-10px 5px 45px rgba(237,155,84,.10))
+            drop-shadow(13px 4px 35px rgba(36,172,202,.13))
+            drop-shadow(0 25px 35px rgba(0,0,0,.34));
+  }
+  #home .lux-intro {
+    left: 0;
+    bottom: clamp(105px, 12.8vh, 145px);
+    width: min(415px, 29vw);
+    z-index: 6;
+  }
+  #home .lux-intro p {
+    max-width: 420px;
+    margin-top: 21px;
+    color: #c7d0d2;
+    font-size: clamp(.92rem,1.03vw,1.07rem);
+    line-height: 1.66;
+    text-wrap: pretty;
+  }
+  #home .availability {
+    padding: 10px 15px;
+    color: #e6efe9;
+    border: 1px solid rgba(116,226,92,.55);
+    background: rgba(8,22,15,.59);
+    box-shadow: inset 0 0 12px rgba(99,230,89,.035);
+    font-size: .72rem;
+  }
+  #home .availability>span { background: #84fb6b; }
+  #home .lux-intro .hero-actions {
+    margin-top: 28px;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  #home .lux-primary {
+    height: 54px;
+    min-width: 178px;
+    padding: 0 25px;
+    font-size: .81rem;
+    font-weight: 750;
+    box-shadow: 0 11px 24px rgba(0,0,0,.2);
+  }
+  #home .lux-primary .hero-cta-arrow {
+    display: inline-block;
+    margin-left: 13px;
+    transition: transform .2s ease;
+  }
+  #home .lux-primary:hover .hero-cta-arrow { transform: translateX(4px); }
+  #home .lux-text-link.hero-contact-button {
+    height: 54px;
+    min-width: 156px;
+    padding: 0 19px;
+    justify-content: center;
+    gap: 12px;
+    border: 1px solid rgba(223,235,241,.32);
+    border-radius: 999px;
+    background: rgba(6,13,17,.56);
+    color: #f0f3f2;
+    font-size: .81rem;
+    transition: transform .2s ease,background .2s ease,border-color .2s ease;
+  }
+  #home .lux-text-link.hero-contact-button:hover {
+    transform: translateY(-2px);
+    border-color: rgba(88,203,233,.75);
+    background: rgba(27,51,59,.8);
+  }
+  #home .hero-metrics {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3,minmax(0,1fr));
+    gap: 0;
+    margin-top: clamp(24px,3.2vh,35px);
+    padding-top: 24px;
+    border-top: 1px solid rgba(203,220,220,.21);
+    color: #f7f8f3;
+  }
+  #home .hero-metrics::before {
+    content:""; position:absolute; top:-5px; left:48px;
+    width:9px;height:9px;border:1px solid #edc17e;
+    border-radius:50%;background:#080b0c;
+    box-shadow:0 0 0 4px #090b0b;
+  }
+  #home .hero-metric {
+    min-width:0;
+    padding-right:10px;
+  }
+  #home .hero-metric+.hero-metric {
+    padding-left:19px;
+    border-left:1px solid rgba(230,235,230,.22);
+  }
+  #home .hero-metric strong {
+    display:block;
+    font-size:clamp(1.55rem,2.05vw,2.25rem);
+    line-height:1;
+    font-weight:740;
+    letter-spacing:-.065em;
+  }
+  #home .hero-metric small {
+    display:block;
+    margin-top:9px;
+    font-size:.58rem;
+    letter-spacing:.17em;
+    line-height:1.55;
+    color:#a9b6b9;
+    font-weight:680;
+    text-transform:uppercase;
+  }
+  #home .hero-skillrail {
+    left:0;right:0;
+    bottom:26px;
+    border-top:1px solid rgba(207,219,225,.26);
+    padding-top:24px;
+    color:#c0c8ca;
+    font-size:.68rem;
+    letter-spacing:.26em;
+    z-index:7;
+  }
+  #home .hero-skillrail span {
+    display:inline-flex;
+    align-items:center;
+    gap:18px;
+  }
+  #home .hero-skillrail span::before {
+    content:"";
+    display:inline-block;
+    width:8px;height:8px;
+    border-radius:50%;
+    background:#46d9f6;
+    box-shadow:0 0 12px rgba(70,217,246,.55);
+  }
+  #home .hero-skillrail span:nth-child(3)::before {
+    background:#efb576;
+    box-shadow:0 0 12px rgba(239,181,118,.5);
+  }
+  #home .hero-side-caption {
+    position:absolute;
+    z-index:5;
+    top:35.2%;
+    right:3.5%;
+    max-width:110px;
+    font-size:.57rem;
+    line-height:1.85;
+    font-weight:750;
+    color:#b8c6cb;
+    letter-spacing:.17em;
+    text-transform:uppercase;
+    pointer-events:none;
+  }
+  #home .hero-side-caption::after {
+    content:"";display:block;margin-top:14px;width:22px;height:2px;background:#57d6ef;
+  }
+  #home .hero-atom-platform {
+    display:block;
+    position:absolute;
+    z-index:0;
+    width:min(55vw,940px);
+    height:38%;
+    right:-1.6%;
+    bottom:1.5%;
+    background:url('hero-atom-stage.svg') center bottom / contain no-repeat;
+    opacity:.76;
+    pointer-events:none;
+  }
+  #home .hero-portrait-glow {
+    display:block;
+    position:absolute;
+    z-index:0;
+    top:11%;
+    left:24%;
+    width:51%;
+    height:85%;
+    background:radial-gradient(ellipse at 45% 50%,rgba(222,127,65,.105),transparent 55%),
+               radial-gradient(ellipse at 78% 50%,rgba(49,162,184,.09),transparent 52%);
+    pointer-events:none;
+  }
+  #home .hero-react-3d {
+    top:55%;
+    right:1.5%;
+    width:min(40vw,640px);
+    height:min(68svh,650px);
+    min-height:480px;
+    transform:translateY(-47%);
+    z-index:1;
+    -webkit-mask-image:radial-gradient(ellipse at 50% 50%,black 45%,rgba(0,0,0,.86) 67%,transparent 83%);
+    mask-image:radial-gradient(ellipse at 50% 50%,black 45%,rgba(0,0,0,.86) 67%,transparent 83%);
+  }
+  #home .hero-react-3d::before {
+    background:radial-gradient(circle,rgba(47,203,250,.13),rgba(19,91,128,.055) 42%,transparent 68%);
+  }
+  .lux-header {
+    max-width:1380px;
+    background:rgba(6,10,13,.83);
+    border:1px solid rgba(161,185,190,.18);
+    border-radius:18px;
+    backdrop-filter:blur(12px);
+  }
+  .lux-top-cta {
+    border-color:rgba(37,211,249,.54);
+    box-shadow:inset 0 0 13px rgba(15,163,204,.09);
+    color:#fff;
+  }
+  .lux-top-cta:hover {border-color:#40d8f3;}
+}
+#home.lux-hero {
+  background:
+    radial-gradient(ellipse at 46% 46%,rgba(128,79,39,.11),transparent 32%),
+    radial-gradient(ellipse at 84% 55%,rgba(25,106,123,.15),transparent 37%),
+    linear-gradient(130deg,#030506 0%,#070b0d 54%,#03090c 100%);
+}
+#home .hero-grid {
+  width:100%;
+  left:0;
+  top:7%;
+  bottom:9%;
+  opacity:.18;
+  background-size:10px 10px;
+  -webkit-mask-image:linear-gradient(90deg,black,rgba(0,0,0,.3) 43%,transparent 65%,rgba(0,0,0,.2));
+  mask-image:linear-gradient(90deg,black,rgba(0,0,0,.3) 43%,transparent 65%,rgba(0,0,0,.2));
+}
+#home .hero-glow {background:rgba(41,175,201,.07);filter:blur(65px);}
+#home .hero-side-caption,#home .hero-atom-platform,#home .hero-portrait-glow {display:none;}
+@media (min-width:1051px) and (max-width:1360px) {
+  #home .lux-hero-name {font-size:clamp(5.2rem,9.2vw,8rem);}
+  #home .lux-intro {width:355px;bottom:114px;}
+  #home .lux-intro p {font-size:.9rem;}
+  #home .lux-primary {min-width:150px;padding:0 19px;}
+  #home .lux-text-link.hero-contact-button {min-width:139px;padding:0 14px;}
+  #home .hero-person {width:42vw;left:51%;}
+  #home .hero-side-caption {right:2%;font-size:.5rem;}
+}
+@media (min-width:761px) and (max-width:1050px) {
+  #home .lux-role.hero-design-role {
+    display:block;
+    left:0;right:auto;top:295px;
+    font-size:clamp(1.75rem,3vw,2.3rem);
+    color:#f0f1eb;text-transform:none;
+  }
+  #home .hero-design-role span {color:#65d4ef;}
+  #home .lux-hero-name {font-weight:720;}
+  #home .hero-metrics {display:none;}
+  #home .lux-intro {width:min(310px,32vw);}
+  #home .lux-text-link.hero-contact-button {display:inline-flex;}
+}
+@media (max-width:760px) {
+  #home.lux-hero {min-height:820px;}
+  #home .lux-hero-inner {min-height:820px;width:calc(100% - 34px);}
+  #home .hero-kicker {letter-spacing:.17em;}
+  #home .lux-hero-name {font-weight:735;}
+  #home .lux-role.hero-design-role {
+    display:block;
+    top:220px;left:0;right:0;text-align:center;
+    font-size:clamp(1.35rem,5vw,1.8rem);
+    color:#f0f4f1;text-transform:none;
+    font-weight:660;letter-spacing:-.035em;
+  }
+  #home .hero-design-role span {color:#70d7ed;}
+  #home .hero-metrics {display:none;}
+  #home .lux-intro {z-index:6;bottom:43px;}
+  #home .lux-intro .hero-actions {gap:12px;justify-content:center;}
+  #home .lux-primary {height:43px;min-width:137px;padding:0 15px;}
+  #home .hero-cta-arrow {margin-left:8px;}
+  #home .lux-text-link.hero-contact-button {
+    display:inline-flex;justify-content:center;
+    align-items:center;min-height:43px;padding:0 14px;
+    border:1px solid rgba(227,238,243,.34);
+    border-radius:999px;
+    color:#f1f4f1;
+    font-size:.72rem;
+  }
+  #home .hero-person {filter:drop-shadow(0 17px 28px rgba(0,0,0,.35));}
+}
+@media(max-width:480px) {
+  #home.lux-hero,#home .lux-hero-inner {min-height:790px;}
+  #home .lux-role.hero-design-role {top:205px;font-size:clamp(1.2rem,5.3vw,1.55rem);}
+  #home .lux-intro {bottom:32px;}
+}
+@media(prefers-reduced-motion:reduce) {
+  #home .hero-react-3d {transition:none!important;}
+}
