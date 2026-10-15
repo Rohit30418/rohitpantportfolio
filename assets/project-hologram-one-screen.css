@@ -259,20 +259,21 @@
 @media (min-width:981px) and (min-height:720px){
   #work.holo-projects {
     box-sizing:border-box;
-    height:100svh;
-    min-height:720px;
+    /* Content-sized showroom: no artificial blank 100svh block. */
+    height:auto;
+    min-height:0;
     padding:clamp(56px,6.8svh,76px) 0;
     overflow:hidden;
   }
-  #work.holo-projects > .shell {height:100%;}
-  #work .holo-layout {height:100%;min-height:0;}
+  #work.holo-projects > .shell {height:auto;}
+  #work .holo-layout {height:clamp(540px,67svh,640px);min-height:0;}
   #work .holo-copy {align-self:center;}
   #work .holo-stage {height:100%;min-height:0;}
 }
 @media (min-width:981px) and (max-height:719px){
-  #work.holo-projects {height:auto;min-height:0;padding:clamp(56px,7.5svh,68px) 0;}
-  #work .holo-layout {min-height:560px;}
-  #work .holo-stage {height:560px;}
+  #work.holo-projects {height:auto;min-height:0;padding:clamp(48px,7svh,62px) 0;}
+  #work .holo-layout {min-height:510px;}
+  #work .holo-stage {height:510px;}
   #work .holo-title {font-size:clamp(2.9rem,4vw,4.3rem);}
 }
 @media (min-width:981px) and (max-height:810px){
