@@ -1,0 +1,334 @@
+/*
+ * HERO FLUID LAYOUT (2026-10)
+ * All content is placed in a shared grid/flow rather than with viewport
+ * coordinates. Decorative 3D elements occupy a grid cell; on tablets/phones
+ * they disappear. Scoped only to the hero, so other sections are untouched.
+ */
+#home.lux-hero {
+  min-height:100svh;
+  overflow:clip;
+}
+#home .lux-hero-inner {
+  width:min(1510px,calc(100% - clamp(28px,7vw,136px)));
+  min-height:100svh;
+  display:grid;
+  grid-template-columns:minmax(0,1.05fr) minmax(0,.9fr) minmax(0,1.05fr);
+  grid-template-rows:auto auto minmax(250px,1fr) auto;
+  column-gap:clamp(8px,1.4vw,24px);
+  padding:clamp(106px,13svh,138px) 0 clamp(20px,3.4svh,35px);
+  align-items:stretch;
+  position:relative;
+  isolation:isolate;
+}
+#home .hero-kicker {
+  position:relative;
+  inset:auto;
+  grid-column:1 / 3;
+  grid-row:1;
+  align-self:center;
+  justify-self:start;
+  margin:0 0 clamp(18px,2.5svh,26px);
+  font-size:clamp(.56rem,.7vw,.67rem);
+  z-index:7;
+}
+#home .lux-hero-name {
+  position:relative;
+  inset:auto;
+  grid-column:1 / -1;
+  grid-row:2;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:clamp(18px,4vw,70px);
+  align-self:start;
+  margin:0 0 clamp(8px,1.8svh,20px);
+  font-size:clamp(4.3rem,8.3vw,9rem);
+  font-weight:770;
+  letter-spacing:-.08em;
+  line-height:.89;
+  white-space:nowrap;
+  z-index:2;
+}
+#home .lux-hero-name span {
+  display:block;
+  min-width:0;
+  flex:0 1 auto;
+}
+#home .lux-hero-name span:last-child {
+  margin-left:auto;
+}
+#home .lux-role.hero-design-role {
+  position:relative;
+  inset:auto;
+  grid-column:1;
+  grid-row:3;
+  align-self:start;
+  justify-self:stretch;
+  margin:0;
+  font-size:clamp(1.25rem,2.08vw,2.65rem);
+  line-height:1.16;
+  letter-spacing:-.05em;
+  white-space:normal;
+  z-index:6;
+}
+#home .hero-design-role span {
+  display:inline;
+  white-space:nowrap;
+}
+#home .lux-intro {
+  position:relative;
+  inset:auto;
+  grid-column:1;
+  grid-row:3;
+  align-self:end;
+  justify-self:stretch;
+  width:100%;
+  max-width:420px;
+  margin:0 0 clamp(24px,5svh,69px);
+  z-index:7;
+  text-align:left;
+}
+#home .lux-intro p {
+  margin-top:clamp(12px,1.8svh,20px);
+  max-width:400px;
+  font-size:clamp(.82rem,1vw,1.02rem);
+  line-height:1.6;
+  text-wrap:pretty;
+}
+#home .lux-intro .hero-actions {
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:clamp(17px,2.5svh,27px);
+}
+#home .lux-primary {
+  height:clamp(43px,5.8svh,54px);
+  min-width:0;
+  padding:0 clamp(15px,1.7vw,25px);
+  white-space:nowrap;
+}
+#home .lux-text-link.hero-contact-button {
+  display:inline-flex;
+  height:clamp(43px,5.8svh,54px);
+  min-width:0;
+  padding:0 clamp(11px,1.4vw,19px);
+  white-space:nowrap;
+}
+#home .hero-person {
+  position:relative;
+  inset:auto;
+  transform:none;
+  grid-column:2;
+  grid-row:2 / 4;
+  align-self:end;
+  justify-self:center;
+  width:min(100%,36vw,510px);
+  max-width:100%;
+  max-height:min(68svh,610px);
+  height:auto;
+  object-fit:contain;
+  object-position:center bottom;
+  margin:0;
+  z-index:5;
+}
+#home .hero-atom-platform {
+  position:relative;
+  inset:auto;
+  display:block;
+  grid-column:3;
+  grid-row:3;
+  align-self:end;
+  justify-self:center;
+  width:100%;
+  height:100%;
+  min-height:0;
+  background-position:center bottom;
+  background-size:100% auto;
+  opacity:.74;
+  z-index:0;
+}
+#home .hero-react-3d {
+  position:relative;
+  inset:auto;
+  grid-column:3;
+  grid-row:3;
+  align-self:center;
+  justify-self:center;
+  width:100%;
+  height:100%;
+  min-height:0;
+  max-height:480px;
+  transform:none;
+  z-index:2;
+  pointer-events:none;
+}
+#home .hero-side-caption {
+  position:relative;
+  inset:auto;
+  grid-column:3;
+  grid-row:2;
+  align-self:end;
+  justify-self:end;
+  margin:0 0 4px;
+  z-index:4;
+}
+#home .hero-skillrail {
+  position:relative;
+  inset:auto;
+  grid-column:1 / -1;
+  grid-row:4;
+  align-self:end;
+  display:flex;
+  width:100%;
+  margin:0;
+  padding-top:clamp(13px,2svh,22px);
+  gap:clamp(12px,2.5vw,28px);
+  z-index:8;
+}
+#home .hero-skillrail span {
+  min-width:0;
+  gap:clamp(5px,.8vw,16px);
+}
+#home .hero-portrait-glow {
+  left:26%;
+  width:49%;
+}
+/* Medium desktop and zoomed browser: two columns, no crowded 3D column. */
+@media(max-width:1100px) and (min-width:761px){
+  #home .lux-hero-inner {
+    width:calc(100% - clamp(30px,6vw,75px));
+    grid-template-columns:minmax(0,1fr) minmax(0,.95fr);
+    grid-template-rows:auto auto minmax(290px,1fr) auto;
+    min-height:max(680px,100svh);
+    column-gap:clamp(16px,3vw,42px);
+    padding:clamp(105px,12svh,128px) 0 26px;
+  }
+  #home .lux-hero-name {
+    grid-column:1 / -1;
+    font-size:clamp(3.65rem,8.4vw,6.9rem);
+    gap:16px;
+  }
+  #home .hero-kicker {grid-column:1 / -1;}
+  #home .lux-role.hero-design-role {
+    grid-column:1;
+    grid-row:3;
+    font-size:clamp(1.22rem,2.5vw,2rem);
+    text-align:left;
+  }
+  #home .lux-intro {
+    grid-column:1;
+    grid-row:3;
+    max-width:370px;
+    margin-bottom:clamp(24px,6svh,80px);
+  }
+  #home .hero-person {
+    grid-column:2;
+    grid-row:2 / 4;
+    width:min(100%,44vw,460px);
+    max-height:min(66svh,570px);
+  }
+  #home .hero-react-3d,
+  #home .hero-atom-platform,
+  #home .hero-side-caption {display:none!important;}
+  #home .lux-intro p {max-width:360px;font-size:clamp(.81rem,1.45vw,.94rem);}
+  #home .hero-skillrail{gap:18px;letter-spacing:.12em;}
+}
+/* Small devices: natural document flow, so zoom and text scaling cannot collide. */
+@media(max-width:760px){
+  #home.lux-hero{min-height:0;overflow:clip;}
+  #home .lux-hero-inner {
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:flex-start;
+    gap:0;
+    width:calc(100% - 32px);
+    min-height:100svh;
+    padding:clamp(91px,12svh,115px) 0 36px;
+    text-align:center;
+  }
+  #home .hero-kicker {
+    order:1;
+    align-self:center;
+    margin:0 0 19px;
+    font-size:clamp(.52rem,1.65vw,.62rem);
+  }
+  #home .lux-hero-name {
+    order:2;
+    display:flex;
+    width:100%;
+    margin:0 0 12px;
+    gap:clamp(8px,3vw,20px);
+    justify-content:space-between;
+    align-items:center;
+    font-size:clamp(2.7rem,12vw,5.8rem);
+    line-height:.93;
+    letter-spacing:-.085em;
+    white-space:nowrap;
+    text-align:center;
+  }
+  #home .lux-role.hero-design-role {
+    order:3;
+    width:100%;
+    margin:0;
+    text-align:center;
+    font-size:clamp(1.15rem,4.9vw,1.9rem);
+    white-space:normal;
+    line-height:1.22;
+  }
+  #home .hero-person {
+    order:4;
+    width:min(79vw,360px);
+    max-width:100%;
+    max-height:390px;
+    margin:clamp(13px,3svh,26px) 0 0;
+    object-fit:contain;
+    transform:none;
+  }
+  #home .lux-intro {
+    order:5;
+    position:relative;
+    inset:auto;
+    width:min(100%,440px);
+    max-width:440px;
+    margin:clamp(12px,3svh,22px) auto 0;
+    padding:0;
+    text-align:center;
+  }
+  #home .availability{margin:0 auto;}
+  #home .lux-intro p{
+    padding:0;
+    margin:12px auto 0;
+    font-size:clamp(.8rem,3.2vw,.94rem);
+    line-height:1.55;
+  }
+  #home .lux-intro .hero-actions{
+    justify-content:center;
+    gap:10px;
+    margin-top:17px;
+  }
+  #home .lux-primary,#home .lux-text-link.hero-contact-button {
+    min-height:43px;
+    height:43px;
+    padding:0 15px;
+    font-size:.72rem;
+  }
+  #home .hero-atom-platform,
+  #home .hero-react-3d,
+  #home .hero-side-caption,
+  #home .hero-skillrail{display:none!important;}
+  #home .hero-portrait-glow{left:9%;top:20%;width:82%;height:50%;}
+}
+@media(max-width:380px){
+  #home .lux-hero-inner{width:calc(100% - 24px);}
+  #home .lux-hero-name{font-size:clamp(2.25rem,11.9vw,3rem);gap:6px;}
+  #home .hero-person{width:min(82vw,320px);max-height:340px;}
+  #home .lux-intro .hero-actions{gap:7px;}
+  #home .lux-primary,#home .lux-text-link.hero-contact-button{
+    padding:0 10px;
+    font-size:.65rem;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  #home .hero-react-3d{transition:none;}
+}
