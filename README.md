@@ -43,7 +43,8 @@ Replaced the tiny WebGL technology ring with a **wide, legible interactive
 carousel** inspired by the approved Skills screenshot:
 
 - Large translucent technology cards with readable icons, names and roles.
-- Curved cyan-lit floor and subtle CSS perspective, without continuous rendering.
+- Large CSS-perspective cards without a decorative glowing floor ring or a
+  skills counter underneath; the stage is intentionally compact.
 - 18 technologies, navigable with arrows, keyboard, clicking cards or swiping.
 - Desktop shows seven to nine cards across; smaller screens display three
   large centered/neighboring tiles instead of shrinking text.
