@@ -102,47 +102,27 @@
     satelliteBottomTitle=$('#holoSatelliteBottomTitle');
   let selected='vaani',switchTimer=0,returnFocus=null;
 
-  const bars='<span class="holo-mini-bars" aria-hidden="true">'+
-    [38,62,43,85,66,51,92,55,76,45].map(n=>'<i style="--bar:'+n+'%"></i>').join('')+'</span>';
-  const graph='<svg class="holo-graph" viewBox="0 0 320 126" preserveAspectRatio="none" aria-hidden="true">'+
-    '<line x1="0" y1="28" x2="320" y2="28"/><line x1="0" y1="63" x2="320" y2="63"/><line x1="0" y1="99" x2="320" y2="99"/>'+
-    '<path class="graph-fill" d="M0 108 C26 103 43 52 66 70S107 107 132 66 171 27 196 40 232 94 254 59 287 18 320 29 V126H0Z"/>'+
-    '<path d="M0 108 C26 103 43 52 66 70S107 107 132 66 171 27 196 40 232 94 254 59 287 18 320 29"/></svg>';
-
-  function previewPanels(p){
-    const side='<div class="holo-app-panel"><div class="holo-app-panel-title">'+p.secondaryTitle+'<small>●</small></div>'+
-      p.features.map((s,i)=>'<div class="holo-mini-row"><i>'+String(i+1).padStart(2,'0')+'</i><span>'+s+'</span><small>✓</small></div>').join('')+bars+'</div>';
-    if(p.shortLabel==='VAANI'){
-      return '<div class="holo-app-panel holo-room-panel"><div class="holo-app-panel-title">Design Circle <small>ROOM PREVIEW</small></div>'+
-        '<div class="holo-room-wave" aria-hidden="true">'+[20,39,55,27,69,42,81,61,33,72,51,23,45,74,38,60,25,46,17].map(n=>'<i style="--w:'+n+'%"></i>').join('')+'</div>'+
-        '<div class="holo-avatar-row"><span>RP</span><span>UI</span><span>DEV</span><span>+</span></div>'+
-        '<div class="holo-call-row"><span>MIC ON</span><span>VIDEO ON</span><span class="holo-end-call">LEAVE ROOM</span></div></div>'+side;
-    }
-    if(p.shortLabel==='HALL LAYOUT'){
-      const stalls=[];
-      for(let row=0;row<4;row++)for(let col=0;col<7;col++){
-        const hot=row===1&&col===4;
-        stalls.push('<rect x="'+(19+col*32)+'" y="'+(14+row*31)+'" width="24" height="22" rx="3" fill="'+(hot?'#69eaff':'#164357')+'" stroke="'+(hot?'#d5faff':'#42788a')+'" stroke-width="1"/>');
-      }
-      return '<div class="holo-app-panel holo-map-panel"><div class="holo-app-panel-title">Hall 9 / Floor plan <small>STALL E18</small></div>'+
-        '<svg class="holo-hall-svg" viewBox="0 0 270 150" role="presentation">'+stalls.join('')+
-        '<path d="M15 138H58V100H128V68H180" fill="none" stroke="#8bf7e9" stroke-width="3" stroke-dasharray="8 4"/>'+
-        '<circle cx="180" cy="68" r="6" fill="#aafefa" stroke="#105e6d" stroke-width="3"/></svg></div>'+side;
-    }
-    if(p.shortLabel==='ARGUS'){
-      return '<div class="holo-app-panel holo-audit-panel"><div class="holo-app-panel-title">Website audit <small>SCAN PREVIEW</small></div>'+
-        '<div class="holo-audit-list"><span>Accessibility <b>CHECKED ✓</b></span><span>SEO signals <b>CHECKED ✓</b></span><span>Network issues <b>ANALYZED ✓</b></span><span>Runtime errors <b>REVIEWED ✓</b></span></div>'+
-        '<div class="holo-scan-mark"></div></div>'+side;
-    }
-    return '<div class="holo-app-panel"><div class="holo-app-panel-title">'+p.panelTitle+'<small>INSIGHTS</small></div>'+graph+
-      '<div class="holo-scan-mark"></div></div>'+side;
-  }
-  function createPreview(p){
-    return '<aside class="holo-app-sidebar"><div class="holo-app-brand">'+p.shortLabel+'</div>'+
-      '<div class="holo-app-nav">'+p.nav.map(s=>'<span>'+s+'</span>').join('')+'</div></aside>'+
-      '<div class="holo-app-main"><div class="holo-app-heading"><b>'+p.appTitle+'</b><small>◉ '+p.status+'</small></div>'+
-      '<div class="holo-app-metric-row">'+p.metrics.map(m=>'<div class="holo-app-metric"><small>'+m[0]+'</small><b>'+m[1]+'</b></div>').join('')+'</div>'+
-      '<div class="holo-app-panels">'+previewPanels(p)+'</div></div>';
+  // The frame contains a real Chromium screenshot captured from each public app.
+  // Missing files show an explicit fallback; never display a fabricated dashboard.
+  const screenshot=$('#holoRealShot');
+  const screenshotFallback=$('#holoScreenshotFallback');
+  const screenshotPaths={
+    vaani:'assets/project-shots/vaani.jpg',
+    eventhive:'assets/project-shots/eventhive.jpg',
+    argus:'assets/project-shots/argus.jpg',
+    hall:'assets/project-shots/hall.jpg'
+  };
+  if(screenshot) {
+    screenshot.addEventListener('load',()=>{
+      screenshot.hidden=false;
+      screenshotFallback.hidden=true;
+      screenshot.parentNode?.classList.add('has-real-screenshot');
+    });
+    screenshot.addEventListener('error',()=>{
+      screenshot.hidden=true;
+      screenshotFallback.hidden=false;
+      screenshot.parentNode?.classList.remove('has-real-screenshot');
+    });
   }
   function setProject(key){
     const p=projects[key];
@@ -163,7 +143,17 @@
     satelliteTitle.textContent=p.section;
     satelliteNote.textContent=p.note;
     satelliteBottomTitle.textContent=p.panelTitle;
-    app.innerHTML=createPreview(p);
+    screenshotFallback.querySelector('strong').textContent=p.title;
+    screenshotFallback.hidden=true;
+    screenshot.hidden=false;
+    screenshot.alt='Actual browser screenshot of '+p.title+' from its public website';
+    const nextShot=screenshotPaths[key];
+    if(screenshot.getAttribute('src')!==nextShot) {
+      screenshot.setAttribute('src',nextShot);
+    } else if(screenshot.complete && !screenshot.naturalWidth) {
+      screenshot.hidden=true;
+      screenshotFallback.hidden=false;
+    }
     selector.querySelectorAll('[data-project-key]').forEach(el=>{
       const current=el.dataset.projectKey===key;
       if(current)el.setAttribute('aria-current','true');
