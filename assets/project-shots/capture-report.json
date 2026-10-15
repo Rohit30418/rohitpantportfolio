@@ -1,21 +1,27 @@
 {
-  "updatedAt": "2026-10-15T07:25:57.993Z",
+  "updatedAt": "2026-10-15T07:30:53.389Z",
   "captured": {
     "vaani": {
       "file": "assets/project-shots/vaani.jpg",
-      "capturedAt": "2026-10-15T07:25:44.286Z",
+      "capturedAt": "2026-10-15T07:30:34.116Z",
       "source": "https://vaani.rohitpant.in/",
       "title": "Vaani | AI & Real-Time Language Exchange"
     },
     "eventhive": {
       "file": "assets/project-shots/eventhive.jpg",
-      "capturedAt": "2026-10-15T07:25:50.381Z",
+      "capturedAt": "2026-10-15T07:30:40.152Z",
       "source": "https://eventhive.rohitpant.in/",
       "title": "EventHive | Event Management Platform"
     },
+    "argus": {
+      "file": "assets/project-shots/argus.jpg",
+      "capturedAt": "2026-10-15T07:30:46.273Z",
+      "source": "https://argus-pro-a2px.onrender.com/",
+      "title": "ARGUS — Autonomous Web QA Investigator"
+    },
     "hall": {
       "file": "assets/project-shots/hall.jpg",
-      "capturedAt": "2026-10-15T07:25:57.983Z",
+      "capturedAt": "2026-10-15T07:30:53.383Z",
       "source": "https://booking.printpackipama.com/hallLayout/ViewhallLayout.html?HallId=28&StallNo=E18&hallName=HALL+9",
       "title": "Premium Interactive Stall Layout"
     }
