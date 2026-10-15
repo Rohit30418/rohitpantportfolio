@@ -38,7 +38,10 @@ try{
       const header=rect('.lux-header');
       const browser=rect('#holoBrowserWrap');
       const projector=rect('#work .holo-projector-base');
+      const workStyles=getComputedStyle(document.getElementById('work'));
       return {section:rect('#work'),header,heading,
+        paddingTop:parseFloat(workStyles.paddingTop),
+        paddingBottom:parseFloat(workStyles.paddingBottom),
         selector:rect('#holoSelector'),detail:rect('#work .holo-detail-card'),
         actions,browser,projector,stage:rect('#holoStage'),
         numberOfProjects:document.querySelectorAll('#holoSelector .holo-option').length,
@@ -53,6 +56,7 @@ try{
       projectCount:data.numberOfProjects===3,
       noHud:!data.hasHud,
       noHorizontalOverflow:data.horizontalOverflow<=3,
+      balancedPadding:Math.abs(data.paddingTop-data.paddingBottom)<=1,
       screenshot:!!data.screenshotVisible,
       desktopTitleBelowHeader:!desktop || data.heading.top>=(data.header?.bottom||0)+4,
       desktopLeftVisible:!desktop || (data.actions.bottom<=height-6&&data.heading.top>=0),
