@@ -19,8 +19,6 @@
       stack:['React','WebRTC','PeerJS','Socket.IO','Firebase'],
       highlight:'Pre-join media controls, peer connections, room presence and responsive conversation UI.',
       live:'https://vaani.rohitpant.in/',
-      github:'https://github.com/Rohit30418',
-      githubLabel:'GitHub profile',
       features:['Live rooms','Peer audio / video','Presence updates'],
       nav:['Rooms','Discover','Participants','Settings'],
       metrics:[['Connection','WebRTC'],['Presence','Live'],['Platform','Web app']],
@@ -30,7 +28,10 @@
       subtitle:'REALTIME / COMMUNICATION',
       shortLabel:'VAANI',
       note:'Communication interfaces powered by realtime interactions.',
-      detail:'I built the frontend around device checks, room joining, peer connections and synced participants. The interface is designed to keep calling controls accessible across different screen sizes.'
+      challenge:"A realtime room interface needs to help people check their devices, join confidently, and understand who is connected or speaking without cluttering the call experience.",
+      work:"Built the React frontend for room discovery, pre-join microphone/camera controls, joining and leaving rooms, responsive call controls, and participant states. Connected the interface to realtime room data and peer-to-peer calling.",
+      caseFeatures:["Microphone and camera checks before entering a room","Peer-to-peer audio/video calls with participant tiles","Room presence, microphone/camera and speaking indicators","Responsive controls for desktop and mobile browsers"],
+      engineering:["React for reusable meeting UI and state-driven rendering","WebRTC and PeerJS for peer-to-peer media connections","Socket.IO signaling for joining and coordinating peers","Firebase participant data and AudioContext speaking detection"]
     },
     eventhive:{
       title:'EventHive',section:'Event management',status:'Event platform',
@@ -39,8 +40,6 @@
       stack:['React','TypeScript','Redux Toolkit','Firebase','React Query'],
       highlight:'Event discovery, registration forms, organizer dashboards and microsite experiences.',
       live:'https://eventhive.rohitpant.in/',
-      github:'https://github.com/Rohit30418',
-      githubLabel:'GitHub profile',
       features:['Event discovery','Registration forms','Organizer dashboard'],
       nav:['Overview','Events','Attendees','Analytics'],
       metrics:[['Management','Events'],['Accounts','Roles'],['Insights','Charts']],
@@ -50,7 +49,10 @@
       subtitle:'EVENTS / PLATFORM',
       shortLabel:'EVENTHIVE',
       note:'A multi-role event management experience.',
-      detail:'EventHive explores full frontend workflows across event search, validation, attendee registration, organizer tools, and event-specific microsites, using Firebase for application services.'
+      challenge:"Event discovery and registration involve different audiences: attendees need a simple booking flow while organizers need tools to create, manage and monitor their events.",
+      work:"Designed and developed event discovery, organizer registration and event creation interfaces, validated attendee forms, organizer dashboards and event microsites, with different workflows for organizers and administrators.",
+      caseFeatures:["Searchable event listings and event-specific microsites","Create-event and attendee-registration workflows","Role-based organizer and admin dashboard interfaces","Analytics charts, management tables and form validation"],
+      engineering:["React and TypeScript for structured UI components","React Hook Form with Zod for input and file validation","Firebase for authentication and application data","React Query for server-state caching and lazy-loaded routes"]
     },
     argus:{
       title:'ARGUS',section:'AI-powered QA',status:'QA intelligence',
@@ -59,8 +61,6 @@
       stack:['Node.js','Playwright','JavaScript','AI Analysis'],
       highlight:'Automated scans for website quality signals, broken links, runtime errors and usability issues.',
       live:'https://argus-pro-a2px.onrender.com',
-      github:'https://github.com/Rohit30418',
-      githubLabel:'GitHub profile',
       features:['Accessibility review','Performance checks','Network diagnostics'],
       nav:['Overview','Scans','Reports','Settings'],
       metrics:[['Testing','QA'],['Engine','Browser'],['Checks','Multi-signal']],
@@ -70,11 +70,14 @@
       subtitle:'AI / WEBSITE TESTING',
       shortLabel:'ARGUS',
       note:'Automated browser testing and actionable site auditing.',
-      detail:'ARGUS is a developer-built QA auditor using Node and Playwright. It checks real sites for visual and functional signals while collecting useful information for manual investigation.'
+      challenge:"Reviewing a website manually for broken links, accessibility issues, performance signals and runtime failures takes time and is difficult to repeat consistently.",
+      work:"Built a browser-based auditing tool that runs automated site checks and brings findings into one report. Developed the scanning workflow and output for SEO, accessibility, broken links, network failures and browser errors.",
+      caseFeatures:["Quick site reconnaissance and deeper audit modes","SEO, accessibility and performance signals","Broken-link, network and browser error checks","Structured reports for identifying issues to investigate"],
+      engineering:["Node.js backend for coordinating scan requests","Playwright to inspect websites in a real browser","JavaScript checks for links, forms and page diagnostics","AI-assisted analysis as an optional layer for explaining findings"]
     }  };
   const $=s=>section.querySelector(s);
   const title=$('#holoProjectTitle'),description=$('#holoProjectDesc'),
-    stack=$('#holoStack'),live=$('#holoLiveLink'),github=$('#holoGithubLink'),
+    stack=$('#holoStack'),live=$('#holoLiveLink'),
     appLabel=$('#holoStageLabel'),browserUrl=$('#holoBrowserUrl'),
     projectIcon=$('.holo-project-icon i');
   let selected='vaani',switchTimer=0,returnFocus=null;
@@ -114,9 +117,6 @@
     stack.replaceChildren(...p.stack.map(s=>{const el=document.createElement('span');el.textContent=s;return el}));
     live.href=p.live;
     live.setAttribute('aria-label','Open '+p.title+' live project in a new tab');
-    github.href=p.github;
-    github.textContent=p.githubLabel+' ↗';
-    github.setAttribute('aria-label','Open '+p.githubLabel+' for '+p.title+' in a new tab');
     appLabel.textContent=p.shortLabel;
     browserUrl.textContent=p.subtitle;
     screenshotFallback.querySelector('strong').textContent=p.title;
@@ -166,12 +166,46 @@
   const caseButton=$('#holoCaseButton'),closeButton=$('#holoCaseClose');
   function closeDialog(){if(dialog && dialog.open)dialog.close();}
   if(caseButton&&dialog){
+    const caseImage=$('#holoCaseImage');
+    const caseImageFallback=$('#holoCaseImageFallback');
+    caseImage.addEventListener('load',()=>{caseImage.hidden=false;caseImageFallback.hidden=true;});
+    caseImage.addEventListener('error',()=>{caseImage.hidden=true;caseImageFallback.hidden=false;});
     caseButton.addEventListener('click',()=>{
       const p=projects[selected];
-      $('#holoDialogTitle').textContent=p.title+' / Project brief';
+      $('#holoDialogTitle').textContent=p.title+' — Project Case Study';
       $('#holoDialogSummary').textContent=p.description;
-      $('#holoDialogWork').textContent=p.detail;
-      $('#holoDialogTech').textContent=p.stack.join(' · ');
+      $('#holoDialogChallenge').textContent=p.challenge;
+      $('#holoDialogWork').textContent=p.work;
+      // DOM nodes + textContent avoid treating project copy as HTML.
+      const renderList=(selector,items)=>{
+        const target=$(selector);
+        target.replaceChildren(...items.map(value=>{
+          const item=document.createElement('li');
+          item.textContent=value;
+          return item;
+        }));
+      };
+      renderList('#holoDialogFeatures',p.caseFeatures);
+      renderList('#holoDialogEngineering',p.engineering);
+      const tech=$('#holoDialogTech');
+      tech.replaceChildren(...p.stack.map(name=>{
+        const pill=document.createElement('span');
+        pill.textContent=name;
+        return pill;
+      }));
+      const caseImage=$('#holoCaseImage');
+      const caseImageFallback=$('#holoCaseImageFallback');
+      caseImage.alt='Screenshot of the public '+p.title+' website';
+      caseImageFallback.hidden=true;
+      caseImage.hidden=false;
+      const nextShot=screenshotPaths[selected];
+      if(caseImage.getAttribute('src')!==nextShot)caseImage.setAttribute('src',nextShot);
+      else if(caseImage.complete && !caseImage.naturalWidth){
+        caseImage.hidden=true;caseImageFallback.hidden=false;
+      }
+      const caseLive=$('#holoCaseLiveLink');
+      caseLive.href=p.live;
+      caseLive.setAttribute('aria-label','Open '+p.title+' live project in a new tab');
       returnFocus=caseButton;
       if(typeof dialog.showModal==='function')dialog.showModal();
     });
