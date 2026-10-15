@@ -71,35 +71,12 @@
       shortLabel:'ARGUS',
       note:'Automated browser testing and actionable site auditing.',
       detail:'ARGUS is a developer-built QA auditor using Node and Playwright. It checks real sites for visual and functional signals while collecting useful information for manual investigation.'
-    },
-    hall:{
-      title:'Hall Layout',section:'Interactive wayfinding',status:'3D / map experience',
-      description:'Interactive exhibition-floor navigation with hall visualization, stall discovery and route guidance.',
-      role:'Frontend / navigation UI',
-      stack:['JavaScript','Three.js','SVG','WebView'],
-      highlight:'Interactive hall maps, stall highlighting, route guidance and mobile-friendly navigation.',
-      live:'https://booking.printpackipama.com/hallLayout/ViewhallLayout.html?HallId=28&StallNo=E18&hallName=HALL+9',
-      github:'https://github.com/Rohit30418/hall-layout',
-      githubLabel:'View source',
-      features:['Hall overview','Stall discovery','Route guidance'],
-      nav:['Hall map','Find a stall','Directions','Overview'],
-      metrics:[['Map','2D / 3D'],['Routes','Guided'],['Display','WebView']],
-      appTitle:'Exhibition wayfinding',
-      panelTitle:'Route preview',
-      secondaryTitle:'Hall navigation',
-      subtitle:'WAYFINDING / INTERACTION',
-      shortLabel:'HALL LAYOUT',
-      note:'Finding your way through complex exhibition halls.',
-      detail:'This client-facing hall navigation interface combines a detailed exhibition layout with highlighted destinations, route guidance and WebView integration for mobile access.'
-    }
-  };
+    }  };
   const $=s=>section.querySelector(s);
   const title=$('#holoProjectTitle'),description=$('#holoProjectDesc'),
-    role=$('#holoRole'),highlight=$('#holoHighlight'),stack=$('#holoStack'),
-    app=$('#holoAppPreview'),live=$('#holoLiveLink'),github=$('#holoGithubLink'),
+    stack=$('#holoStack'),live=$('#holoLiveLink'),github=$('#holoGithubLink'),
     appLabel=$('#holoStageLabel'),browserUrl=$('#holoBrowserUrl'),
-    satelliteTitle=$('#holoSatelliteTitle'),satelliteNote=$('#holoSatelliteNote'),
-    satelliteBottomTitle=$('#holoSatelliteBottomTitle');
+    projectIcon=$('.holo-project-icon i');
   let selected='vaani',switchTimer=0,returnFocus=null;
 
   // The frame contains a real Chromium screenshot captured from each public app.
@@ -109,8 +86,7 @@
   const screenshotPaths={
     vaani:'assets/project-shots/vaani.jpg',
     eventhive:'assets/project-shots/eventhive.jpg',
-    argus:'assets/project-shots/argus.jpg',
-    hall:'assets/project-shots/hall.jpg'
+    argus:'assets/project-shots/argus.jpg'
   };
   if(screenshot) {
     screenshot.addEventListener('load',()=>{
@@ -129,9 +105,12 @@
     if(!p)return;
     selected=key;
     title.textContent=p.title;
+    if (projectIcon) projectIcon.className={
+      vaani:'fa-solid fa-wave-square',
+      eventhive:'fa-solid fa-calendar-days',
+      argus:'fa-solid fa-shield-halved'
+    }[key] || 'fa-solid fa-code';
     description.textContent=p.description;
-    role.textContent=p.role;
-    highlight.textContent=p.highlight;
     stack.replaceChildren(...p.stack.map(s=>{const el=document.createElement('span');el.textContent=s;return el}));
     live.href=p.live;
     live.setAttribute('aria-label','Open '+p.title+' live project in a new tab');
@@ -140,9 +119,6 @@
     github.setAttribute('aria-label','Open '+p.githubLabel+' for '+p.title+' in a new tab');
     appLabel.textContent=p.shortLabel;
     browserUrl.textContent=p.subtitle;
-    satelliteTitle.textContent=p.section;
-    satelliteNote.textContent=p.note;
-    satelliteBottomTitle.textContent=p.panelTitle;
     screenshotFallback.querySelector('strong').textContent=p.title;
     screenshotFallback.hidden=true;
     screenshot.hidden=false;
