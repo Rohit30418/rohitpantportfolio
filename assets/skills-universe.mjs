@@ -18,6 +18,7 @@ const DATA = [
   { name: 'WebRTC', tag: 'REALTIME', detail: 'Camera, microphone and peer-to-peer experiences.', icon: 'RTC', color: '#79d8cb' },
   { name: 'GSAP', tag: 'MOTION', detail: 'Scroll storytelling, timelines and refined micro-interactions.', icon: 'GS', color: '#adce6e' },
   { name: 'Playwright', tag: 'TESTING', detail: 'Browser automation and production-oriented UI testing.', icon: 'PW', color: '#9cdb8f' },
+  { name: 'jQuery', tag: 'PRODUCTION UI', detail: 'Maintaining and modernizing real-world client interfaces.', icon: 'JQ', color: '#7ab5d7' },
   { name: 'Bootstrap', tag: 'CSS FRAMEWORK', detail: 'Production-ready responsive layouts and component styling.', icon: 'BS', color: '#9b7ad6' },
   { name: 'Vite', tag: 'BUILD TOOLS', detail: 'Fast local development and optimized frontend builds.', icon: 'V', color: '#b58eff' },
   { name: 'REST APIs', tag: 'INTEGRATION', detail: 'Async data, validation, loading states and error handling.', icon: 'API', color: '#e7a872' },
@@ -33,9 +34,11 @@ const faceGeometry = new THREE.PlaneGeometry(2.7, 1.5);
 
 function makeLabel(data, index) {
   const el = document.createElement('canvas');
-  el.width = 1024;
-  el.height = 568;
+  // 768 x 426 keeps label textures crisp without wasting GPU memory.
+  el.width = 768;
+  el.height = 426;
   const ctx = el.getContext('2d');
+  ctx.scale(.75, .75);
   ctx.clearRect(0, 0, 1024, 568);
   ctx.fillStyle = '#0c1417';
   ctx.strokeStyle = 'rgba(233,245,237,.19)';
