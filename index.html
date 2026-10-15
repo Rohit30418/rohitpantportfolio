@@ -2137,6 +2137,45 @@
     }
 
   </style>
+  <!-- Browser-native module imports for the optional, desktop-only 3D island.
+       The existing static portfolio remains functional if this CDN is blocked. -->
+  <script type="importmap">
+  {
+    "imports": {
+      "react": "https://esm.sh/react@19.2.0",
+      "react/": "https://esm.sh/react@19.2.0/",
+      "react-dom": "https://esm.sh/react-dom@19.2.0?external=react",
+      "react-dom/": "https://esm.sh/react-dom@19.2.0/",
+      "react-dom/client": "https://esm.sh/react-dom@19.2.0/client?external=react",
+      "three": "https://esm.sh/three@0.185.0",
+      "three/": "https://esm.sh/three@0.185.0/",
+      "@react-three/fiber": "https://esm.sh/@react-three/fiber@9.6.1?external=react,react-dom,three",
+      "@react-three/drei": "https://esm.sh/@react-three/drei@10.7.7?external=@react-three/fiber,react,react-dom,three",
+      "gsap": "https://esm.sh/gsap@3.13.0"
+    }
+  }
+  </script>
+  <style id="orbit-hero-style">
+    .orbit-hero-scene {
+      position: absolute;
+      top: 18%;
+      right: -5%;
+      width: min(67vw, 1040px);
+      height: min(73svh, 760px);
+      z-index: 0;
+      pointer-events: none;
+      contain: layout paint;
+      opacity: 0;
+      transition: opacity 1.2s cubic-bezier(.22,1,.36,1);
+      -webkit-mask-image: radial-gradient(ellipse at 50% 48%, #000 38%, rgba(0,0,0,.9) 61%, transparent 78%);
+      mask-image: radial-gradient(ellipse at 50% 48%, #000 38%, rgba(0,0,0,.9) 61%, transparent 78%);
+    }
+    .orbit-hero-scene.is-mounted { opacity: .78; }
+    .orbit-hero-scene canvas { display: block; }
+    @media (max-width: 1050px), (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+      .orbit-hero-scene { display: none !important; }
+    }
+  </style>
 </head>
 <body>
   <div class="cursor-follower" id="cursorFollower" aria-hidden="true"></div>
@@ -2183,6 +2222,7 @@
     <section class="hero lux-hero" id="home">
       <div class="hero-grid" aria-hidden="true"></div>
       <div class="hero-glow" aria-hidden="true"></div>
+      <div class="orbit-hero-scene" id="orbitHeroScene" aria-hidden="true"></div>
 
       <div class="shell hero-inner lux-hero-inner">
         <p class="hero-kicker">Frontend / UI Developer</p>
@@ -3051,6 +3091,36 @@
       },{passive:true});
     }
 
+  </script>
+  <!-- Load the WebGL scene only on strong desktop devices, after the intro. -->
+  <script type="module">
+    const orbitHero = document.getElementById('home');
+    const orbitHost = document.getElementById('orbitHeroScene');
+    const orbitEligible = matchMedia('(min-width:1051px) and (hover:hover) and (pointer:fine)').matches
+      && !matchMedia('(prefers-reduced-motion:reduce)').matches
+      && !(navigator.connection && navigator.connection.saveData)
+      && (!navigator.deviceMemory || navigator.deviceMemory >= 4);
+    if (orbitHero && orbitHost && orbitEligible) {
+      let started = false;
+      const startOrbit = () => {
+        if (started || document.documentElement.classList.contains('intro-playing')) return;
+        started = true;
+        import('./assets/orbit-scene.mjs').catch(error => {
+          orbitHost.classList.remove('is-mounted');
+          console.warn('Optional 3D hero unavailable:', error);
+        });
+      };
+      const orbitObserver = new IntersectionObserver(entries => {
+        if (!entries[0].isIntersecting) return;
+        orbitObserver.disconnect();
+        if (document.documentElement.classList.contains('intro-playing')) {
+          document.addEventListener('portfolio:intro-ended', startOrbit, { once: true });
+        } else {
+          startOrbit();
+        }
+      }, { rootMargin: '80px 0px', threshold: 0 });
+      orbitObserver.observe(orbitHero);
+    }
   </script>
 </body>
 </html>
