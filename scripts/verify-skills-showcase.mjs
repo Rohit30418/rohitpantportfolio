@@ -39,7 +39,10 @@ try {
         next:!!el('#skills .skills-glass-next'),
         overflow:document.documentElement.scrollWidth-innerWidth,
         cardStatusAccessible:cards.every(x=>x.hasAttribute('aria-pressed')),
-        ghostCanvas:!!el('#skills canvas')
+        ghostCanvas:!!el('#skills canvas'),
+        noOversizedRim:!el('#skills .skills-glass-rim'),
+        noDecorativeFloor:!el('#skills .skills-glass-floor'),
+        noCaption:!el('#skills .skills-glass-caption')
       };
     });
     const before=await getInfo();
@@ -71,6 +74,8 @@ try {
       keyboardWorks:keyboard.activeName===after.activeName,
       swipeWorks:swiped.activeName!==keyboard.activeName,
       noExtraCanvas:!before.ghostCanvas,
+      floorRemoved:before.noOversizedRim&&before.noDecorativeFloor&&before.noCaption,
+      stageCompact:before.stage.height<=380,
       noHorizontalOverflow:before.overflow<=3,
       ariaStates:before.cardStatusAccessible
     };
