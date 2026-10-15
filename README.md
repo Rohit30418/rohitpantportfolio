@@ -98,8 +98,8 @@ The original three project cards were replaced by a responsive, interactive
   reduced-motion support.
 - `assets/hologram-projector.svg` is a lightweight metallic projector illustration
   with cyan-lit concentric rings (not another WebGL scene).
-- `assets/project-hologram.js` switches four real projects: Vaani,
-  EventHive, ARGUS and Hall Layout. Each has a different illustrative UI
+- `assets/project-hologram.js` switches three featured projects: Vaani,
+  EventHive and ARGUS. Each has a different illustrative UI
   preview and matching description, stack, live link and project brief.
 - The projection previews are visual representations of the projects, not
   live embedded apps, usage statistics, or screenshots.
@@ -126,7 +126,7 @@ Live browser layout and FPS were not measured in this environment.
   displayed in the floating hologram screen.
 - `assets/project-shots/*.jpg` contain Playwright captures of **public live
   pages** (not fabricated dashboards). Current confirmed captures: Vaani,
-  EventHive, Hall Layout and ARGUS (after retrying its temporary HTTP 503).
+  EventHive and ARGUS (after retrying its temporary HTTP 503).
   An unavailable screenshot shows a clearly labeled fallback and the
   selected project's Live Demo link instead of pretending to show it.
 - `scripts/capture-project-previews.mjs` and the manually runnable GitHub
@@ -135,4 +135,28 @@ Live browser layout and FPS were not measured in this environment.
 - The projector itself remains a lightweight decorative SVG with
   CSS perspective — no added WebGL canvas, no live iframe, and no
   background video. Preview switching uses a brief transition only.
+
+## Approved compact hologram layout — October 15, 2026
+
+The Projects section now mirrors the approved, uncluttered reference.
+It shows only **Vaani, EventHive and ARGUS**, with actual Chromium
+screenshots from their public homepages. Hall Layout and the two decorative
+floating HUD cards were removed from this section.
+
+The right projection was enlarged, and the left panel was rebuilt with a
+compact title, three project choices, brief summary, accurate tech tags and
+three working CTAs. The design clears the fixed navigation header.
+
+The section uses one viewport on desktop screens at least 981 pixels wide
+and 720 pixels high. Smaller viewports fall back to natural vertical scrolling
+rather than clipping the controls. Browser layout regression tests are in
+`scripts/verify-project-layout.mjs` and
+`.github/workflows/verify-project-layout.yml`.
+
+**Verified with real headless Chromium:** 1728×900, 1440×900, 1366×768,
+1280×720, 1024×768, 768×1024 and 390×844. All passed layout tests for
+horizontal overflow, project selectors and available screenshots; desktop
+viewports also passed fixed-header clearance, CTA visibility and the
+one-screen section height constraint. The three project screenshot files are
+kept under `assets/project-shots/`.
 
