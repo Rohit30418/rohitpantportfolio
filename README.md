@@ -7,6 +7,16 @@ Its portrait, typography, first-visit intro, projects, Skills section and
 scroll-controlled development animation are preserved.
 
 - `index.html` provides the `#heroReact3D` mount point and progressive loader.
+- `assets/hero-cinematic.css` implements the updated editorial mockup:
+  split oversized name, highlighted role, warm/cool portrait lighting,
+  refined actions, verified portfolio highlights and the bottom tech rail.
+- `assets/hero-atom-stage.svg` adds an atmospheric rocky platform
+  beneath the React atom without expensive extra WebGL meshes.
+- The original portrait asset `assets/rohit-hero.webp` is retained;
+  the scenic art remains a live 3D R3F animation, not a screenshot.
+- The cinematic composition is desktop-first. Tablet/phone layouts
+  retain a simpler readable portrait-and-content hero.
+
 - `assets/hero-react-object.mjs` renders a recognizable React atom with
   three animated elliptical orbits, three electrons and a floating metallic core.
 - React Three Fiber handles rendering, Drei handles subtle floating motion,
