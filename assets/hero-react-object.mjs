@@ -135,7 +135,10 @@ function HeroCanvas({ host, hero }) {
     dpr: [1, 1.25],
     frameloop: active ? 'always' : 'never',
     gl: { antialias: true, alpha: true, powerPreference: 'high-performance' },
-    onCreated: () => { host.classList.add('is-mounted'); },
+    onCreated: () => {
+      host.classList.add('is-mounted');
+      hero.classList.add('has-react-object');
+    },
     style: { pointerEvents: 'none', display: 'block' }
   },
     h('ambientLight', { intensity: 1.35 }),
