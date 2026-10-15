@@ -62,3 +62,27 @@ the smooth selected-skill rotation.
 If the scene fails to load, the original HTML skills section still appears.
 To roll back only this feature, revert the relevant index.html changes and
 remove `assets/skills-universe.mjs`.
+
+## Performance update — October 2026
+
+- Removed the three metric counters (5+ / 4+ / infinity) and related hero CSS.
+  Desktop copy is rebalanced; mobile hero is unchanged.
+- The first-visit WebP intro now uses a sparse preview set (~1 in every 4
+  frames) instead of fetching all 196 frames before entry. The remaining
+  frames load near the scroll target. It runs only once per browser tab/session,
+  with a 9-second fail-open timeout if image preparation stalls.
+- The development process sequence is no longer prefetched after the intro.
+  It starts near its own viewport position and initially fetches spaced-out
+  thumbnails plus the nearby frames, rather than all 90 frames.
+- Full-resolution WebP bitmap caching is capped (2 intro / 3 process on
+  desktop), and canvases use a maximum effective DPR of 1 for cheaper paints.
+- The 3D Skills scene uses on-demand rendering at approximately 30 FPS,
+  smaller 512 × 284 label textures and a lower DPR cap; the React hero uses
+  a lower DPR cap and avoids pointer-triggered layout reads.
+- Reduced the portrait's expensive layered drop-shadows to a single shadow
+  and disabled the custom mouse-follower loop.
+
+**Verification:** Syntax and source integration can be checked through
+GitHub; actual scroll smoothness must still be measured in a browser on
+desktop and mobile hardware. Performance depends on GPU, network and cache.
+
