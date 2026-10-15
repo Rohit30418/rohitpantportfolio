@@ -2794,7 +2794,8 @@
         }
       }
       trimHigh(){
-        const limit=this.mobile?3:6;
+        // Keep only a few full-resolution decoded bitmaps in GPU/CPU memory.
+        const limit=this.folder.includes('intro-frames')?2:(this.mobile?2:3);
         if(this.full.size<=limit)return;
         const removable=[...this.full.keys()]
           .filter(i=>i!==this.target)
@@ -3030,7 +3031,7 @@
       const DISTANCE=3600;
       const frameCount=196;
       let distance=0,frame=0,raf=0,touchY=null,done=false,endTimer=0,player=null;
-      let prepared=false,lastTime=0,lastPercent=-1;
+      let prepared=false,lastTime=0,lastPercent=-1,preloadTimeout=0;
       const updateIntroDisplay=(progress)=>{
         const p=frameClamp(progress,0,1);
         introProgress.style.transform='scaleX('+p.toFixed(4)+')';
@@ -3109,6 +3110,7 @@
         removeEventListener('resize',resizeIntro);
         if(raf)cancelAnimationFrame(raf);
         if(endTimer)clearTimeout(endTimer);
+        if(preloadTimeout)clearTimeout(preloadTimeout);
         if(player)player.dispose();
         try { sessionStorage.setItem('rp-portfolio-intro-seen','1'); } catch (_) {}
         scrollTo(0,0);
@@ -3156,6 +3158,8 @@
         }
       };
       player.warm();
+      // Fail open rather than trapping visitors behind a stalled image download.
+      preloadTimeout=setTimeout(()=>{ if(!prepared)finishIntro(); },9000);
       updateIntroDisplay(0);
     }else if(introLoader){
       introLoader.remove();
