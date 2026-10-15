@@ -403,3 +403,46 @@
   #work .holo-stage *,#work .holo-stage *::before,#work .holo-stage *::after{animation:none!important;transition:none!important;}
   #work .holo-option,#work .holo-action{transition:none!important;}
 }
+
+/* Distinctive hologram internals for each real project. */
+#work .holo-room-panel{
+  display:flex;flex-direction:column;
+  background:radial-gradient(ellipse at 50% 39%,rgba(48,92,151,.27),transparent 65%),rgba(10,37,52,.68);
+}
+#work .holo-room-wave{display:flex;align-items:center;justify-content:center;gap:4px;height:49%;min-height:40px;}
+#work .holo-room-wave i{display:block;width:4px;height:var(--w);max-height:60px;background:linear-gradient(180deg,#7debff,#2b79e0);border-radius:4px;opacity:.86;}
+#work .holo-avatar-row{display:flex;align-items:center;justify-content:center;margin-top:auto;}
+#work .holo-avatar-row span{
+  display:grid;place-items:center;width:32px;height:32px;margin-left:-4px;
+  border:2px solid #112e40;border-radius:50%;
+  background:linear-gradient(135deg,#5078af,#1d354c);color:#e8f9ff;font-size:.56rem;font-weight:700;
+}
+#work .holo-avatar-row span:nth-child(2){background:linear-gradient(135deg,#8365b5,#394477)}
+#work .holo-avatar-row span:nth-child(3){background:linear-gradient(135deg,#429b98,#1c525c)}
+#work .holo-avatar-row span:nth-child(4){background:rgba(63,132,161,.47)}
+#work .holo-call-row{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:auto;padding-top:10px;}
+#work .holo-call-row span{
+  padding:6px 8px;border:1px solid rgba(87,194,221,.26);border-radius:15px;
+  color:#a9e2ec;background:rgba(17,69,84,.4);font-size:.45rem;font-weight:700;white-space:nowrap;
+}
+#work .holo-call-row .holo-end-call{background:rgba(119,47,62,.65);border-color:rgba(235,91,114,.5);color:#fff;}
+#work .holo-hall-svg{display:block;width:100%;height:85%;max-height:170px;margin:0 auto;}
+#work .holo-map-panel{background:radial-gradient(ellipse at 65% 40%,rgba(37,140,165,.26),transparent 73%),rgba(10,37,52,.68)}
+#work .holo-audit-list{display:grid;gap:9px;margin-top:12px;}
+#work .holo-audit-list span{
+  display:flex;justify-content:space-between;align-items:center;gap:8px;
+  padding:9px 11px;border:1px solid rgba(104,203,203,.14);border-radius:6px;
+  color:#bbd8e1;background:rgba(11,44,56,.46);font-size:.58rem;
+}
+#work .holo-audit-list b{font-size:.47rem;color:#80e7c7;white-space:nowrap;}
+@media(max-width:600px){
+  #work .holo-room-wave{height:34%;min-height:19px;gap:2px;}
+  #work .holo-room-wave i{width:2px;max-height:25px;}
+  #work .holo-avatar-row span{width:18px;height:18px;font-size:.31rem;border-width:1px;}
+  #work .holo-call-row{gap:2px;padding-top:3px;}
+  #work .holo-call-row span{font-size:.28rem;padding:3px;border-radius:6px;}
+  #work .holo-hall-svg{max-height:90px;}
+  #work .holo-audit-list{gap:3px;margin-top:4px;}
+  #work .holo-audit-list span{padding:4px 3px;font-size:.35rem;}
+  #work .holo-audit-list b{font-size:.29rem;}
+}
