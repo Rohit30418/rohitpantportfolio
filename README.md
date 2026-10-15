@@ -86,3 +86,33 @@ remove `assets/skills-universe.mjs`.
 GitHub; actual scroll smoothness must still be measured in a browser on
 desktop and mobile hardware. Performance depends on GPU, network and cache.
 
+## Project Hologram showroom
+
+The original three project cards were replaced by a responsive, interactive
+**Project Hologram** section inspired by the approved concept mockup.
+
+- `index.html` contains accessible selectors, details, project CTAs, a
+  decorative floating app preview and a native case-study dialog.
+- `assets/project-hologram.css` handles the cinematic dark/cyan styling,
+  projected light beam, CSS 3D perspective, responsive layouts and
+  reduced-motion support.
+- `assets/hologram-projector.svg` is a lightweight metallic projector illustration
+  with cyan-lit concentric rings (not another WebGL scene).
+- `assets/project-hologram.js` switches four real projects: Vaani,
+  EventHive, ARGUS and Hall Layout. Each has a different illustrative UI
+  preview and matching description, stack, live link and project brief.
+- The projection previews are visual representations of the projects, not
+  live embedded apps, usage statistics, or screenshots.
+- Project options are ordinary outgoing links if JavaScript fails.
+  With JavaScript enabled they switch the hologram; Ctrl/Cmd-click still
+  opens the destination directly. The Case Study button opens a
+  keyboard-accessible native dialog.
+- To avoid reintroducing lag there is no additional Canvas, heavy physics,
+  or scroll-controlled camera. Two small CSS animations are paused when the
+  section is offscreen or the browser tab is hidden, and disabled for
+  reduced-motion preferences.
+
+**Validation:** GitHub source integrity, HTML IDs, JavaScript syntax and
+the simulated project switching/dialog behavior have been checked.
+Live browser layout and FPS were not measured in this environment.
+
