@@ -18,6 +18,10 @@ const DATA = [
   { name: 'WebRTC', tag: 'REALTIME', detail: 'Camera, microphone and peer-to-peer experiences.', icon: 'RTC', color: '#79d8cb' },
   { name: 'GSAP', tag: 'MOTION', detail: 'Scroll storytelling, timelines and refined micro-interactions.', icon: 'GS', color: '#adce6e' },
   { name: 'Playwright', tag: 'TESTING', detail: 'Browser automation and production-oriented UI testing.', icon: 'PW', color: '#9cdb8f' },
+  { name: 'Bootstrap', tag: 'CSS FRAMEWORK', detail: 'Production-ready responsive layouts and component styling.', icon: 'BS', color: '#9b7ad6' },
+  { name: 'Vite', tag: 'BUILD TOOLS', detail: 'Fast local development and optimized frontend builds.', icon: 'V', color: '#b58eff' },
+  { name: 'REST APIs', tag: 'INTEGRATION', detail: 'Async data, validation, loading states and error handling.', icon: 'API', color: '#e7a872' },
+  { name: 'Git & GitHub', tag: 'VERSION CONTROL', detail: 'Collaboration, code reviews, branch workflows and releases.', icon: 'GIT', color: '#f08b63' },
   { name: 'Node.js', tag: 'TOOLING', detail: 'API integrations, development tools and browser automation.', icon: 'N', color: '#8acf91' }
 ];
 const COUNT = DATA.length;
@@ -115,7 +119,7 @@ function SkillRing({ selected }) {
       h('icosahedronGeometry', { args: [1.09, 1] }),
       h('meshStandardMaterial', { color: '#253f47', metalness: .75, roughness: .22, wireframe: true, transparent: true, opacity: .72 })
     ),
-    h('mesh',
+    h('mesh', null,
       h('icosahedronGeometry', { args: [.6, 1] }),
       h('meshPhysicalMaterial', { color: '#448d8d', metalness: .63, roughness: .18, transparent: true, opacity: .48 })
     ),
@@ -165,7 +169,7 @@ function SkillUniverse({ host, section }) {
   },
     h('div', { className: 'skills-3d-top', 'aria-hidden': true },
       h('span', null, 'THE TECH UNIVERSE'),
-      h('span', null, '12 DISCIPLINES / ONE CRAFT')
+      h('span', null, COUNT + ' SKILLS / ONE CRAFT')
     ),
     h('div', { className: 'skills-3d-stage', 'aria-hidden': true },
       h(Canvas, {
