@@ -2403,7 +2403,6 @@
             <div class="holo-actions">
               <a class="holo-action holo-action-primary" id="holoLiveLink" href="https://vaani.rohitpant.in/" target="_blank" rel="noopener noreferrer">↗ <span>Live Demo</span></a>
               <button class="holo-action" id="holoCaseButton" type="button"><i class="fa-regular fa-file-lines" aria-hidden="true"></i> Case Study</button>
-              <a class="holo-action" id="holoGithubLink" href="https://github.com/Rohit30418" target="_blank" rel="noopener noreferrer">GitHub profile ↗</a>
             </div>
           </div>
 
@@ -2431,14 +2430,52 @@
           </div>
         </div>
       </div>
-      <dialog class="holo-dialog" id="holoCaseDialog" aria-labelledby="holoDialogTitle">
+      <dialog class="holo-dialog" id="holoCaseDialog" aria-labelledby="holoDialogTitle" aria-describedby="holoDialogSummary">
         <div class="holo-dialog-inner">
-          <button class="holo-dialog-close" id="holoCaseClose" type="button" aria-label="Close case study">✕ Close</button>
-          <div class="holo-eyebrow">PROJECT / OVERVIEW</div>
-          <h3 id="holoDialogTitle">Vaani / Project brief</h3>
-          <p id="holoDialogSummary"></p>
-          <h4>What I built</h4><p id="holoDialogWork"></p>
-          <h4>Technology stack</h4><p id="holoDialogTech"></p>
+          <header class="holo-case-header">
+            <div>
+              <div class="holo-case-eyebrow">SELECTED WORK <span aria-hidden="true">/</span> CASE STUDY</div>
+              <h3 id="holoDialogTitle">Vaani <span>— Project Case Study</span></h3>
+              <p id="holoDialogSummary">Realtime web conversations with responsive calling controls.</p>
+            </div>
+            <button class="holo-dialog-close" id="holoCaseClose" type="button" aria-label="Close case study"><i class="fa-solid fa-xmark" aria-hidden="true"></i><span>Close</span></button>
+          </header>
+          <div class="holo-case-content">
+            <div class="holo-case-media">
+              <img id="holoCaseImage" src="assets/project-shots/vaani.jpg" alt="Screenshot of the public Vaani website" loading="lazy" decoding="async" />
+              <div class="holo-case-image-fallback" id="holoCaseImageFallback" hidden>Project screenshot unavailable</div>
+              <span class="holo-case-media-caption">ACTUAL PROJECT SCREENSHOT</span>
+            </div>
+            <div class="holo-case-grid">
+              <section class="holo-case-panel">
+                <span class="holo-case-number">01 / THE CHALLENGE</span>
+                <h4>Problem &amp; goal</h4>
+                <p id="holoDialogChallenge">Connect people with a smooth, responsive interface.</p>
+              </section>
+              <section class="holo-case-panel">
+                <span class="holo-case-number">02 / MY WORK</span>
+                <h4>What I built</h4>
+                <p id="holoDialogWork">Responsive interfaces and core product functionality.</p>
+              </section>
+              <section class="holo-case-panel">
+                <span class="holo-case-number">03 / CORE FEATURES</span>
+                <h4>Key features</h4>
+                <ul class="holo-case-list" id="holoDialogFeatures"></ul>
+              </section>
+              <section class="holo-case-panel">
+                <span class="holo-case-number">04 / ENGINEERING</span>
+                <h4>Technical approach</h4>
+                <ul class="holo-case-list" id="holoDialogEngineering"></ul>
+              </section>
+            </div>
+            <div class="holo-case-bottom">
+              <div class="holo-case-bottom-stack">
+                <span class="holo-case-number">TECHNOLOGIES USED</span>
+                <div class="holo-stack" id="holoDialogTech"></div>
+              </div>
+              <a class="holo-case-live-link" id="holoCaseLiveLink" href="https://vaani.rohitpant.in/" target="_blank" rel="noopener noreferrer">Explore Live Project <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+            </div>
+          </div>
         </div>
       </dialog>
     </section>
