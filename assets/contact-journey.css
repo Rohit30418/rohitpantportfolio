@@ -1,0 +1,315 @@
+/* Cinematic contact destination. Matches the approved neon-plane concept
+   without raster background artwork, additional canvas, or animation loops. */
+#contact.contact.contact-journey {
+  position:relative;
+  isolation:isolate;
+  min-height:clamp(520px,47vw,650px);
+  display:flex;
+  align-items:center;
+  overflow:hidden;
+  padding:clamp(78px,8.5vw,128px) 0 clamp(82px,8.5vw,128px);
+  border-top:1px solid rgba(38,148,176,.17);
+  border-bottom:1px solid rgba(38,148,176,.21);
+  background:
+    radial-gradient(ellipse at 52% 51%,rgba(3,44,58,.35),transparent 55%),
+    linear-gradient(135deg,#020b10 0%,#031118 45%,#020a0f 100%);
+}
+#contact.contact-journey::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  width:auto;height:auto;
+  border-radius:0;
+  background-image:
+    linear-gradient(rgba(79,161,187,.073) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(79,161,187,.068) 1px,transparent 1px);
+  background-size:68px 68px;
+  opacity:.45;
+  filter:none;
+  pointer-events:none;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0%,black 8%,black 93%,transparent 100%);
+  mask-image:linear-gradient(90deg,transparent 0%,black 8%,black 93%,transparent 100%);
+}
+#contact.contact-journey::after {
+  content:"";
+  position:absolute;
+  right:-12%;top:-19%;
+  width:45vw;height:45vw;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(17,121,151,.08),transparent 68%);
+  filter:none;
+  pointer-events:none;
+}
+#contact .contact-journey-inner {
+  position:relative;
+  z-index:2;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(390px,.9fr);
+  align-items:center;
+  gap:clamp(36px,7vw,115px);
+  width:min(1390px,calc(100% - clamp(34px,8vw,150px)));
+  max-width:none;
+  margin:0 auto;
+}
+#contact .contact-journey-copy{position:relative;z-index:3;min-width:0;}
+#contact .contact-journey-index {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin:0 0 clamp(22px,3vw,38px);
+  color:#c5d8e0;
+  font-size:clamp(.59rem,.83vw,.77rem);
+  letter-spacing:.25em;
+  text-transform:uppercase;
+  font-weight:690;
+}
+#contact .contact-journey-index strong {
+  color:#f4b74e;
+  font-size:1.1em;
+  font-weight:800;
+  letter-spacing:.07em;
+}
+#contact .contact-journey-index::after {
+  content:"";
+  flex:none;
+  width:clamp(28px,3.8vw,59px);
+  height:2px;
+  margin-left:8px;
+  background:#f2af44;
+  box-shadow:0 0 10px rgba(246,171,55,.25);
+}
+#contact .contact-journey-title {
+  margin:0;
+  color:#f4f8f8;
+  font:760 clamp(4rem,6.3vw,7.25rem)/.99 Manrope,Inter,system-ui,sans-serif;
+  letter-spacing:-.079em;
+  text-wrap:balance;
+}
+#contact .contact-journey-title .contact-journey-dot{
+  color:#f3ad40;
+  text-shadow:0 0 22px rgba(248,163,40,.24);
+}
+#contact .contact-journey-lede{
+  max-width:515px;
+  margin:clamp(22px,2.7vw,36px) 0 0;
+  color:#b1c4d0;
+  font-size:clamp(.91rem,1.21vw,1.1rem);
+  line-height:1.75;
+  text-wrap:pretty;
+}
+#contact .contact-journey-panel {
+  min-width:0;
+  position:relative;
+  z-index:4;
+  display:grid;
+  gap:0;
+  padding:clamp(18px,2.15vw,32px) clamp(19px,2.3vw,35px);
+  border:1px solid rgba(23,191,231,.76);
+  border-radius:clamp(16px,1.7vw,24px);
+  background:linear-gradient(135deg,rgba(2,17,25,.97),rgba(3,12,19,.95));
+  box-shadow:0 0 0 1px rgba(9,86,118,.12),0 24px 65px rgba(0,0,0,.20);
+}
+#contact .contact-journey-link {
+  display:grid;
+  grid-template-columns:clamp(52px,5.3vw,73px) minmax(0,1fr) clamp(38px,3.9vw,49px);
+  align-items:center;
+  min-height:clamp(97px,9vw,124px);
+  gap:clamp(13px,1.7vw,23px);
+  padding:12px 0;
+  border:0;
+  border-radius:0;
+  background:none;
+  text-decoration:none;
+  color:inherit;
+  transition:none;
+}
+#contact .contact-journey-link + .contact-journey-link {
+  border-top:1px solid rgba(94,160,179,.17);
+}
+#contact .contact-journey-link:hover,
+#contact .contact-journey-link:focus-visible {
+  background:rgba(21,101,127,.07);
+  transform:none;
+}
+#contact .contact-journey-link:focus-visible {outline:2px solid #73e9f8;outline-offset:3px;border-radius:7px;}
+#contact .contact-journey-icon{
+  display:grid;
+  place-items:center;
+  width:clamp(52px,5.3vw,73px);
+  aspect-ratio:1;
+  border:1px solid rgba(95,175,205,.17);
+  border-radius:clamp(12px,1.2vw,17px);
+  background:linear-gradient(150deg,rgba(18,53,69,.45),rgba(3,16,23,.83));
+  color:#2b85ff;
+  font-size:clamp(1.5rem,2.4vw,2.3rem);
+}
+#contact .contact-journey-link:nth-child(2) .contact-journey-icon {color:#12c7ed;}
+#contact .contact-journey-link:nth-child(3) .contact-journey-icon {color:#f2f8fa;}
+#contact .contact-journey-meta{display:flex;flex-direction:column;gap:8px;min-width:0;}
+#contact .contact-journey-meta small {
+  color:#a2b6c2;
+  font-size:clamp(.59rem,.77vw,.72rem);
+  letter-spacing:.23em;
+  font-weight:600;
+  text-transform:uppercase;
+}
+#contact .contact-journey-meta strong {
+  display:block;
+  color:#f5f9fb;
+  font-size:clamp(.82rem,1.13vw,1.12rem);
+  letter-spacing:-.035em;
+  font-weight:690;
+  line-height:1.35;
+  overflow-wrap:anywhere;
+}
+#contact .contact-journey-arrow{
+  display:grid;
+  place-items:center;
+  justify-self:end;
+  width:clamp(37px,3.5vw,48px);
+  aspect-ratio:1;
+  border:1px solid rgba(53,163,198,.28);
+  border-radius:13px;
+  background:rgba(1,15,24,.81);
+  color:#2ce0fc;
+  font-size:1.1rem;
+  transition:background .2s ease,border-color .2s ease,transform .2s ease;
+}
+#contact .contact-journey-link:hover .contact-journey-arrow,
+#contact .contact-journey-link:focus-visible .contact-journey-arrow {
+  transform:translate(2px,-2px);
+  background:rgba(13,75,96,.53);
+  border-color:rgba(89,224,245,.75);
+}
+#contact .contact-journey-art{
+  position:absolute;
+  z-index:1;
+  inset:0;
+  width:100%;height:100%;
+  overflow:hidden;
+  pointer-events:none;
+}
+#contact .contact-journey-lines {
+  position:absolute;
+  inset:0;
+  width:100%;height:100%;
+  color:inherit;
+  opacity:.9;
+}
+#contact .contact-journey-lines path{
+  vector-effect:non-scaling-stroke;
+  fill:none;
+  stroke-width:1;
+}
+#contact .contact-journey-lines .contact-path-bright{
+  stroke-width:1.55;
+  filter:drop-shadow(0 0 7px rgba(54,227,255,.3));
+}
+#contact .contact-journey-lines .contact-path-gold{
+  stroke-width:1.5;
+  filter:drop-shadow(0 0 9px rgba(247,165,45,.25));
+}
+#contact .contact-journey-plane{
+  position:absolute;
+  z-index:2;
+  top:54%;left:51%;
+  display:grid;
+  place-items:center;
+  width:48px;height:48px;
+  transform:translate(-50%,-50%) rotate(-13deg);
+  color:#ffe6af;
+  font-size:1.7rem;
+  text-shadow:0 0 16px rgba(255,179,57,.9),0 0 32px rgba(255,147,44,.42);
+}
+#contact .contact-journey-plane::before {
+  content:"";
+  position:absolute;
+  inset:-42px;
+  border:1px dashed rgba(94,178,208,.16);
+  border-radius:50%;
+  pointer-events:none;
+}
+#contact .contact-journey-plane::after {
+  content:"";
+  position:absolute;
+  z-index:-1;
+  width:100px;height:100px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(251,172,43,.21),transparent 72%);
+}
+#contact .contact-journey-spark{
+  position:absolute;
+  width:7px;height:7px;
+  background:#1be0fc;
+  border-radius:50%;
+  box-shadow:0 0 15px rgba(7,233,255,.72);
+  pointer-events:none;
+}
+#contact .contact-journey-spark--one{left:14%;top:72%;}
+#contact .contact-journey-spark--two{left:49%;top:25%;}
+#contact .contact-journey-star{
+  position:absolute;
+  width:23px;height:23px;
+  opacity:.43;
+}
+#contact .contact-journey-star::before,#contact .contact-journey-star::after{
+  content:"";position:absolute;background:#438aa4;
+}
+#contact .contact-journey-star::before{width:1px;height:23px;left:11px;}
+#contact .contact-journey-star::after{height:1px;width:23px;top:11px;}
+#contact .contact-journey-star--one{left:38%;top:34%;}
+#contact .contact-journey-star--two{left:54%;top:77%;}
+#contact + .footer{
+  border-top:0;
+}
+@media(max-width:1050px){
+  #contact .contact-journey-inner{
+    grid-template-columns:minmax(0,.98fr) minmax(350px,1.02fr);
+    gap:clamp(20px,3vw,44px);
+    width:calc(100% - 60px);
+  }
+  #contact .contact-journey-title{font-size:clamp(3.45rem,6.8vw,5.8rem);}
+  #contact .contact-journey-panel{padding:17px;}
+  #contact .contact-journey-link{gap:12px;grid-template-columns:56px minmax(0,1fr) 40px;min-height:97px;}
+  #contact .contact-journey-icon{width:55px;}
+  #contact .contact-journey-meta strong{font-size:clamp(.82rem,1.42vw,1rem);}
+  #contact .contact-journey-plane{left:49%;top:54%;}
+}
+@media(max-width:760px){
+  #contact.contact.contact-journey{
+    min-height:0;
+    padding:clamp(75px,12vw,97px) 0 clamp(63px,10vw,91px);
+  }
+  #contact .contact-journey-inner{
+    display:flex;
+    flex-direction:column;
+    align-items:stretch;
+    gap:clamp(52px,9vw,84px);
+    width:calc(100% - 34px);
+  }
+  #contact .contact-journey-index{margin-bottom:21px;font-size:.68rem;}
+  #contact .contact-journey-title{font-size:clamp(3.55rem,10vw,5.7rem);}
+  #contact .contact-journey-lede{max-width:575px;font-size:.95rem;line-height:1.65;margin-top:20px;}
+  #contact .contact-journey-panel{padding:clamp(14px,3.6vw,24px);border-radius:18px;}
+  #contact .contact-journey-link{min-height:94px;grid-template-columns:54px minmax(0,1fr) 42px;}
+  #contact .contact-journey-icon{width:54px;}
+  #contact .contact-journey-meta strong{font-size:clamp(.8rem,2.2vw,1rem);}
+  #contact .contact-journey-arrow{width:40px;}
+  #contact .contact-journey-plane{left:77%;top:42%;font-size:1.35rem;}
+  #contact .contact-journey-lines{opacity:.62;}
+}
+@media(max-width:440px){
+  #contact .contact-journey-title{font-size:clamp(3.12rem,12.5vw,4.4rem);}
+  #contact .contact-journey-inner{gap:45px;width:calc(100% - 26px);}
+  #contact .contact-journey-panel{padding:12px 13px;}
+  #contact .contact-journey-link{grid-template-columns:47px minmax(0,1fr) 35px;gap:8px;min-height:89px;}
+  #contact .contact-journey-icon{width:46px;font-size:1.45rem;border-radius:11px;}
+  #contact .contact-journey-arrow{width:34px;border-radius:9px;font-size:.84rem;}
+  #contact .contact-journey-meta{gap:5px;}
+  #contact .contact-journey-meta small{font-size:.55rem;}
+  #contact .contact-journey-meta strong{font-size:clamp(.76rem,3.2vw,.94rem);}
+  #contact .contact-journey-plane{left:77%;top:42%;font-size:1.17rem;}
+}
+@media(prefers-reduced-motion:reduce){
+  #contact .contact-journey-arrow{transition:none!important;}
+}
