@@ -59,7 +59,7 @@ function ReactAtom({ pointer }) {
   return h(Float, { speed: 0.8, floatIntensity: 0.17, rotationIntensity: 0.025 },
     h('group', { ref: group },
       h('mesh', null,
-        h('icosahedronGeometry', { args: [0.39, 3] }),
+        h('icosahedronGeometry', { args: [0.39, 2] }),
         h('meshPhysicalMaterial', {
           color: '#86eaff',
           emissive: '#116a85',
@@ -113,10 +113,9 @@ function HeroCanvas({ host, hero }) {
     document.addEventListener('visibilitychange', syncVisibility);
 
     const move = event => {
-      const bounds = hero.getBoundingClientRect();
-      if (!bounds.width || !bounds.height) return;
-      pointer.current.x = THREE.MathUtils.clamp((event.clientX - bounds.left) / bounds.width * 2 - 1, -1, 1);
-      pointer.current.y = THREE.MathUtils.clamp((event.clientY - bounds.top) / bounds.height * 2 - 1, -1, 1);
+      // Use viewport-normalized coordinates; don't force layout on every pointer move.
+      pointer.current.x = THREE.MathUtils.clamp(event.clientX / Math.max(1, innerWidth) * 2 - 1, -1, 1);
+      pointer.current.y = THREE.MathUtils.clamp(event.clientY / Math.max(1, innerHeight) * 2 - 1, -1, 1);
     };
     const reset = () => { pointer.current.x = 0; pointer.current.y = 0; };
     hero.addEventListener('pointermove', move, { passive: true });
@@ -132,7 +131,7 @@ function HeroCanvas({ host, hero }) {
 
   return h(Canvas, {
     camera: { position: [0, 0, 5.8], fov: 43 },
-    dpr: [1, 1.25],
+    dpr: [1, 1.1],
     frameloop: active ? 'always' : 'never',
     gl: { antialias: true, alpha: true, powerPreference: 'high-performance' },
     onCreated: () => {
