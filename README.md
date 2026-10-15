@@ -1,32 +1,31 @@
 # rohitpantportfolio
 
-## Optional 3D hero (React Three Fiber + Drei + GSAP)
+## Smooth React 3D hero (React Three Fiber + Drei + GSAP)
 
-The live homepage remains a static HTML site. Its original portrait, first-visit
-scroll intro, project links, and canvas-driven "Behind the code" section are
-preserved. A progressive enhancement mounts a React Three Fiber sculpture into
-the desktop hero without converting the rest of the site into a React SPA.
+The homepage remains the original static HTML portfolio, not a React SPA.
+Its portrait, typography, first-visit intro, projects, Skills section and
+scroll-controlled development animation are preserved.
 
-- `index.html` provides an ES import map, the `#orbitHeroScene` mount point,
-  and a small loader that imports the scene only when appropriate.
-- `assets/orbit-scene.mjs` renders the sculpture using Three.js, React Three
-  Fiber, Drei's Float component, and GSAP for subtle reveal/scroll motion.
-- The scene is disabled on touch/mobile layouts, reduced-motion preferences,
-  data-saver connections, and devices reporting less than 4 GB memory.
-- It begins **after** the existing first-visit intro finishes, and suspends
-  rendering when the hero or browser tab isn't visible.
-- The canvas uses capped device pixel ratio and low-power WebGL settings.
-- If the optional CDN imports fail, the site continues functioning without 3D.
+- `index.html` provides the `#heroReact3D` mount point and progressive loader.
+- `assets/hero-react-object.mjs` renders a recognizable React atom with
+  three animated elliptical orbits, three electrons and a floating metallic core.
+- React Three Fiber handles rendering, Drei handles subtle floating motion,
+  and GSAP handles only the entrance scale, not each animation frame.
+- The desktop hero's original pointer-parallax is disabled to avoid competing
+  animations. The custom cursor and animations in other sections remain.
+- The 3D scene loads only after the first-visit intro, on eligible desktop
+  devices. Touch, reduced-motion, data-saving, no-WebGL and low-memory
+  users retain the normal static hero.
+- Rendering pauses when the hero moves out of view or the tab is hidden.
+  DPR is capped at 1.25; shared low-poly geometries and no postprocessing
+  help reduce GPU load.
+- If the CDN imports fail, the original hero content remains visible.
 
-**Local testing:** Serve the project over HTTP rather than opening the HTML
-via `file://` so ES module imports work (for example,
-`python -m http.server 8000`). A network connection is required because this
-static-site bridge currently loads React, Three.js, Drei and GSAP from pinned
-esm.sh CDN versions. A bundled Vite build is recommended if making 3D a
-mandatory production feature. Test on desktop, mobile, and reduced-motion modes.
-
-**Rollback:** Revert the "integrate 3D orbit" index.html commit and the
-"add lazy React Three Fiber hero sculpture" asset commit.
+**Local testing:** Serve the site via HTTP, not `file://` (for example,
+`python -m http.server 8000`). An internet connection is needed because
+this static-site approach imports React, R3F, Drei and GSAP from pinned
+esm.sh URLs in `index.html`. A bundled build with Vite is recommended
+if WebGL becomes a critical production feature.
 
 ## Interactive 3D skills carousel
 
