@@ -1,0 +1,23 @@
+{
+  "updatedAt": "2026-10-15T07:25:57.993Z",
+  "captured": {
+    "vaani": {
+      "file": "assets/project-shots/vaani.jpg",
+      "capturedAt": "2026-10-15T07:25:44.286Z",
+      "source": "https://vaani.rohitpant.in/",
+      "title": "Vaani | AI & Real-Time Language Exchange"
+    },
+    "eventhive": {
+      "file": "assets/project-shots/eventhive.jpg",
+      "capturedAt": "2026-10-15T07:25:50.381Z",
+      "source": "https://eventhive.rohitpant.in/",
+      "title": "EventHive | Event Management Platform"
+    },
+    "hall": {
+      "file": "assets/project-shots/hall.jpg",
+      "capturedAt": "2026-10-15T07:25:57.983Z",
+      "source": "https://booking.printpackipama.com/hallLayout/ViewhallLayout.html?HallId=28&StallNo=E18&hallName=HALL+9",
+      "title": "Premium Interactive Stall Layout"
+    }
+  }
+}
