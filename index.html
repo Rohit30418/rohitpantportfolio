@@ -2292,6 +2292,7 @@
   </style>
   <link rel="stylesheet" href="assets/hero-cinematic.css" />
   <link rel="stylesheet" href="assets/project-hologram.css" />
+  <link rel="stylesheet" href="assets/project-hologram-one-screen.css" />
 </head>
 <body>
   <div class="cursor-follower" id="cursorFollower" aria-hidden="true"></div>
@@ -2408,11 +2409,12 @@
                   <span class="holo-browser-dot"></span><span class="holo-browser-dot"></span><span class="holo-browser-dot"></span>
                   <span class="holo-browser-url" id="holoBrowserUrl">REALTIME / COMMUNICATION</span><span class="holo-browser-live">UI PREVIEW</span>
                 </div>
-                <div class="holo-app" id="holoAppPreview">
-                  <aside class="holo-app-sidebar"><div class="holo-app-brand">VAANI</div><div class="holo-app-nav"><span>Rooms</span><span>Discover</span><span>Participants</span><span>Settings</span></div></aside>
-                  <div class="holo-app-main"><div class="holo-app-heading"><b>Conversation workspace</b><small>◉ Realtime app</small></div>
-                    <div class="holo-app-metric-row"><div class="holo-app-metric"><small>Connection</small><b>WebRTC</b></div><div class="holo-app-metric"><small>Presence</small><b>Live</b></div><div class="holo-app-metric"><small>Platform</small><b>Web app</b></div></div>
-                    <div class="holo-app-panels"><div class="holo-app-panel"><div class="holo-app-panel-title">Room activity <small>UI PREVIEW</small></div><svg class="holo-graph" viewBox="0 0 320 126" preserveAspectRatio="none"><path d="M0 108 C26 103 43 52 66 70S107 107 132 66 171 27 196 40 232 94 254 59 287 18 320 29"/></svg></div><div class="holo-app-panel"><div class="holo-app-panel-title">Room members <small>●</small></div><div class="holo-mini-row"><i>01</i>Live rooms</div><div class="holo-mini-row"><i>02</i>Peer audio/video</div><div class="holo-mini-row"><i>03</i>Presence updates</div></div></div>
+                <div class="holo-app holo-app-real" id="holoAppPreview">
+                  <img id="holoRealShot" class="holo-real-screenshot" src="assets/project-shots/vaani.jpg" alt="Real screenshot of the Vaani application" loading="lazy" decoding="async" />
+                  <div class="holo-screenshot-fallback" id="holoScreenshotFallback" role="status" hidden>
+                    <span>SCREENSHOT CURRENTLY UNAVAILABLE</span>
+                    <strong>Vaani</strong>
+                    <small>Open the live product with the button on the left.</small>
                   </div>
                 </div>
               </div>
