@@ -126,7 +126,7 @@ Live browser layout and FPS were not measured in this environment.
   displayed in the floating hologram screen.
 - `assets/project-shots/*.jpg` contain Playwright captures of **public live
   pages** (not fabricated dashboards). Current confirmed captures: Vaani,
-  EventHive, Hall Layout. Argus returned HTTP 503 on the first attempt.
+  EventHive, Hall Layout and ARGUS (after retrying its temporary HTTP 503).
   An unavailable screenshot shows a clearly labeled fallback and the
   selected project's Live Demo link instead of pretending to show it.
 - `scripts/capture-project-previews.mjs` and the manually runnable GitHub
