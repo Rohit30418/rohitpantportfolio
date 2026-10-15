@@ -27,3 +27,29 @@ mandatory production feature. Test on desktop, mobile, and reduced-motion modes.
 
 **Rollback:** Revert the "integrate 3D orbit" index.html commit and the
 "add lazy React Three Fiber hero sculpture" asset commit.
+
+## Interactive 3D skills carousel
+
+The existing Skills section has a progressive, Three.js-based 3D carousel
+on desktop. It uses React Three Fiber for WebGL rendering and GSAP for
+the smooth selected-skill rotation.
+
+- `assets/skills-universe.mjs` draws texture-mapped floating cards in a
+  circular 3D arrangement, plus an interactive description, drag navigation,
+  accessible arrow buttons and arrow-key support.
+- The new carousel mounts in `#skillsUniverse` and loads only when the Skills
+  section is nearby; it does not load at initial page render.
+- The original Font Awesome skill marquees remain intact as the fallback on
+  touch/mobile layouts, reduced-motion users, browsers without WebGL, low-memory
+  devices, data-saving connections, or CDN-loading failure.
+- Rendering is paused outside the Skills section and when the page is hidden.
+- Skill label canvases use 768×426 textures and a capped device pixel ratio.
+- The 3D island reuses the same pinned ES module import map as the optional
+  desktop hero scene. It is not a Vite application.
+- To edit skills shown in 3D, update the `DATA` array inside
+  `assets/skills-universe.mjs`. To edit the fallback, update the marquee
+  chip HTML inside `index.html`.
+
+If the scene fails to load, the original HTML skills section still appears.
+To roll back only this feature, revert the relevant index.html changes and
+remove `assets/skills-universe.mjs`.
