@@ -2291,6 +2291,7 @@
     }
   </style>
   <link rel="stylesheet" href="assets/hero-cinematic.css" />
+  <link rel="stylesheet" href="assets/project-hologram.css" />
 </head>
 <body>
   <div class="cursor-follower" id="cursorFollower" aria-hidden="true"></div>
@@ -2368,66 +2369,72 @@
       </div>
     </section>
 
-    <section class="section lux-projects" id="work">
+
+    <section class="section lux-projects holo-projects" id="work" aria-labelledby="holoHeading">
       <div class="shell">
-        <div class="lux-projects-head" data-reveal>
-          <div>
-            <div class="lux-section-index"><span>02</span> Selected work</div>
-            <h2 class="lux-projects-title"><span>FEATURED</span><span>PROJECTS</span></h2>
+        <div class="holo-layout">
+          <div class="holo-copy">
+            <div class="holo-eyebrow">02 / SELECTED WORK</div>
+            <h2 class="holo-title" id="holoHeading"><span>PROJECT</span><em>HOLOGRAM</em></h2>
+            <p class="holo-lead">Interactive previews of products I've designed and built. Select a project and watch its interface materialize.</p>
+
+            <nav class="holo-selector" id="holoSelector" aria-label="Choose a project">
+              <a class="holo-option" aria-current="true" data-project-key="vaani" href="https://vaani.rohitpant.in/" target="_blank" rel="noopener noreferrer"><span class="holo-index">01</span><span class="holo-option-icon"><i class="fa-solid fa-wave-square" aria-hidden="true"></i></span><span>Vaani</span><span class="holo-option-arrow" aria-hidden="true">→</span></a>
+              <a class="holo-option" data-project-key="eventhive" href="https://eventhive.rohitpant.in/" target="_blank" rel="noopener noreferrer"><span class="holo-index">02</span><span class="holo-option-icon"><i class="fa-solid fa-calendar-days" aria-hidden="true"></i></span><span>EventHive</span><span class="holo-option-arrow" aria-hidden="true">→</span></a>
+              <a class="holo-option" data-project-key="argus" href="https://argus-pro-a2px.onrender.com" target="_blank" rel="noopener noreferrer"><span class="holo-index">03</span><span class="holo-option-icon"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i></span><span>Argus</span><span class="holo-option-arrow" aria-hidden="true">→</span></a>
+              <a class="holo-option" data-project-key="hall" href="https://github.com/Rohit30418/hall-layout" target="_blank" rel="noopener noreferrer"><span class="holo-index">04</span><span class="holo-option-icon"><i class="fa-solid fa-map-location-dot" aria-hidden="true"></i></span><span>Hall Layout</span><span class="holo-option-arrow" aria-hidden="true">→</span></a>
+            </nav>
+
+            <div class="holo-detail-card" aria-live="polite" aria-atomic="true">
+              <div class="holo-detail-top"><h3 id="holoProjectTitle">Vaani</h3><span class="holo-detail-status">INTERACTIVE SHOWCASE</span></div>
+              <p class="holo-description" id="holoProjectDesc">Live conversation rooms with device checks, peer-to-peer audio/video and synchronized participant states.</p>
+              <div class="holo-detail-row"><span class="holo-detail-row-label">ROLE</span><span id="holoRole">Frontend UI / realtime experiences</span></div>
+              <div class="holo-detail-row"><span class="holo-detail-row-label">STACK</span><div class="holo-stack" id="holoStack"><span>React</span><span>WebRTC</span><span>PeerJS</span><span>Socket.IO</span><span>Firebase</span></div></div>
+              <div class="holo-detail-row"><span class="holo-detail-row-label">HIGHLIGHTS</span><span id="holoHighlight">Pre-join media controls, peer connections, room presence and responsive conversation UI.</span></div>
+            </div>
+            <div class="holo-actions">
+              <a class="holo-action holo-action-primary" id="holoLiveLink" href="https://vaani.rohitpant.in/" target="_blank" rel="noopener noreferrer">↗ <span>Live Demo</span></a>
+              <button class="holo-action" id="holoCaseButton" type="button"><i class="fa-regular fa-file-lines" aria-hidden="true"></i> Case Study</button>
+              <a class="holo-action" id="holoGithubLink" href="https://github.com/Rohit30418" target="_blank" rel="noopener noreferrer">GitHub profile ↗</a>
+            </div>
           </div>
-          <div class="lux-projects-intro">
-            <p>A selection of product-focused builds where interface design, frontend engineering and real-world functionality come together.</p>
-            <span>Built for performance. Designed to feel effortless.</span>
+
+          <div class="holo-stage" id="holoStage" aria-hidden="true">
+            <div class="holo-floor"></div>
+            <div class="holo-beam"></div>
+            <div class="holo-browser-wrap" id="holoBrowserWrap">
+              <div class="holo-browser">
+                <div class="holo-browser-bar">
+                  <span class="holo-browser-dot"></span><span class="holo-browser-dot"></span><span class="holo-browser-dot"></span>
+                  <span class="holo-browser-url" id="holoBrowserUrl">REALTIME / COMMUNICATION</span><span class="holo-browser-live">UI PREVIEW</span>
+                </div>
+                <div class="holo-app" id="holoAppPreview">
+                  <aside class="holo-app-sidebar"><div class="holo-app-brand">VAANI</div><div class="holo-app-nav"><span>Rooms</span><span>Discover</span><span>Participants</span><span>Settings</span></div></aside>
+                  <div class="holo-app-main"><div class="holo-app-heading"><b>Conversation workspace</b><small>◉ Realtime app</small></div>
+                    <div class="holo-app-metric-row"><div class="holo-app-metric"><small>Connection</small><b>WebRTC</b></div><div class="holo-app-metric"><small>Presence</small><b>Live</b></div><div class="holo-app-metric"><small>Platform</small><b>Web app</b></div></div>
+                    <div class="holo-app-panels"><div class="holo-app-panel"><div class="holo-app-panel-title">Room activity <small>UI PREVIEW</small></div><svg class="holo-graph" viewBox="0 0 320 126" preserveAspectRatio="none"><path d="M0 108 C26 103 43 52 66 70S107 107 132 66 171 27 196 40 232 94 254 59 287 18 320 29"/></svg></div><div class="holo-app-panel"><div class="holo-app-panel-title">Room members <small>●</small></div><div class="holo-mini-row"><i>01</i>Live rooms</div><div class="holo-mini-row"><i>02</i>Peer audio/video</div><div class="holo-mini-row"><i>03</i>Presence updates</div></div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="holo-side-panel holo-satellite-top"><strong id="holoSatelliteTitle">Realtime communication</strong><small id="holoSatelliteNote">Communication interfaces powered by realtime interactions.</small><div class="holo-signal"><i style="--s:38%"></i><i style="--s:70%"></i><i style="--s:51%"></i><i style="--s:92%"></i><i style="--s:62%"></i><i style="--s:100%"></i><i style="--s:42%"></i><i style="--s:82%"></i><i style="--s:57%"></i><i style="--s:76%"></i></div></div>
+            <div class="holo-side-panel holo-satellite-bottom"><strong id="holoSatelliteBottomTitle">Room activity</strong><svg viewBox="0 0 125 45"><path d="M0 33Q15 2 28 25T60 22 82 12 104 20 125 7"/></svg><small>Projected interface layer</small></div>
+            <img class="holo-projector-base" src="assets/hologram-projector.svg" width="1000" height="340" alt="" loading="lazy" decoding="async" />
+            <span class="holo-projector-name" id="holoStageLabel">VAANI</span>
+            <div class="holo-stage-status">HOLOGRAM ACTIVE</div>
           </div>
-        </div>
-
-        <div class="lux-projects-list">
-          <a class="project-card lux-project-card" href="https://vaani.rohitpant.in/" target="_blank" rel="noreferrer" data-reveal>
-            <div class="project-media lux-project-media">
-              <img src="assets/vaani-project.svg" alt="Vaani realtime language practice platform" loading="lazy" decoding="async" />
-              <div class="lux-media-shade"></div>
-              <span class="lux-live-pill">Live project <b>↗</b></span>
-            </div>
-            <div class="project-body lux-project-body">
-              <div class="lux-project-meta"><span>01</span><span>Realtime communication</span></div>
-              <h3 class="project-title lux-project-title">Vaani</h3>
-              <p class="project-desc lux-project-desc">A realtime language-practice platform with live rooms, device checks, peer-to-peer audio/video and synchronized participant states.</p>
-              <div class="stack lux-stack"><span>React</span><span>WebRTC</span><span>Firebase</span><span>Socket.IO</span></div>
-              <div class="lux-project-foot"><span>Explore project</span><i>↗</i></div>
-            </div>
-          </a>
-
-          <a class="project-card lux-project-card" href="https://argus-pro-a2px.onrender.com" target="_blank" rel="noreferrer" data-reveal>
-            <div class="project-media lux-project-media">
-              <img src="assets/argus-project.svg" alt="ARGUS AI website auditor" loading="lazy" decoding="async" />
-              <div class="lux-media-shade"></div>
-              <span class="lux-live-pill">Live project <b>↗</b></span>
-            </div>
-            <div class="project-body lux-project-body">
-              <div class="lux-project-meta"><span>02</span><span>AI / QA intelligence</span></div>
-              <h3 class="project-title lux-project-title">ARGUS</h3>
-              <p class="project-desc lux-project-desc">Automated website intelligence covering performance, accessibility, SEO, security, responsive behavior and runtime issues.</p>
-              <div class="stack lux-stack"><span>Node.js</span><span>Playwright</span><span>AI Analysis</span><span>QA</span></div>
-              <div class="lux-project-foot"><span>Explore project</span><i>↗</i></div>
-            </div>
-          </a>
-
-          <a class="project-card lux-project-card" href="https://eventhive.rohitpant.in/" target="_blank" rel="noreferrer" data-reveal>
-            <div class="project-media lux-project-media">
-              <img src="assets/eventhive-project.svg" alt="EventHive event management platform" loading="lazy" decoding="async" />
-              <div class="lux-media-shade"></div>
-              <span class="lux-live-pill">Live project <b>↗</b></span>
-            </div>
-            <div class="project-body lux-project-body">
-              <div class="lux-project-meta"><span>03</span><span>Event management</span></div>
-              <h3 class="project-title lux-project-title">EventHive</h3>
-              <p class="project-desc lux-project-desc">A role-based event product for discovery, registration, organizer workflows, microsites, dashboards and event analytics.</p>
-              <div class="stack lux-stack"><span>React</span><span>TypeScript</span><span>Redux</span><span>Firebase</span></div>
-              <div class="lux-project-foot"><span>Explore project</span><i>↗</i></div>
-            </div>
-          </a>
         </div>
       </div>
+      <dialog class="holo-dialog" id="holoCaseDialog" aria-labelledby="holoDialogTitle">
+        <div class="holo-dialog-inner">
+          <button class="holo-dialog-close" id="holoCaseClose" type="button" aria-label="Close case study">✕ Close</button>
+          <div class="holo-eyebrow">PROJECT / OVERVIEW</div>
+          <h3 id="holoDialogTitle">Vaani / Project brief</h3>
+          <p id="holoDialogSummary"></p>
+          <h4>What I built</h4><p id="holoDialogWork"></p>
+          <h4>Technology stack</h4><p id="holoDialogTech"></p>
+        </div>
+      </dialog>
     </section>
 
     <section class="process-cinema" id="process" aria-label="Behind the code">
@@ -3290,5 +3297,6 @@
       observer.observe(skillSection);
     }
   </script>
+  <script src="assets/project-hologram.js" defer></script>
 </body>
 </html>
