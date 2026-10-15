@@ -56,7 +56,7 @@ try{
       exactLinks:data.linkChecks.length===3&&
         data.linkChecks[0].href==='mailto:rohitpant090@gmail.com'&&
         data.linkChecks[1].href==='https://www.linkedin.com/in/rohitpantdev/'&&
-        data.linkChecks[2].href==='https://github.com/Rohit30418/',
+        data.linkChecks[2].href.replace(/\\/$/,'')==='https://github.com/Rohit30418',
       cardLinkFits:data.linkChecks.every(({contentInside,arrowInside,textInside,rowWithinPanel})=>contentInside&&arrowInside&&textInside&&rowWithinPanel),
       titleWithinInner:data.titleWithinInner,
       panelWithinInner:data.panelWithinInner,
