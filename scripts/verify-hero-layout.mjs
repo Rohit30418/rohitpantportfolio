@@ -51,6 +51,10 @@ try {
         return w>padding&&h>padding;
       };
       const hero=get('#home'),header=get('.lux-header'),
+        headerBrand=get('.lux-header .lux-brand'),
+        headerNav=get('.lux-header .lux-nav'),
+        headerCTA=get('.lux-header .lux-top-cta'),
+        heroShell=get('#home .lux-hero-inner'),
         kicker=get('#home .hero-kicker'),name=get('#home .lux-hero-name'),
         first=get('#home .lux-hero-name span:first-child'),
         last=get('#home .lux-hero-name span:last-child'),
@@ -63,6 +67,10 @@ try {
       const viewport={width:innerWidth,height:innerHeight};
       const checks={
         noHorizontalOverflow:document.documentElement.scrollWidth<=innerWidth+3,
+        headerBrandMatchesHero:Math.abs(headerBrand.left-heroShell.left)<=3,
+        headerRightMatchesHero:innerWidth<=760 || Math.abs(headerCTA.right-heroShell.right)<=3,
+        headerNavCentered:innerWidth<=760 || Math.abs((headerNav.left+headerNav.right)/2-innerWidth/2)<=4,
+        heroKickerBreathes:kicker.top>=header.bottom+12,
         heroNameBelowHeader:name.top>=header.bottom+6,
         wordsNotColliding:first.right+5<last.left,
         wordsGrouped:last.left-first.right<=35,
@@ -86,6 +94,12 @@ try {
       };
       const inspect={
         headerBottom:Math.round(header.bottom),nameTop:Math.round(name.top),
+        headerLeft:Math.round(header.left),headerRight:Math.round(header.right),
+        brandLeft:Math.round(headerBrand.left),shellLeft:Math.round(heroShell.left),
+        brandGap:Math.round(headerBrand.left-heroShell.left),
+        ctaRight:Math.round(headerCTA.right),shellRight:Math.round(heroShell.right),
+        navCenter:Math.round((headerNav.left+headerNav.right)/2),
+        kickerTop:Math.round(kicker.top),
         firstRight:Math.round(first.right),lastLeft:Math.round(last.left),
         roleBottom:Math.round(role.bottom),introTop:Math.round(intro.top),
         introBottom:Math.round(intro.bottom),portraitTop:Math.round(portrait.top),
