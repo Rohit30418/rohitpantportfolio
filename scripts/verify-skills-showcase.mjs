@@ -12,7 +12,7 @@ try {
       try{sessionStorage.setItem('rp-portfolio-intro-seen','1')}catch(_){}
     });
     await page.goto('http://127.0.0.1:8777/',{waitUntil:'domcontentloaded',timeout:45000});
-    await page.locator('#skillsUniverse .skills-glass-card').first().waitFor({timeout:12000});
+    await page.locator('#skillsUniverse .skills-glass-card[data-active="true"]').waitFor({state:'visible',timeout:12000});
     await page.locator('#skills').scrollIntoViewIfNeeded();
     const getInfo=()=>page.evaluate(()=>{
       const el=(selector)=>document.querySelector(selector);
