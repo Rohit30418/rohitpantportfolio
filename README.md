@@ -116,3 +116,23 @@ The original three project cards were replaced by a responsive, interactive
 the simulated project switching/dialog behavior have been checked.
 Live browser layout and FPS were not measured in this environment.
 
+## One-screen hologram with real screenshots
+
+- The desktop Projects showroom uses a single 100svh viewport on screens
+  981px wide and at least 740px tall. Shorter screens and mobile phones
+  scroll naturally so controls remain usable.
+- `assets/project-hologram-one-screen.css` optimizes section spacing and
+  replaces the old illustrated interface with one actual project screenshot
+  displayed in the floating hologram screen.
+- `assets/project-shots/*.jpg` contain Playwright captures of **public live
+  pages** (not fabricated dashboards). Current confirmed captures: Vaani,
+  EventHive, Hall Layout. Argus returned HTTP 503 on the first attempt.
+  An unavailable screenshot shows a clearly labeled fallback and the
+  selected project's Live Demo link instead of pretending to show it.
+- `scripts/capture-project-previews.mjs` and the manually runnable GitHub
+  Actions workflow `Capture real project screenshots` refresh the files
+  using a real Chromium browser, with no logged-in session.
+- The projector itself remains a lightweight decorative SVG with
+  CSS perspective — no added WebGL canvas, no live iframe, and no
+  background video. Preview switching uses a brief transition only.
+
