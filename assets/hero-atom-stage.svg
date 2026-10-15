@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 360" fill="none" role="img" aria-label="Dark sculptural stone platform">
+<defs>
+  <linearGradient id="stone" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#28424d"/><stop offset=".28" stop-color="#121d25"/><stop offset=".78" stop-color="#070b0e"/><stop offset="1" stop-color="#020405"/></linearGradient>
+  <linearGradient id="ridge" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#49798a"/><stop offset=".16" stop-color="#1e3742"/><stop offset="1" stop-color="#070c11"/></linearGradient>
+  <linearGradient id="crack" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#63d9ed" stop-opacity=".56"/><stop offset="1" stop-color="#184153" stop-opacity="0"/></linearGradient>
+  <radialGradient id="halo"><stop stop-color="#34c9ee" stop-opacity=".22"/><stop offset="1" stop-color="#34c9ee" stop-opacity="0"/></radialGradient>
+  <filter id="shadow" x="-40%" y="-90%" width="180%" height="240%"><feGaussianBlur stdDeviation="28"/></filter>
+</defs>
+<ellipse cx="595" cy="210" rx="440" ry="150" fill="url(#halo)" filter="url(#shadow)"/>
+<path d="M0 315L120 278 179 265 243 211 329 232 395 192 475 201 552 174 600 195 691 146 750 173 809 150 876 208 938 194 1011 237 1100 229V360H0Z" fill="url(#stone)"/>
+<path d="M0 315L120 278 179 265 243 211 285 256 320 283 391 307 452 360H0Z" fill="#0c171d"/>
+<path d="M243 211L329 232 395 192 475 201 552 174 600 195 691 146 750 173 809 150 876 208 938 194 1011 237 940 266 838 256 748 282 670 241 557 272 469 233 407 267 344 248 285 256Z" fill="url(#ridge)" opacity=".9"/>
+<path d="M691 146L750 173 809 150 876 208 838 256 748 282 670 241Z" fill="#101c23"/>
+<path d="M809 150L876 208 938 194 1011 237 940 266 838 256Z" fill="#20323b" opacity=".57"/>
+<path d="M285 256L344 248 407 267 469 233 557 272 670 241 748 282 838 256 940 266 1100 229V360H452L391 307 320 283Z" fill="#081015"/>
+<path d="M395 192L475 201 552 174M600 195L691 146 750 173M809 150L876 208 938 194" stroke="#9ce9fa" stroke-opacity=".19" stroke-width="2"/>
+<path d="M221 250L285 256 329 232 344 248M471 232L557 272 600 195M671 241L691 146M838 256L809 150" stroke="url(#crack)" stroke-width="2"/>
+<path d="M170 290L249 293 287 332M548 283L631 307 658 360M907 280L945 307 997 311" stroke="#7ed5e6" stroke-opacity=".09" stroke-width="2"/>
+<g fill="#a3e3ef">
+<circle cx="333" cy="150" r="2" opacity=".3"/><circle cx="582" cy="89" r="2" opacity=".55"/><circle cx="918" cy="129" r="1.5" opacity=".3"/>
+</g>
+<path d="M227 139l27-19 9 33-30 11zM947 89l23-16 17 23-29 8zM1032 152l17-31 24 25-11 21zM355 89l20-13 12 20-25 9z" fill="#213640" stroke="#7dcedb" stroke-opacity=".23"/>
+</svg>
