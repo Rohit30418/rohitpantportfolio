@@ -2176,6 +2176,106 @@
       .orbit-hero-scene { display: none !important; }
     }
   </style>
+
+  <style id="skills-universe-3d-styles">
+    /* Progressive enhancement. The original 2D skill marquee remains a fallback. */
+    .skills-marquee-section .skills-universe-3d {
+      position:absolute;
+      top:0;
+      left:0;
+      width: min(1320px, calc(100% - 48px));
+      height: 570px;
+      overflow:hidden;
+      visibility:hidden;
+      pointer-events:none;
+    }
+    .skills-marquee-section.skills-universe-ready .skills-universe-3d {
+      position:relative;
+      left:auto;
+      top:auto;
+      margin:0 auto;
+      visibility:visible;
+      pointer-events:auto;
+      z-index:2;
+    }
+    .skills-marquee-section.skills-universe-ready .skills-marquee-wrap { display:none; }
+    .skills-3d-shell {
+      position:relative;
+      height:570px;
+      width:100%;
+      overflow:hidden;
+      isolation:isolate;
+      border:1px solid rgba(176,206,202,.17);
+      border-radius:30px;
+      outline:none;
+      background:
+        radial-gradient(ellipse at 51% 31%, rgba(25,89,100,.25), transparent 41%),
+        radial-gradient(ellipse at 84% 90%, rgba(195,138,81,.085), transparent 50%),
+        linear-gradient(155deg,#10191d 0%,#091013 56%,#070b0e 100%);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 26px 86px rgba(0,0,0,.18);
+      cursor:grab;
+    }
+    .skills-3d-shell:active { cursor:grabbing; }
+    .skills-3d-shell:focus-visible { outline:2px solid #7be3e6; outline-offset:3px; }
+    .skills-3d-shell::before {
+      content:"";
+      position:absolute;
+      inset:0;
+      z-index:1;
+      pointer-events:none;
+      background-image:linear-gradient(rgba(130,193,194,.055) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(130,193,194,.055) 1px,transparent 1px);
+      background-size:65px 65px;
+      -webkit-mask-image:linear-gradient(180deg, transparent 12%, black 72%);
+      mask-image:linear-gradient(180deg, transparent 12%, black 72%);
+    }
+    .skills-3d-stage {position:absolute;inset:0;z-index:1}
+    .skills-3d-stage canvas {display:block}
+    .skills-3d-top {
+      position:absolute;z-index:3;left:35px;right:35px;top:30px;
+      display:flex;justify-content:space-between;gap:16px;
+      color:#a6b5b3;font-size:.63rem;font-weight:750;letter-spacing:.19em;
+      pointer-events:none;
+    }
+    .skills-3d-top span:first-child {color:#dff0ed}
+    .skills-3d-status {
+      position:absolute;z-index:3;bottom:32px;left:35px;
+      width:min(430px,calc(100% - 270px));pointer-events:none;
+      padding:23px 27px 21px;
+      border:1px solid rgba(160,204,204,.13);
+      border-radius:20px;
+      background:linear-gradient(135deg,rgba(13,22,25,.86),rgba(10,17,20,.76));
+      box-shadow:0 15px 48px rgba(0,0,0,.18);
+      backdrop-filter:blur(12px);
+      -webkit-backdrop-filter:blur(12px);
+    }
+    .skills-3d-status-top {display:flex;align-items:center;gap:10px;color:#a6bcb7;font-size:.61rem;font-weight:800;letter-spacing:.14em}
+    .skills-3d-dot {width:7px;height:7px;border-radius:50%;box-shadow:0 0 15px currentColor}
+    .skills-3d-count {margin-left:auto;color:#e1eae6;font-variant-numeric:tabular-nums}
+    .skills-3d-status h3 {margin:12px 0 8px;font-size:clamp(1.45rem,2.3vw,2.15rem);font-weight:750;color:#f3f5ef;line-height:1.1;letter-spacing:-.04em}
+    .skills-3d-status p {margin:0;max-width:360px;min-height:35px;color:#a9b7b6;font-size:.78rem;line-height:1.55}
+    .skills-3d-controls {
+      position:absolute;z-index:4;right:34px;bottom:38px;
+      display:flex;flex-direction:column;align-items:end;gap:13px;
+      color:#91a4a4;font-size:.58rem;font-weight:750;letter-spacing:.13em;
+    }
+    .skills-3d-controls>div {display:flex;gap:9px}
+    .skills-3d-controls button {
+      display:grid;place-items:center;width:49px;height:49px;
+      border:1px solid rgba(182,213,207,.26);border-radius:50%;
+      color:#edf5ed;background:rgba(19,36,38,.8);
+      cursor:pointer;font:500 1.5rem/1 Manrope,system-ui,sans-serif;
+      transition:background .2s ease,border-color .2s ease,transform .2s ease;
+    }
+    .skills-3d-controls button:hover,.skills-3d-controls button:focus-visible {
+      background:#25434a;border-color:#a0e3dd;transform:translateY(-2px);
+    }
+    @media(max-width:1050px),(hover:none),(pointer:coarse),(prefers-reduced-motion:reduce) {
+      .skills-marquee-section .skills-universe-3d,
+      .skills-marquee-section.skills-universe-ready .skills-universe-3d {display:none!important}
+      .skills-marquee-section.skills-universe-ready .skills-marquee-wrap {display:grid!important}
+    }
+  </style>
 </head>
 <body>
   <div class="cursor-follower" id="cursorFollower" aria-hidden="true"></div>
@@ -2344,6 +2444,8 @@
         </div>
         <p>Production-focused frontend tools I use across interfaces, realtime products, APIs, testing and deployment.</p>
       </div>
+
+      <div class="skills-universe-3d" id="skillsUniverse" aria-label="Interactive 3D technology showcase"></div>
 
       <div class="skills-marquee-wrap" data-reveal>
         <div class="skills-marquee-row skills-marquee-left">
@@ -3120,6 +3222,40 @@
         }
       }, { rootMargin: '80px 0px', threshold: 0 });
       orbitObserver.observe(orbitHero);
+    }
+  </script>
+
+  <!-- Lazy-load the optional 3D skills only near the section.
+       Original HTML skill chips remain the fallback on mobile, reduced-motion,
+       data-saving browsers or failed WebGL/CDN loading. -->
+  <script type="module">
+    const skillSection = document.getElementById('skills');
+    const skillMount = document.getElementById('skillsUniverse');
+    const skillCapable = matchMedia('(min-width:1051px) and (hover:hover) and (pointer:fine)').matches
+      && !matchMedia('(prefers-reduced-motion:reduce)').matches
+      && !(navigator.connection && navigator.connection.saveData)
+      && (!navigator.deviceMemory || navigator.deviceMemory >= 4)
+      && !!window.WebGLRenderingContext;
+    if (skillCapable && skillSection && skillMount) {
+      let skillStarted = false;
+      const start = () => {
+        if (skillStarted) return;
+        if (document.documentElement.classList.contains('intro-playing')) {
+          document.addEventListener('portfolio:intro-ended', start, { once:true });
+          return;
+        }
+        skillStarted = true;
+        import('./assets/skills-universe.mjs').catch(error => {
+          skillSection.classList.remove('skills-universe-ready');
+          console.warn('Optional 3D skills unavailable:', error);
+        });
+      };
+      const observer = new IntersectionObserver(entries => {
+        if (!entries[0].isIntersecting) return;
+        observer.disconnect();
+        start();
+      }, { rootMargin:'320px 0px', threshold:0 });
+      observer.observe(skillSection);
     }
   </script>
 </body>
