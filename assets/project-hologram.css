@@ -1,0 +1,405 @@
+/* Project Hologram — cinematic interactive showroom, no extra WebGL canvas.
+   The browser and projector use CSS perspective + a static SVG for low GPU cost. */
+#work.holo-projects {
+  --holo-accent:#49d9f4;
+  --holo-accent-rgb:73,217,244;
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  padding:116px 0 124px;
+  border-top:1px solid rgba(99,176,185,.14);
+  background:
+    radial-gradient(ellipse at 77% 43%,rgba(17,74,88,.26),transparent 47%),
+    radial-gradient(ellipse at 38% 90%,rgba(110,65,30,.12),transparent 47%),
+    linear-gradient(122deg,#03080c 0%,#050d11 55%,#050a0e 100%);
+}
+#work.holo-projects::before {
+  content:"";
+  position:absolute;
+  inset:0;
+  width:auto;
+  opacity:.20;
+  pointer-events:none;
+  background-image:
+    linear-gradient(rgba(93,165,180,.085) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(93,165,180,.07) 1px,transparent 1px);
+  background-size:78px 78px;
+  -webkit-mask-image:linear-gradient(90deg,transparent,black 55%,black 80%,transparent);
+  mask-image:linear-gradient(90deg,transparent,black 55%,black 80%,transparent);
+}
+#work.holo-projects > .shell {
+  position:relative;
+  z-index:1;
+  width:min(1500px,calc(100% - 9vw));
+  max-width:none;
+  margin:auto;
+}
+#work .holo-layout {
+  display:grid;
+  grid-template-columns:minmax(355px,.84fr) minmax(0,1.16fr);
+  gap:clamp(15px,2.7vw,46px);
+  align-items:center;
+  min-height:755px;
+}
+#work .holo-copy {position:relative;z-index:3;padding:0 0 6px;}
+#work .holo-eyebrow {
+  margin-bottom:18px;
+  display:flex;align-items:center;gap:13px;
+  color:#67d9eb;letter-spacing:.24em;
+  font:750 .66rem/1.4 Manrope,Inter,sans-serif;
+  text-transform:uppercase;
+}
+#work .holo-eyebrow::before {
+  content:"";width:24px;height:1px;background:#79eaf8;
+}
+#work .holo-title {
+  margin:0;
+  display:flex;flex-direction:column;
+  font-family:Manrope,Inter,ui-sans-serif,system-ui,sans-serif;
+  font-size:clamp(3.7rem,5.5vw,6.3rem);
+  font-weight:690;
+  line-height:.95;
+  letter-spacing:-.079em;
+  color:#f4f7f8;
+}
+#work .holo-title em {
+  font-style:normal;font-weight:560;
+  color:#65e4f4;
+  background:linear-gradient(90deg,#31cee9 0%,#96effd 75%,#39b6ce 100%);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+#work .holo-lead {
+  max-width:465px;
+  margin:21px 0 34px;
+  color:#9eafb7;
+  font-size:clamp(.85rem,1vw,.98rem);
+  line-height:1.75;
+}
+#work .holo-selector {
+  display:grid;
+  width:100%;
+  max-width:515px;
+  gap:6px;
+}
+#work .holo-option {
+  min-width:0;width:100%;height:54px;
+  display:grid;grid-template-columns:29px 25px minmax(0,1fr) 23px;
+  align-items:center;gap:16px;
+  padding:0 15px 0 12px;
+  border:1px solid rgba(143,204,213,.11);
+  border-radius:10px;
+  background:rgba(7,18,24,.4);
+  color:#b5c7cd;
+  text-decoration:none;
+  font-size:.87rem;font-weight:620;
+  cursor:pointer;
+  transition:border-color .23s ease,background .23s ease,color .23s ease,box-shadow .23s ease;
+}
+#work .holo-option:hover,#work .holo-option:focus-visible{
+  color:#f5fdfd;border-color:rgba(102,226,245,.6);
+  background:rgba(26,71,80,.24);
+}
+#work .holo-option[aria-current="true"] {
+  color:#81efff;
+  border-color:rgba(96,226,245,.87);
+  background:linear-gradient(90deg,rgba(29,122,142,.28),rgba(9,33,42,.49));
+  box-shadow:inset 0 0 14px rgba(29,191,228,.08),0 0 18px rgba(32,191,231,.08);
+}
+#work .holo-index {font-size:.7rem;letter-spacing:.05em;color:#61757f;font-variant-numeric:tabular-nums;}
+#work .holo-option[aria-current="true"] .holo-index {color:#96dbe5}
+#work .holo-option-icon{display:flex;align-items:center;justify-content:center;color:#7896a1;font-size:1.05rem;}
+#work .holo-option[aria-current="true"] .holo-option-icon{color:#6fe8f6;}
+#work .holo-option-arrow {justify-self:end;opacity:0;transition:opacity .2s ease,transform .2s ease}
+#work .holo-option:is(:hover,[aria-current="true"]) .holo-option-arrow{opacity:1;transform:translateX(2px)}
+#work .holo-detail-card {
+  max-width:515px;
+  margin-top:20px;
+  padding:19px 20px;
+  border:1px solid rgba(113,179,194,.23);
+  border-radius:15px;
+  background:linear-gradient(150deg,rgba(17,34,43,.78),rgba(5,14,20,.89));
+  box-shadow:0 15px 45px rgba(0,0,0,.11);
+}
+#work .holo-detail-top {display:flex;align-items:center;justify-content:space-between;gap:12px;}
+#work .holo-detail-top h3 {margin:0;color:#f3f7f9;font-size:1.2rem;font-weight:725;letter-spacing:-.04em;}
+#work .holo-detail-status{
+  display:inline-flex;align-items:center;gap:6px;white-space:nowrap;
+  font-size:.58rem;letter-spacing:.11em;text-transform:uppercase;color:#9cddd7;
+}
+#work .holo-detail-status::before {content:"";width:6px;height:6px;border-radius:50%;background:#70eeaf;box-shadow:0 0 9px rgba(112,238,175,.5);}
+#work .holo-description{margin:7px 0 16px;font-size:.75rem;line-height:1.6;color:#99abb4;}
+#work .holo-detail-row{
+  display:grid;grid-template-columns:84px minmax(0,1fr);
+  gap:12px;align-items:start;margin-top:12px;font-size:.7rem;line-height:1.5;
+  color:#c9d8df;
+}
+#work .holo-detail-row-label {color:#76929c;text-transform:uppercase;letter-spacing:.13em;font-size:.57rem;font-weight:800;}
+#work .holo-stack{display:flex;flex-wrap:wrap;gap:5px;}
+#work .holo-stack span{
+  display:inline-flex;align-items:center;min-height:24px;
+  padding:3px 8px;border:1px solid rgba(140,207,221,.19);
+  border-radius:6px;background:rgba(9,25,30,.7);
+  font-size:.63rem;color:#cbdfe5;
+}
+#work .holo-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;}
+#work .holo-action{
+  min-height:47px;min-width:0;
+  display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  padding:0 17px;
+  border-radius:9px;border:1px solid rgba(97,205,229,.43);
+  background:rgba(3,21,28,.52);
+  color:#e9f8fa;text-decoration:none;
+  font:650 .73rem/1 Manrope,Inter,sans-serif;
+  white-space:nowrap;cursor:pointer;
+  transition:transform .2s ease,background .2s ease,border-color .2s ease;
+}
+#work .holo-action:hover,#work .holo-action:focus-visible{transform:translateY(-2px);border-color:#77eafa;background:rgba(13,61,71,.74);}
+#work .holo-action-primary {
+  background:#43d5ea;color:#061216;
+  border-color:#43d5ea;
+  box-shadow:0 8px 26px rgba(53,202,225,.18);
+}
+#work .holo-action-primary:hover,#work .holo-action-primary:focus-visible{
+  color:#031318;background:#a0f3ff;border-color:#a0f3ff;
+}
+#work .holo-stage {
+  position:relative;z-index:1;
+  width:100%;height:780px;
+  overflow:visible;
+  perspective:1150px;
+  isolation:isolate;
+}
+#work .holo-stage::before {
+  content:"";position:absolute;z-index:0;
+  top:10%;left:7%;width:91%;height:75%;
+  border-radius:50%;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 55%,rgba(38,176,205,.19),rgba(9,85,111,.07) 46%,transparent 72%);
+}
+#work .holo-floor {
+  position:absolute;z-index:0;left:-5%;right:-8%;bottom:5%;height:35%;
+  background:
+    linear-gradient(rgba(56,157,185,.13) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(56,157,185,.1) 1px,transparent 1px),
+    radial-gradient(ellipse at 52% 74%,rgba(20,135,166,.23),transparent 61%);
+  background-size:62px 62px,62px 62px,auto;
+  transform-origin:center bottom;
+  transform:perspective(540px) rotateX(68deg);
+  -webkit-mask-image:linear-gradient(0deg,black,transparent 91%);
+  mask-image:linear-gradient(0deg,black,transparent 91%);
+  pointer-events:none;
+}
+#work .holo-beam{
+  position:absolute;z-index:1;
+  left:18%;right:8%;top:12%;height:66%;
+  clip-path:polygon(34% 100%,61% 100%,95% 0,4% 0);
+  background:linear-gradient(90deg,transparent,rgba(70,228,248,.03) 26%,rgba(71,206,235,.16) 53%,rgba(61,203,227,.04) 78%,transparent);
+  opacity:.78;pointer-events:none;
+}
+#work .holo-beam::after {
+  content:"";position:absolute;inset:0;
+  background:repeating-linear-gradient(180deg,transparent 0,transparent 18px,rgba(132,241,249,.10) 19px,transparent 21px);
+  opacity:.5;
+}
+#work .holo-projector-base{
+  position:absolute;z-index:4;left:2%;bottom:0;width:100%;
+  height:auto;max-height:290px;object-fit:contain;
+  pointer-events:none;filter:drop-shadow(0 24px 21px rgba(0,0,0,.4));
+}
+#work .holo-projector-name{
+  position:absolute;left:46%;bottom:19%;z-index:5;
+  transform:translateX(-50%);
+  color:rgba(152,242,252,.65);
+  font-size:.53rem;font-weight:820;
+  letter-spacing:.27em;pointer-events:none;text-transform:uppercase;
+}
+#work .holo-browser-wrap{
+  position:absolute;
+  top:13%;left:9%;width:88%;height:53%;
+  z-index:3;
+  transform-style:preserve-3d;
+  transform:rotateY(-8deg) rotateX(3deg) rotateZ(1.1deg);
+  transition:opacity .24s ease,transform .4s cubic-bezier(.2,.8,.2,1);
+  pointer-events:none;
+}
+#work .holo-browser{
+  width:100%;height:100%;
+  display:flex;flex-direction:column;overflow:hidden;
+  border:1px solid rgba(96,227,248,.82);
+  border-radius:13px;
+  background:linear-gradient(145deg,rgba(5,30,43,.95),rgba(3,13,22,.97));
+  color:#e8f8ff;
+  box-shadow:
+    0 0 0 1px rgba(29,144,184,.21),
+    0 0 28px rgba(35,195,243,.2),
+    0 30px 75px rgba(0,0,0,.31);
+}
+#work .holo-browser::after{
+  content:"";position:absolute;inset:1px;
+  border-radius:inherit;
+  background:repeating-linear-gradient(180deg,transparent 0,transparent 6px,rgba(73,205,236,.025) 7px,transparent 8px);
+  pointer-events:none;
+}
+#work .holo-browser-bar{
+  height:38px;flex:none;display:flex;align-items:center;gap:8px;
+  padding:0 15px;
+  background:rgba(15,50,65,.75);
+  border-bottom:1px solid rgba(115,221,240,.25);
+}
+#work .holo-browser-dot{display:block;width:6px;height:6px;border:1px solid rgba(142,221,235,.55);border-radius:50%;}
+#work .holo-browser-url{margin-left:14px;color:#91b9ca;font-size:.58rem;letter-spacing:.06em;}
+#work .holo-browser-live{margin-left:auto;color:#93e9e9;font-size:.54rem;letter-spacing:.1em;}
+#work .holo-browser-live::before {content:"";display:inline-block;width:5px;height:5px;margin-right:7px;vertical-align:middle;border-radius:50%;background:#76eeb0;}
+#work .holo-app {display:grid;grid-template-columns:110px minmax(0,1fr);flex:1;min-height:0;}
+#work .holo-app-sidebar {padding:20px 9px;border-right:1px solid rgba(92,168,195,.17);background:rgba(5,18,27,.54);}
+#work .holo-app-brand {margin:0 4px 23px;color:#c7f9ff;letter-spacing:-.06em;font-size:1.04rem;font-weight:850;}
+#work .holo-app-nav {display:grid;gap:8px;}
+#work .holo-app-nav span {padding:8px;border-radius:5px;color:#82a4b4;font-size:.57rem;}
+#work .holo-app-nav span:first-child{background:rgba(59,192,226,.17);color:#88f1ff;box-shadow:inset 2px 0 0 #68dff6;}
+#work .holo-app-main {min-width:0;min-height:0;overflow:hidden;padding:16px 19px 14px;}
+#work .holo-app-heading{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:0 0 15px;}
+#work .holo-app-heading b{font-size:clamp(.8rem,1.1vw,1rem);font-weight:750;letter-spacing:-.04em;}
+#work .holo-app-heading small{color:#75ddeb;font-size:.54rem;}
+#work .holo-app-metric-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-bottom:13px;}
+#work .holo-app-metric{padding:10px;border:1px solid rgba(89,177,201,.23);border-radius:8px;background:rgba(22,66,84,.30);}
+#work .holo-app-metric small{display:block;color:#81a4b3;font-size:.52rem;}
+#work .holo-app-metric b{display:block;margin-top:8px;font-size:1.12rem;color:#e1faff;}
+#work .holo-app-panels{display:grid;grid-template-columns:1.2fr .85fr;gap:9px;height:calc(100% - 106px);min-height:0;}
+#work .holo-app-panel{overflow:hidden;min-height:0;border:1px solid rgba(73,155,185,.2);border-radius:9px;background:rgba(10,37,52,.68);padding:13px;}
+#work .holo-app-panel-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:.64rem;font-weight:740;color:#c8ecf7;}
+#work .holo-app-panel-title small{font-size:.49rem;color:#6dcfe0}
+#work .holo-graph{display:block;width:100%;height:62%;min-height:72px;}
+#work .holo-graph path{fill:none;stroke:#5de4fa;stroke-width:2.8;stroke-linecap:round;}
+#work .holo-graph .graph-fill{fill:rgba(37,196,231,.10);stroke:none;}
+#work .holo-graph line{stroke:rgba(112,195,217,.18);stroke-width:1;}
+#work .holo-mini-row{display:flex;align-items:center;gap:9px;padding:8px 0;border-bottom:1px solid rgba(91,167,185,.1);font-size:.57rem;color:#c6dee8;}
+#work .holo-mini-row i{display:grid;place-items:center;flex:none;width:20px;height:20px;border-radius:50%;background:rgba(87,206,241,.19);color:#90e9fb;font-size:.55rem;font-style:normal;}
+#work .holo-mini-row small{margin-left:auto;color:#58cfe8;font-size:.49rem;}
+#work .holo-mini-bars{display:flex;align-items:flex-end;gap:4px;height:64px;margin-top:13px;}
+#work .holo-mini-bars i{height:var(--bar);width:9%;display:block;border-radius:3px 3px 0 0;background:linear-gradient(0deg,rgba(31,132,156,.33),rgba(96,220,241,.92));}
+#work .holo-side-panel {
+  position:absolute;z-index:4;
+  min-width:150px;padding:12px 13px;
+  background:linear-gradient(135deg,rgba(10,48,66,.88),rgba(7,25,39,.92));
+  border:1px solid rgba(104,229,249,.64);
+  border-radius:9px;color:#dff8ff;
+  box-shadow:0 0 23px rgba(38,186,225,.12);
+  pointer-events:none;
+}
+#work .holo-satellite-top {top:8%;right:-4%;width:167px;transform:rotateZ(-7deg);}
+#work .holo-satellite-bottom {top:58%;left:0;width:165px;transform:rotateZ(3deg);}
+#work .holo-side-panel strong{display:block;font-size:.66rem;font-weight:750;letter-spacing:-.015em;}
+#work .holo-side-panel small{display:block;margin-top:5px;font-size:.53rem;color:#93c3d2;line-height:1.5;}
+#work .holo-signal{height:29px;display:flex;align-items:center;justify-content:space-between;gap:2px;margin-top:9px;}
+#work .holo-signal i{display:block;width:4px;height:var(--s);border-radius:3px;background:#64dff4;}
+#work .holo-satellite-bottom svg{display:block;width:100%;height:42px;margin-top:4px;}
+#work .holo-satellite-bottom path{fill:none;stroke:#65e6f8;stroke-width:2.5;}
+#work .holo-stage-status {
+  position:absolute;z-index:5;right:0;bottom:9%;
+  display:flex;align-items:center;gap:8px;
+  font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:#a0ced8;
+  pointer-events:none;
+}
+#work .holo-stage-status::before{content:"";display:block;width:6px;height:6px;background:#70eead;border-radius:50%;}
+#work .holo-browser-wrap.is-switching {opacity:.25;transform:rotateY(-14deg) rotateX(6deg) translateY(13px) scale(.97);}
+#work .holo-app-panel .holo-scan-mark{height:2px;margin-top:9px;background:linear-gradient(90deg,transparent,#5ee3fa,transparent);opacity:.5;}
+#work .holo-stage.is-visible .holo-browser-wrap{animation:holoFloat 8s ease-in-out infinite alternate;}
+@keyframes holoFloat {
+  from{transform:rotateY(-8deg) rotateX(3deg) rotateZ(1.1deg) translateY(0);}
+  to{transform:rotateY(-6deg) rotateX(2deg) rotateZ(.5deg) translateY(-7px);}
+}
+#work .holo-stage.is-visible .holo-beam {animation:holoBeam 5.5s ease-in-out infinite alternate;}
+@keyframes holoBeam {from{opacity:.66}to{opacity:.92}}
+#work .holo-stage.is-visible .holo-browser-wrap.is-switching {animation:none;}
+#work .holo-dialog {padding:0;border:1px solid rgba(79,206,237,.53);border-radius:18px;background:#071319;color:#effbff;width:min(560px,calc(100vw - 32px));max-height:min(86vh,700px);box-shadow:0 38px 110px rgba(0,0,0,.65);}
+#work .holo-dialog::backdrop {background:rgba(0,5,11,.75);backdrop-filter:blur(3px);}
+#work .holo-dialog-inner{padding:31px;}
+#work .holo-dialog-inner h3{margin:8px 0 12px;font-size:2rem;letter-spacing:-.06em}
+#work .holo-dialog-inner p{font-size:.88rem;line-height:1.7;color:#a5bdc6;}
+#work .holo-dialog-inner h4{margin:20px 0 6px;font-size:.8rem;color:#7bdff1;}
+#work .holo-dialog-close{float:right;border:1px solid rgba(118,207,225,.38);background:rgba(22,62,77,.55);color:#f5fdfd;border-radius:8px;padding:7px 11px;font:650 .75rem Manrope,Inter,sans-serif;cursor:pointer;}
+@media(min-width:1600px){
+  #work .holo-layout{grid-template-columns:minmax(450px,.82fr) minmax(0,1.18fr);}
+  #work .holo-stage{height:820px;}
+}
+@media(max-width:1170px) and (min-width:921px){
+  #work.holo-projects>.shell{width:calc(100% - 56px);}
+  #work .holo-layout{grid-template-columns:minmax(325px,.9fr) minmax(0,1.1fr);gap:10px;}
+  #work .holo-title{font-size:clamp(3.55rem,5.1vw,5rem);}
+  #work .holo-stage{height:690px;}
+  #work .holo-browser-wrap{top:17%;left:5%;width:94%;height:50%;}
+  #work .holo-satellite-top{right:-1%;}
+  #work .holo-satellite-bottom{left:-2%;top:57%;}
+}
+@media(max-width:920px){
+  #work.holo-projects{padding:90px 0 96px;}
+  #work.holo-projects>.shell{width:calc(100% - 48px);}
+  #work .holo-layout{display:flex;flex-direction:column;align-items:stretch;gap:18px;}
+  #work .holo-copy{width:100%;}
+  #work .holo-title{font-size:clamp(3.5rem,9vw,6rem);}
+  #work .holo-lead{margin:18px 0 25px;}
+  #work .holo-selector{max-width:none;grid-template-columns:repeat(2,minmax(0,1fr));}
+  #work .holo-option{gap:10px;grid-template-columns:21px 21px minmax(0,1fr) 15px;}
+  #work .holo-detail-card{max-width:none;}
+  #work .holo-stage{height:650px;width:min(810px,100%);margin:0 auto;}
+  #work .holo-actions{margin-bottom:0;}
+}
+@media(max-width:600px){
+  #work.holo-projects{padding:75px 0 68px;}
+  #work.holo-projects>.shell{width:calc(100% - 30px);}
+  #work .holo-title{font-size:clamp(3.25rem,13.2vw,5.4rem);}
+  #work .holo-eyebrow{font-size:.57rem;}
+  #work .holo-lead{font-size:.82rem;line-height:1.6;}
+  #work .holo-selector{gap:7px;}
+  #work .holo-option{height:49px;padding:0 9px;gap:7px;grid-template-columns:16px 15px minmax(0,1fr);font-size:.72rem;}
+  #work .holo-option-arrow{display:none}
+  #work .holo-option-icon{font-size:.9rem;}
+  #work .holo-detail-card{padding:17px 15px;}
+  #work .holo-detail-row{grid-template-columns:66px minmax(0,1fr);gap:8px}
+  #work .holo-action{flex:1;min-width:115px;padding:0 10px;font-size:.68rem;}
+  #work .holo-stage{height:355px;overflow:hidden;margin:10px -15px 0;width:calc(100% + 30px);}
+  #work .holo-stage::before{top:5%;height:85%;}
+  #work .holo-browser-wrap{top:15%;left:8%;width:87%;height:54%;transform:none!important;animation:none!important;}
+  #work .holo-browser{border-radius:7px;}
+  #work .holo-browser-bar{height:23px;padding:0 8px;gap:4px;}
+  #work .holo-browser-dot{width:4px;height:4px;}
+  #work .holo-browser-url{margin-left:5px;font-size:.43rem;}
+  #work .holo-browser-live{font-size:.4rem;}
+  #work .holo-app{grid-template-columns:59px minmax(0,1fr);}
+  #work .holo-app-sidebar{padding:11px 3px;}
+  #work .holo-app-brand{font-size:.62rem;margin:0 4px 10px;}
+  #work .holo-app-nav{gap:3px;}
+  #work .holo-app-nav span{padding:5px 3px;font-size:.4rem;}
+  #work .holo-app-main{padding:8px 9px;}
+  #work .holo-app-heading{margin:0 0 7px;}
+  #work .holo-app-heading b{font-size:.62rem;}
+  #work .holo-app-heading small{font-size:.4rem;}
+  #work .holo-app-metric-row{gap:4px;margin-bottom:7px;}
+  #work .holo-app-metric{padding:5px;border-radius:4px;}
+  #work .holo-app-metric small{font-size:.36rem;}
+  #work .holo-app-metric b{font-size:.7rem;margin-top:3px;}
+  #work .holo-app-panels{gap:5px;height:calc(100% - 64px)}
+  #work .holo-app-panel{padding:6px;border-radius:5px;}
+  #work .holo-app-panel-title{font-size:.4rem;}
+  #work .holo-app-panel-title small{font-size:.33rem;}
+  #work .holo-graph{min-height:28px;height:50%;}
+  #work .holo-mini-row{font-size:.38rem;padding:4px 0;gap:3px;}
+  #work .holo-mini-row i{width:12px;height:12px;font-size:.37rem;}
+  #work .holo-mini-row small{font-size:.31rem;}
+  #work .holo-mini-bars{height:24px;margin-top:4px;}
+  #work .holo-beam{top:16%;height:68%;}
+  #work .holo-projector-base{left:1%;bottom:0;width:99%;max-height:136px;}
+  #work .holo-projector-name{bottom:9%;font-size:.4rem;}
+  #work .holo-satellite-top{top:7%;right:0;width:89px;min-width:0;padding:6px;transform:rotate(-5deg);}
+  #work .holo-satellite-bottom{top:64%;left:2%;width:95px;min-width:0;padding:6px;transform:rotate(3deg);}
+  #work .holo-side-panel strong{font-size:.4rem;}
+  #work .holo-side-panel small{font-size:.36rem;margin-top:2px;}
+  #work .holo-signal{height:11px;margin-top:4px;}
+  #work .holo-signal i{width:3px;}
+  #work .holo-satellite-bottom svg{height:20px;}
+  #work .holo-stage-status{bottom:5%;right:3%;font-size:.4rem;}
+}
+@media(prefers-reduced-motion:reduce){
+  #work .holo-stage *,#work .holo-stage *::before,#work .holo-stage *::after{animation:none!important;transition:none!important;}
+  #work .holo-option,#work .holo-action{transition:none!important;}
+}
