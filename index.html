@@ -2155,25 +2155,37 @@
     }
   }
   </script>
-  <style id="orbit-hero-style">
-    .orbit-hero-scene {
-      position: absolute;
-      top: 18%;
-      right: -5%;
-      width: min(67vw, 1040px);
-      height: min(73svh, 760px);
-      z-index: 0;
-      pointer-events: none;
-      contain: layout paint;
-      opacity: 0;
-      transition: opacity 1.2s cubic-bezier(.22,1,.36,1);
-      -webkit-mask-image: radial-gradient(ellipse at 50% 48%, #000 38%, rgba(0,0,0,.9) 61%, transparent 78%);
-      mask-image: radial-gradient(ellipse at 50% 48%, #000 38%, rgba(0,0,0,.9) 61%, transparent 78%);
+  <style id="react-hero-style">
+    /* One lightweight React atom behind the original portrait and typography. */
+    .hero-react-3d {
+      position:absolute;
+      z-index:1;
+      top:50%;
+      right:-1.5%;
+      transform:translateY(-43%);
+      width:min(51vw,740px);
+      height:min(72svh,720px);
+      min-height:440px;
+      pointer-events:none;
+      overflow:hidden;
+      contain:layout paint;
+      opacity:0;
+      transition:opacity 1s cubic-bezier(.22,1,.36,1);
     }
-    .orbit-hero-scene.is-mounted { opacity: .78; }
-    .orbit-hero-scene canvas { display: block; }
-    @media (max-width: 1050px), (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
-      .orbit-hero-scene { display: none !important; }
+    .hero-react-3d::before {
+      content:"";
+      position:absolute;
+      inset:12%;
+      border-radius:50%;
+      pointer-events:none;
+      background:radial-gradient(circle,rgba(71,203,228,.15),rgba(28,107,127,.055) 42%,transparent 68%);
+    }
+    .hero-react-3d.is-mounted { opacity:.96; }
+    .hero-react-3d canvas { position:relative;z-index:1;display:block;width:100%;height:100% }
+    /* The old decorative elliptical outline competes with the recognizable React atom. */
+    .lux-hero.has-react-object::after {opacity:.12;}
+    @media(max-width:1050px),(hover:none),(pointer:coarse),(prefers-reduced-motion:reduce) {
+      .hero-react-3d {display:none!important}
     }
   </style>
 
@@ -2322,7 +2334,7 @@
     <section class="hero lux-hero" id="home">
       <div class="hero-grid" aria-hidden="true"></div>
       <div class="hero-glow" aria-hidden="true"></div>
-      <div class="orbit-hero-scene" id="orbitHeroScene" aria-hidden="true"></div>
+      <div class="hero-react-3d" id="heroReact3D" aria-hidden="true"></div>
 
       <div class="shell hero-inner lux-hero-inner">
         <p class="hero-kicker">Frontend / UI Developer</p>
@@ -2536,7 +2548,8 @@
 
     // Hero parallax — desktop pointer only. No scroll work.
     const hero = document.getElementById('home');
-    const heroCanParallax = finePointer && innerWidth > 900 && !reduceMotion;
+    // With a WebGL atom mounted, avoid running competing text/portrait parallax.
+    const heroCanParallax = finePointer && innerWidth > 900 && !reduceMotion && !document.getElementById('heroReact3D');
     let heroRaf = 0;
     let heroTargetX = 0;
     let heroTargetY = 0;
@@ -3194,34 +3207,37 @@
     }
 
   </script>
-  <!-- Load the WebGL scene only on strong desktop devices, after the intro. -->
+  <!-- Optional 3D React atom: load once after intro and only on capable desktop devices. -->
   <script type="module">
-    const orbitHero = document.getElementById('home');
-    const orbitHost = document.getElementById('orbitHeroScene');
-    const orbitEligible = matchMedia('(min-width:1051px) and (hover:hover) and (pointer:fine)').matches
-      && !matchMedia('(prefers-reduced-motion:reduce)').matches
-      && !(navigator.connection && navigator.connection.saveData)
-      && (!navigator.deviceMemory || navigator.deviceMemory >= 4);
-    if (orbitHero && orbitHost && orbitEligible) {
+    const reactHeroHost = document.getElementById('heroReact3D');
+    const reactHeroSection = document.getElementById('home');
+    const reactHeroEligible =
+      matchMedia('(min-width:1051px) and (hover:hover) and (pointer:fine)').matches &&
+      !matchMedia('(prefers-reduced-motion:reduce)').matches &&
+      !(navigator.connection && navigator.connection.saveData) &&
+      (!navigator.deviceMemory || navigator.deviceMemory >= 4) &&
+      !!window.WebGLRenderingContext;
+    if (reactHeroHost && reactHeroSection && reactHeroEligible) {
       let started = false;
-      const startOrbit = () => {
-        if (started || document.documentElement.classList.contains('intro-playing')) return;
+      const startHeroAtom = () => {
+        if (started) return;
+        if (document.documentElement.classList.contains('intro-playing')) {
+          document.addEventListener('portfolio:intro-ended', startHeroAtom, { once:true });
+          return;
+        }
         started = true;
-        import('./assets/orbit-scene.mjs').catch(error => {
-          orbitHost.classList.remove('is-mounted');
-          console.warn('Optional 3D hero unavailable:', error);
+        import('./assets/hero-react-object.mjs').catch(error => {
+          reactHeroHost.classList.remove('is-mounted');
+          reactHeroSection.classList.remove('has-react-object');
+          console.warn('Optional React 3D hero unavailable:', error);
         });
       };
-      const orbitObserver = new IntersectionObserver(entries => {
+      const observer = new IntersectionObserver(entries => {
         if (!entries[0].isIntersecting) return;
-        orbitObserver.disconnect();
-        if (document.documentElement.classList.contains('intro-playing')) {
-          document.addEventListener('portfolio:intro-ended', startOrbit, { once: true });
-        } else {
-          startOrbit();
-        }
-      }, { rootMargin: '80px 0px', threshold: 0 });
-      orbitObserver.observe(orbitHero);
+        observer.disconnect();
+        startHeroAtom();
+      }, { rootMargin:'120px 0px', threshold:0 });
+      observer.observe(reactHeroSection);
     }
   </script>
 
