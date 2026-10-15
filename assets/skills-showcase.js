@@ -86,7 +86,7 @@
     const w=Math.max(1,host.clientWidth);
     // Mobile deliberately shows a full center tile and cropped neighboring
     // tiles, instead of making all three too small to read.
-    const visibleSlots=w>=1510?9:w>=1110?7:w>=760?5:3;
+    const visibleSlots=w>=1510?9:w>=1110?7:w>=950?5:3;
     radius=Math.floor(visibleSlots/2);
     cardWidth=w<560?(w<350?146:160):
       Math.min(182,Math.max(127,(w-170)/(visibleSlots*1.045)));
