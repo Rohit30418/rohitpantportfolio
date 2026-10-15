@@ -1,0 +1,330 @@
+/* Skills Glass Gallery — approved cyan-lit technology showcase.
+   DOM/CSS transforms, no continuously rendered WebGL or animation loop. */
+#skills.skills-marquee-section {
+  background:
+    radial-gradient(ellipse at 55% 84%,rgba(8,118,154,.19),transparent 40%),
+    radial-gradient(ellipse at 97% 0%,rgba(5,66,92,.24),transparent 48%),
+    linear-gradient(180deg,#02090e 0%,#021017 57%,#02090e 100%);
+  border-top:1px solid rgba(75,173,193,.12);
+  padding:clamp(78px,8.2vw,118px) 0 clamp(58px,6vw,90px);
+  isolation:isolate;
+}
+#skills.skills-marquee-section::before {
+  opacity:.16;
+  background-image:radial-gradient(circle,rgba(91,206,228,.35) .7px,transparent 1px);
+  background-size:23px 23px;
+}
+#skills .skills-marquee-head {
+  width:min(1450px,calc(100% - clamp(30px,7vw,136px)));
+  max-width:none;
+  margin:0 auto clamp(10px,1.5vw,24px);
+  grid-template-columns:minmax(0,1.04fr) minmax(290px,.72fr);
+  align-items:end;
+  gap:clamp(28px,7vw,110px);
+}
+#skills .skills-marquee-title{
+  font-size:clamp(3.1rem,5.5vw,6.2rem);
+  line-height:.95;
+  font-weight:760;
+  letter-spacing:-.072em;
+}
+#skills .skills-marquee-title span:last-child{
+  margin-top:4px;
+  color:#3cddf5;
+  -webkit-text-stroke:0 transparent;
+  text-stroke:0 transparent;
+  text-shadow:0 0 33px rgba(32,177,217,.12);
+}
+#skills .skills-marquee-head .lux-section-index{
+  color:#93cfdd;
+  letter-spacing:.18em;
+}
+#skills .skills-marquee-head .lux-section-index span{color:#45d5ed;}
+#skills .skills-marquee-head > p{
+  max-width:440px;
+  justify-self:end;
+  margin-bottom:12px;
+  color:#b1c1c9;
+  font-size:clamp(.8rem,.95vw,.94rem);
+  line-height:1.6;
+}
+#skills .skills-universe-3d {
+  position:relative;
+  display:none;
+  width:min(1580px,100%);
+  height:auto;
+  min-height:0;
+  margin:0 auto;
+  overflow:visible;
+  visibility:visible;
+  pointer-events:auto;
+}
+#skills.skills-universe-ready .skills-universe-3d {
+  position:relative;
+  display:block!important;
+  width:min(1580px,100%);
+  height:auto;
+  min-height:0;
+  visibility:visible;
+  pointer-events:auto;
+}
+#skills.skills-universe-ready .skills-marquee-wrap{display:none!important;}
+#skills .skills-glass-stage {
+  position:relative;
+  width:100%;
+  height:clamp(360px,33vw,475px);
+  min-height:0;
+  overflow:hidden;
+  isolation:isolate;
+  perspective:1000px;
+  touch-action:pan-y;
+  user-select:none;
+  -webkit-user-select:none;
+}
+#skills .skills-glass-stage::before {
+  content:"";
+  position:absolute;
+  z-index:0;
+  top:7%;bottom:2%;
+  left:6%;right:6%;
+  pointer-events:none;
+  background:radial-gradient(ellipse at 50% 68%,rgba(10,102,132,.17),transparent 65%);
+}
+#skills .skills-glass-floor {
+  position:absolute;
+  z-index:0;
+  bottom:-4%;
+  left:5%;width:90%;
+  height:49%;
+  pointer-events:none;
+  transform:perspective(560px) rotateX(66deg);
+  transform-origin:bottom center;
+  border-radius:50%;
+  background:
+    repeating-linear-gradient(0deg,rgba(91,201,232,.13) 0 1px,transparent 1px 35px),
+    repeating-linear-gradient(90deg,rgba(91,201,232,.12) 0 1px,transparent 1px 49px),
+    radial-gradient(ellipse at 50% 54%,rgba(3,134,169,.27),rgba(2,30,43,.12) 59%,transparent 77%);
+  -webkit-mask-image:radial-gradient(ellipse,black 38%,transparent 74%);
+  mask-image:radial-gradient(ellipse,black 38%,transparent 74%);
+}
+#skills .skills-glass-rim{
+  position:absolute;
+  z-index:0;
+  bottom:3.8%;
+  left:8%;width:84%;
+  height:25%;
+  border:2px solid rgba(48,221,251,.73);
+  border-radius:50%;
+  transform:perspective(800px) rotateX(63deg);
+  box-shadow:0 0 14px rgba(31,196,243,.53),inset 0 0 21px rgba(12,181,224,.26);
+  pointer-events:none;
+}
+#skills .skills-glass-rim::after{
+  content:"";position:absolute;inset:0;
+  border-radius:inherit;
+  box-shadow:0 0 35px rgba(37,218,255,.33),0 0 80px rgba(19,164,224,.13);
+}
+#skills .skills-glass-items {
+  position:absolute;
+  z-index:2;
+  inset:0;
+  pointer-events:none;
+  transform-style:preserve-3d;
+}
+#skills .skills-glass-card {
+  --skill-accent:#5dddec;
+  position:absolute;
+  left:50%;
+  top:14%;
+  width:var(--skill-card-width,170px);
+  height:clamp(204px,19vw,255px);
+  padding:16px 10px 18px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:0;
+  overflow:hidden;
+  transform:translate3d(-50%,0,0);
+  transform-origin:center center;
+  opacity:0;
+  background:
+    radial-gradient(ellipse at 95% 0%,color-mix(in srgb,var(--skill-accent) 13%,transparent),transparent 55%),
+    linear-gradient(155deg,rgba(24,62,78,.68),rgba(5,20,32,.94) 44%,rgba(4,20,30,.87));
+  color:#f1fbfd;
+  border:1px solid rgba(103,216,248,.45);
+  border-radius:15px;
+  box-shadow:
+    inset 1px 1px 0 rgba(188,242,255,.28),
+    inset -3px -4px 12px rgba(17,108,143,.12),
+    6px 15px 29px rgba(0,0,0,.42),
+    0 0 0 1px rgba(5,51,73,.25);
+  pointer-events:none;
+  cursor:pointer;
+  appearance:none;
+  -webkit-appearance:none;
+  text-align:center;
+  transition:transform .58s cubic-bezier(.22,.72,.16,1),opacity .4s ease,border-color .3s ease,box-shadow .3s ease;
+  will-change:transform;
+  backface-visibility:hidden;
+}
+#skills .skills-glass-card::before{
+  content:"";position:absolute;
+  top:8px;bottom:9px;
+  right:7px;width:2px;
+  border-radius:5px;
+  background:linear-gradient(180deg,rgba(83,238,255,.2),rgba(18,220,255,.07) 70%,rgba(46,229,255,.54));
+  pointer-events:none;
+}
+#skills .skills-glass-card::after{
+  content:"";position:absolute;left:14px;right:14px;bottom:0;height:2px;
+  border-radius:10px;
+  background:linear-gradient(90deg,transparent,var(--skill-accent),transparent);
+  opacity:.67;
+  box-shadow:0 0 11px var(--skill-accent);
+  pointer-events:none;
+}
+#skills .skills-glass-card[data-visible="true"]{pointer-events:auto;}
+#skills .skills-glass-card[data-active="true"]{
+  border-color:rgba(120,245,255,.83);
+  box-shadow:
+    inset 0 1px 0 rgba(218,250,255,.38),
+    0 18px 38px rgba(0,0,0,.48),
+    0 0 22px rgba(23,183,221,.2);
+}
+#skills .skills-glass-card[data-visible="true"]:hover,
+#skills .skills-glass-card:focus-visible {
+  outline:none;
+  border-color:#a0f2ff;
+  box-shadow:0 0 0 2px rgba(81,209,241,.27),0 14px 34px rgba(0,0,0,.43),0 0 30px rgba(33,204,243,.24);
+}
+#skills .skills-glass-logo{
+  display:grid;
+  place-items:center;
+  flex:none;
+  width:clamp(65px,7.2vw,98px);
+  height:clamp(65px,7.2vw,98px);
+  margin:0 auto clamp(15px,1.8vw,22px);
+  font-size:clamp(3rem,4.4vw,4.8rem);
+  line-height:1;
+  color:var(--skill-accent);
+  filter:drop-shadow(0 3px 11px color-mix(in srgb,var(--skill-accent) 20%,transparent));
+}
+#skills .skills-glass-logo i{font-size:inherit;}
+#skills .skills-glass-monogram {
+  display:grid;
+  place-items:center;
+  width:clamp(54px,6.4vw,82px);
+  height:clamp(54px,6.4vw,82px);
+  font-size:clamp(1.8rem,3.2vw,3rem);
+  line-height:1;
+  font-weight:850;
+  letter-spacing:-.09em;
+  border-radius:3px;
+  background:var(--skill-accent);
+  color:#07151b;
+}
+#skills .skills-glass-label{
+  display:block;
+  width:100%;
+  font-size:clamp(.91rem,1.19vw,1.22rem);
+  font-weight:750;
+  line-height:1.2;
+  letter-spacing:-.035em;
+  color:#f8fdff;
+  white-space:normal;
+}
+#skills .skills-glass-category{
+  display:block;
+  margin-top:9px;
+  width:100%;
+  color:#acbec6;
+  font-size:clamp(.67rem,.75vw,.8rem);
+  line-height:1.25;
+  font-weight:450;
+}
+#skills .skills-glass-nav{
+  position:absolute;
+  z-index:5;
+  top:47%;
+  width:clamp(44px,4.2vw,58px);
+  height:clamp(44px,4.2vw,58px);
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(48,220,248,.76);
+  border-radius:50%;
+  background:rgba(3,21,30,.83);
+  color:#ecfbff;
+  font:500 1.55rem/1 Manrope,system-ui,sans-serif;
+  cursor:pointer;
+  box-shadow:0 0 17px rgba(19,198,240,.1);
+  transition:background .2s,border-color .2s,transform .2s;
+}
+#skills .skills-glass-prev{left:clamp(14px,3vw,55px);}
+#skills .skills-glass-next{right:clamp(14px,3vw,55px);}
+#skills .skills-glass-nav:hover,
+#skills .skills-glass-nav:focus-visible{
+  background:#0b3b4a;
+  border-color:#c2faff;
+  outline:2px solid rgba(61,204,232,.3);
+  outline-offset:2px;
+}
+#skills .skills-glass-caption {
+  position:absolute;z-index:3;
+  left:50%;bottom:1%;
+  transform:translateX(-50%);
+  color:rgba(132,201,215,.76);
+  font-size:.63rem;
+  font-weight:700;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  white-space:nowrap;
+}
+#skills .skills-glass-card[data-visible="false"]{
+  visibility:hidden;
+  transition:opacity .16s ease,visibility .16s;
+}
+@media(max-width:1100px){
+  #skills .skills-marquee-head{
+    grid-template-columns:1fr minmax(220px,.7fr);
+    gap:20px;
+  }
+  #skills .skills-marquee-title{font-size:clamp(3.3rem,6.3vw,5.2rem);}
+  #skills .skills-glass-stage{height:390px;}
+  #skills .skills-glass-card{height:222px;}
+  #skills .skills-glass-logo{height:72px;width:72px;font-size:3.4rem;margin-bottom:13px;}
+  #skills .skills-glass-monogram{height:59px;width:59px;font-size:2rem;}
+  #skills .skills-glass-label{font-size:.99rem;}
+}
+@media(max-width:760px){
+  #skills.skills-marquee-section{padding:75px 0 59px;}
+  #skills .skills-marquee-head{
+    display:grid;grid-template-columns:1fr;gap:16px;
+    margin-bottom:6px;
+    width:calc(100% - 36px);
+  }
+  #skills .skills-marquee-title{
+    font-size:clamp(2.8rem,10vw,4.6rem);
+    line-height:.94;
+  }
+  #skills .skills-marquee-head>p{
+    max-width:520px;
+    justify-self:start;
+    margin-bottom:0;
+    font-size:.82rem;
+  }
+  #skills .skills-glass-stage{height:355px;}
+  #skills .skills-glass-card{top:16%;height:213px;border-radius:12px;padding:13px 9px;}
+  #skills .skills-glass-logo{width:62px;height:62px;font-size:2.9rem;margin-bottom:12px;}
+  #skills .skills-glass-monogram{width:54px;height:54px;font-size:1.7rem;}
+  #skills .skills-glass-label{font-size:.95rem;}
+  #skills .skills-glass-category{font-size:.68rem;}
+  #skills .skills-glass-nav{width:39px;height:39px;top:49%;font-size:1.3rem;}
+  #skills .skills-glass-prev{left:8px;}
+  #skills .skills-glass-next{right:8px;}
+  #skills .skills-glass-caption{bottom:0;font-size:.55rem;letter-spacing:.08em;}
+}
+@media(prefers-reduced-motion:reduce){
+  #skills .skills-glass-card,
+  #skills .skills-glass-nav {transition:none!important;}
+}
