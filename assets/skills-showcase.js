@@ -41,10 +41,6 @@
   stage.setAttribute('role','region');
   stage.setAttribute('aria-roledescription','carousel');
   stage.setAttribute('aria-label','Tools I use to build. Use previous and next buttons or arrow keys.');
-  const floor=make('div','skills-glass-floor');
-  floor.setAttribute('aria-hidden','true');
-  const rim=make('div','skills-glass-rim');
-  rim.setAttribute('aria-hidden','true');
   const items=make('div','skills-glass-items');
   const cards=SKILLS.map((skill,i)=>{
     const b=make('button','skills-glass-card');
@@ -72,9 +68,8 @@
   prev.type='button';prev.setAttribute('aria-label','Previous skill');
   const next=make('button','skills-glass-nav skills-glass-next','→');
   next.type='button';next.setAttribute('aria-label','Next skill');
-  const caption=make('div','skills-glass-caption');
-  caption.setAttribute('aria-live','polite');
-  stage.append(floor,rim,items,prev,next,caption);
+  // Keep the card gallery and controls only; no oversized ring or counter footer.
+  stage.append(items,prev,next);
   host.replaceChildren(stage);
 
   const circularOffset=i=>{
@@ -113,7 +108,6 @@
       card.style.transform='translate3d(calc(-50% + '+Math.round(x)+'px),'+y+'px,0) rotateY('+rotate+'deg) scale('+scale.toFixed(3)+')';
       if(onStage)visible.push(SKILLS[i].name);
     });
-    caption.textContent=String(active+1).padStart(2,'0')+' / '+count+'  ·  '+(w<760?'SWIPE OR USE ARROWS':'DRAG OR USE ARROWS');
     if(firstPaint){
       // No unexpected fly-in animation on initial reveal.
       stage.classList.add('skills-glass-initialized');
