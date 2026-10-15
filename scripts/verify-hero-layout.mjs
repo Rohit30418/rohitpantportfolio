@@ -65,6 +65,7 @@ try {
         noHorizontalOverflow:document.documentElement.scrollWidth<=innerWidth+3,
         heroNameBelowHeader:name.top>=header.bottom+6,
         wordsNotColliding:first.right+5<last.left,
+        wordsGrouped:last.left-first.right<=35,
         roleBeforeIntro:role.bottom+6<=intro.top,
         // The last version passed geometry tests despite an enormous void.
         // Keep availability near the role, and always expose the CTA in
