@@ -66,6 +66,12 @@ try {
         heroNameBelowHeader:name.top>=header.bottom+6,
         wordsNotColliding:first.right+5<last.left,
         roleBeforeIntro:role.bottom+6<=intro.top,
+        // The last version passed geometry tests despite an enormous void.
+        // Keep availability near the role, and always expose the CTA in
+        // comfortable desktop viewports.
+        noHugeIntroGap:mobile||intro.top-role.bottom<=125,
+        desktopCTAVisible:innerWidth<981||innerHeight<720||intro.bottom<=innerHeight-30,
+        portraitNotDropped:innerWidth<981||innerHeight<720||portrait.top<=innerHeight*.57,
         introPortraitNoCollision:!intersects(intro,portrait,10),
         rolePortraitNoCollision:!intersects(role,portrait,8),
         copyWithinBounds:role.left>=-1&&intro.left>=-1&&intro.right<=innerWidth+1,
