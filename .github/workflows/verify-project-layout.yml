@@ -1,0 +1,34 @@
+name: Verify project viewport layout
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "index.html"
+      - "assets/project-hologram-one-screen.css"
+      - "assets/project-hologram.js"
+      - "scripts/verify-project-layout.mjs"
+      - ".github/workflows/verify-project-layout.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  project-layout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser testing dependencies
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install chromium --with-deps
+      - name: Serve static portfolio
+        run: |
+          python3 -m http.server 8777 --bind 127.0.0.1 > /tmp/portfolio-server.log 2>&1 &
+          sleep 2
+      - name: Check desktop and mobile viewports
+        run: node scripts/verify-project-layout.mjs
