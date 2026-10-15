@@ -75,7 +75,7 @@
   }
   #home .lux-intro {
     left: 0;
-    bottom: clamp(105px, 12.8vh, 145px);
+    bottom: clamp(195px, 23vh, 238px);
     width: min(415px, 29vw);
     z-index: 6;
   }
@@ -132,47 +132,6 @@
     transform: translateY(-2px);
     border-color: rgba(88,203,233,.75);
     background: rgba(27,51,59,.8);
-  }
-  #home .hero-metrics {
-    position: relative;
-    display: grid;
-    grid-template-columns: repeat(3,minmax(0,1fr));
-    gap: 0;
-    margin-top: clamp(24px,3.2vh,35px);
-    padding-top: 24px;
-    border-top: 1px solid rgba(203,220,220,.21);
-    color: #f7f8f3;
-  }
-  #home .hero-metrics::before {
-    content:""; position:absolute; top:-5px; left:48px;
-    width:9px;height:9px;border:1px solid #edc17e;
-    border-radius:50%;background:#080b0c;
-    box-shadow:0 0 0 4px #090b0b;
-  }
-  #home .hero-metric {
-    min-width:0;
-    padding-right:10px;
-  }
-  #home .hero-metric+.hero-metric {
-    padding-left:19px;
-    border-left:1px solid rgba(230,235,230,.22);
-  }
-  #home .hero-metric strong {
-    display:block;
-    font-size:clamp(1.55rem,2.05vw,2.25rem);
-    line-height:1;
-    font-weight:740;
-    letter-spacing:-.065em;
-  }
-  #home .hero-metric small {
-    display:block;
-    margin-top:9px;
-    font-size:.58rem;
-    letter-spacing:.17em;
-    line-height:1.55;
-    color:#a9b6b9;
-    font-weight:680;
-    text-transform:uppercase;
   }
   #home .hero-skillrail {
     left:0;right:0;
@@ -295,7 +254,7 @@
 }
 @media (min-width:1051px) and (max-width:1360px) {
   #home .lux-hero-name {font-size:clamp(5.2rem,9.2vw,8rem);}
-  #home .lux-intro {width:355px;bottom:92px;}
+  #home .lux-intro {width:355px;bottom:175px;}
   #home .lux-intro p {font-size:.9rem;}
   #home .lux-primary {min-width:150px;padding:0 19px;}
   #home .lux-text-link.hero-contact-button {min-width:139px;padding:0 14px;}
@@ -311,7 +270,6 @@
   }
   #home .hero-design-role span {color:#65d4ef;}
   #home .lux-hero-name {font-weight:720;}
-  #home .hero-metrics {display:none;}
   #home .lux-intro {width:min(310px,32vw);}
   #home .lux-text-link.hero-contact-button {display:inline-flex;}
 }
@@ -328,7 +286,6 @@
     font-weight:660;letter-spacing:-.035em;
   }
   #home .hero-design-role span {color:#70d7ed;}
-  #home .hero-metrics {display:none;}
   #home .lux-intro {z-index:6;bottom:43px;}
   #home .lux-intro .hero-actions {gap:12px;justify-content:center;}
   #home .lux-primary {height:43px;min-width:137px;padding:0 15px;}
