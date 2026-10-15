@@ -2288,6 +2288,7 @@
       .skills-marquee-section.skills-universe-ready .skills-marquee-wrap {display:grid!important}
     }
   </style>
+  <link rel="stylesheet" href="assets/hero-cinematic.css" />
 </head>
 <body>
   <div class="cursor-follower" id="cursorFollower" aria-hidden="true"></div>
@@ -2322,7 +2323,7 @@
       <a href="#skills">Skills</a>
       <a href="#contact">Contact</a>
     </nav>
-    <a class="top-cta lux-top-cta" href="#contact">Let’s Talk</a>
+    <a class="top-cta lux-top-cta" href="#contact">Let’s Talk <span aria-hidden="true">→</span></a>
     <button class="menu-button" id="menuButton" aria-label="Open menu" aria-expanded="false">☰</button>
   </header>
 
@@ -2334,7 +2335,10 @@
     <section class="hero lux-hero" id="home">
       <div class="hero-grid" aria-hidden="true"></div>
       <div class="hero-glow" aria-hidden="true"></div>
+      <div class="hero-portrait-glow" aria-hidden="true"></div>
+      <div class="hero-atom-platform" aria-hidden="true"></div>
       <div class="hero-react-3d" id="heroReact3D" aria-hidden="true"></div>
+      <div class="hero-side-caption" aria-hidden="true">BUILD<br />BEAUTIFUL<br />EXPERIENCES</div>
 
       <div class="shell hero-inner lux-hero-inner">
         <p class="hero-kicker">Frontend / UI Developer</p>
@@ -2343,16 +2347,19 @@
           <span>ROHIT</span><span>PANT</span>
         </h1>
 
-        <div class="lux-role" aria-hidden="true">
-          <span>FRONTEND</span><span>DEVELOPER</span>
-        </div>
+        <div class="lux-role hero-design-role">Frontend <span>UI Developer</span></div>
 
         <div class="lux-intro">
           <div class="availability"><span aria-hidden="true"></span>Open to frontend opportunities</div>
           <p>I build polished web products with React, TypeScript, realtime features and thoughtful interaction.</p>
           <div class="hero-actions">
-            <a class="btn btn-primary lux-primary" href="#work">View Projects</a>
-            <a class="lux-text-link" href="#contact">Contact Me <span>↗</span></a>
+            <a class="btn btn-primary lux-primary" href="#work">View Projects <span class="hero-cta-arrow" aria-hidden="true">→</span></a>
+            <a class="lux-text-link hero-contact-button" href="#contact"><span aria-hidden="true">✉</span> Contact Me</a>
+          </div>
+          <div class="hero-metrics" aria-label="Portfolio highlights">
+            <div class="hero-metric"><strong>5+</strong><small>Projects</small></div>
+            <div class="hero-metric"><strong>4+</strong><small>Years building</small></div>
+            <div class="hero-metric"><strong>∞</strong><small>Passion for web</small></div>
           </div>
         </div>
 
