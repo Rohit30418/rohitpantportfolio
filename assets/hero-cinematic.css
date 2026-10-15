@@ -288,6 +288,11 @@
 }
 #home .hero-glow {background:rgba(41,175,201,.07);filter:blur(65px);}
 #home .hero-side-caption,#home .hero-atom-platform,#home .hero-portrait-glow {display:none;}
+@media(min-width:1051px) {
+  #home .hero-side-caption,
+  #home .hero-atom-platform,
+  #home .hero-portrait-glow {display:block;}
+}
 @media (min-width:1051px) and (max-width:1360px) {
   #home .lux-hero-name {font-size:clamp(5.2rem,9.2vw,8rem);}
   #home .lux-intro {width:355px;bottom:114px;}
