@@ -37,31 +37,24 @@ this static-site approach imports React, R3F, Drei and GSAP from pinned
 esm.sh URLs in `index.html`. A bundled build with Vite is recommended
 if WebGL becomes a critical production feature.
 
-## Interactive 3D skills carousel
+## Skills Glass Gallery (October 15, 2026)
 
-The existing Skills section has a progressive, Three.js-based 3D carousel
-on desktop. It uses React Three Fiber for WebGL rendering and GSAP for
-the smooth selected-skill rotation.
+Replaced the tiny WebGL technology ring with a **wide, legible interactive
+carousel** inspired by the approved Skills screenshot:
 
-- `assets/skills-universe.mjs` draws texture-mapped floating cards in a
-  circular 3D arrangement, plus an interactive description, drag navigation,
-  accessible arrow buttons and arrow-key support.
-- The new carousel mounts in `#skillsUniverse` and loads only when the Skills
-  section is nearby; it does not load at initial page render.
-- The original Font Awesome skill marquees remain intact as the fallback on
-  touch/mobile layouts, reduced-motion users, browsers without WebGL, low-memory
-  devices, data-saving connections, or CDN-loading failure.
-- Rendering is paused outside the Skills section and when the page is hidden.
-- Skill label canvases use 768×426 textures and a capped device pixel ratio.
-- The 3D island reuses the same pinned ES module import map as the optional
-  desktop hero scene. It is not a Vite application.
-- To edit skills shown in 3D, update the `DATA` array inside
-  `assets/skills-universe.mjs`. To edit the fallback, update the marquee
-  chip HTML inside `index.html`.
-
-If the scene fails to load, the original HTML skills section still appears.
-To roll back only this feature, revert the relevant index.html changes and
-remove `assets/skills-universe.mjs`.
+- Large translucent technology cards with readable icons, names and roles.
+- Curved cyan-lit floor and subtle CSS perspective, without continuous rendering.
+- 18 technologies, navigable with arrows, keyboard, clicking cards or swiping.
+- Desktop shows seven to nine cards across; smaller screens display three
+  large centered/neighboring tiles instead of shrinking text.
+- Built with `assets/skills-showcase.js` and `assets/skills-showcase.css`.
+  No React/Three.js/GSAP dependency is loaded for the Skills section.
+- The old plain HTML marquee still exists in `index.html` as the fail-open
+  fallback if JavaScript is disabled or initialization fails.
+- Original `assets/skills-universe.mjs` is retained only as old unused source;
+  it is **not imported** by the portfolio any longer.
+- The gallery is checked in Chromium by `scripts/verify-skills-showcase.mjs`
+  and `.github/workflows/verify-skills-showcase.yml`.
 
 ## Performance update — October 2026
 
@@ -76,9 +69,9 @@ remove `assets/skills-universe.mjs`.
   thumbnails plus the nearby frames, rather than all 90 frames.
 - Full-resolution WebP bitmap caching is capped (2 intro / 3 process on
   desktop), and canvases use a maximum effective DPR of 1 for cheaper paints.
-- The 3D Skills scene uses on-demand rendering at approximately 30 FPS,
-  smaller 512 × 284 label textures and a lower DPR cap; the React hero uses
-  a lower DPR cap and avoids pointer-triggered layout reads.
+- The Skills section no longer starts a WebGL scene or a 30 FPS loop;
+  it uses DOM cards with transform transitions only on user interaction.
+  The separate React hero retains a lower DPR cap.
 - Reduced the portrait's expensive layered drop-shadows to a single shadow
   and disabled the custom mouse-follower loop.
 
