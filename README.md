@@ -160,3 +160,29 @@ viewports also passed fixed-header clearance, CTA visibility and the
 one-screen section height constraint. The three project screenshot files are
 kept under `assets/project-shots/`.
 
+## Zoom-stable fluid hero — October 15, 2026
+
+The same cinematic ROHIT / PANT hero now uses a shared **responsive CSS
+Grid** rather than independently absolutely positioned text, portrait and
+React scene. The markup in `index.html` places the atom and rock platform
+inside the hero grid; `assets/hero-fluid.css` establishes layout rows,
+columns, typography, imagery, spacing and narrower-device flow.
+
+- Wide desktop: three columns for intro, centered portrait and React atom.
+- Narrow desktop/tablet: two columns, with the optional 3D scene disabled.
+- Phone: one column in natural flow, preventing overlap under zoom or large text.
+- An obsolete reduced-motion rule had continued shifting the portrait left by
+  half its own width. Its transform is now explicitly reset for every width.
+- All other sections, project screenshots, navigation, media, and the static
+  mobile fallback remain intact.
+
+**Automated Chromium verification:** GitHub Actions workflow
+`Verify responsive hero layout` ran
+`scripts/verify-hero-layout.mjs` across **15 viewport and zoom-equivalent
+sizes** (1920×1080, 1800×1125, 1728×900, 1440×900, 1366×768,
+1152×720, 1100×700, 1024×768, 960×600, 844×390, 768×1024,
+600×900, 390×844, 375×667, 320×640).
+All passed checks for header clearance, overlapping text/images, visible
+buttons, horizontal overflow and viewport containment. Reduced-motion is
+enabled during the layout regression to avoid dependency on CDN-hosted WebGL.
+
