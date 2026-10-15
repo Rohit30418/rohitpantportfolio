@@ -30,7 +30,24 @@ try {
         colorScheme:'dark'
       });
       page.setDefaultTimeout(10000);
-      const response=await page.goto(url,{ waitUntil:'domcontentloaded',timeout:45000 });
+      // Free Render instances may briefly return 503 during a cold start.
+      // Retry server errors rather than treating a sleeping service as a final failure.
+      let response=null;
+      for(let attempt=1;attempt<=3;attempt++){
+        try{
+          response=await page.goto(url,{ waitUntil:'domcontentloaded',timeout:45000 });
+          if(response && response.status()>=500 && attempt<3){
+            console.log(key+': received HTTP '+response.status()+'; retry '+attempt);
+            await page.waitForTimeout(20000);
+            continue;
+          }
+          break;
+        }catch(err){
+          if(attempt===3)throw err;
+          console.log(key+': navigation retry '+attempt+' ('+err.message+')');
+          await page.waitForTimeout(12000);
+        }
+      }
       if(response && response.status() >= 400) throw new Error('HTTP '+response.status());
       await page.waitForTimeout(5500);
       const health = await page.evaluate(() => ({
