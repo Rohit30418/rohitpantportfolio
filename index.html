@@ -6,12 +6,11 @@
   <meta name="theme-color" content="#05080b" />
   <meta name="color-scheme" content="dark" />
   <script>
-    // Phones and touch-first devices land directly on the portfolio.
-    // Decide before first paint so the hero is never hidden behind the intro.
-    const skipPortfolioIntro = matchMedia('(max-width:767px), (hover:none) and (pointer:coarse)').matches;
+    // Show a short, CSS-only loader once per browsing session.
+    const prefersSimpleEntry = matchMedia('(prefers-reduced-motion: reduce)').matches;
     let introAlreadySeen = false;
     try { introAlreadySeen = sessionStorage.getItem('rp-portfolio-intro-seen') === '1'; } catch (_) {}
-    document.documentElement.classList.add(skipPortfolioIntro || introAlreadySeen ? 'intro-seen' : 'intro-playing');
+    document.documentElement.classList.add(introAlreadySeen || prefersSimpleEntry ? 'intro-seen' : 'intro-playing');
   </script>
   <title>Rohit Pant | Frontend & UI Developer</title>
   <meta name="description" content="Rohit Pant is a Frontend and UI Developer building responsive production interfaces, realtime experiences and polished web products with React, TypeScript and modern frontend tooling." />
@@ -2029,115 +2028,6 @@
     }
 
   
-    /* =========================================================
-       FIRST-LOAD SCROLL INTRO
-       Scroll controls the intro once per browser session.
-       At completion it fades into the hero and is removed.
-       ========================================================= */
-    html.intro-playing,html.intro-playing body{overflow:hidden!important;overscroll-behavior:none}
-    html.intro-playing .lux-header,
-    html.intro-playing main,
-    html.intro-playing .footer{opacity:0}
-    html.intro-complete .lux-header,
-    html.intro-complete main,
-    html.intro-complete .footer{opacity:1;transition:opacity .78s cubic-bezier(.22,1,.36,1)}
-    html.intro-seen .intro-loader{display:none!important}
-
-    .intro-loader{
-      position:fixed;z-index:20000;inset:0;width:100%;height:100%;overflow:hidden;
-      background:#030403;isolation:isolate;opacity:1;visibility:visible;touch-action:none;
-      transition:opacity .72s cubic-bezier(.22,1,.36,1),visibility .72s step-end;
-    }
-    .intro-loader.is-done{opacity:0;visibility:hidden;pointer-events:none}
-    .intro-loader-canvas{
-      position:absolute;z-index:0;inset:0;width:100%;height:100%;display:block;
-      background:#030403;transform:translate3d(0,0,0) scale(1.002);backface-visibility:hidden;
-      will-change:transform;contain:paint;
-    }
-    .intro-loader-shade{
-      position:absolute;z-index:1;inset:0;pointer-events:none;
-      background:linear-gradient(180deg,rgba(0,0,0,.08),transparent 60%,rgba(0,0,0,.48)),
-                 radial-gradient(circle at 50% 50%,transparent 48%,rgba(0,0,0,.16) 100%);
-    }
-
-    /* Minimal progress indicator, without a card or background overlay. */
-    .intro-prepare{
-      position:absolute;
-      z-index:2;
-      left:50%;
-      bottom:110px;
-      width:min(560px,calc(100vw - 100px));
-      transform:translateX(-50%);
-      color:#f4f2ec;
-      opacity:1;
-      visibility:visible;
-      pointer-events:none;
-      transition:opacity .35s ease,visibility .35s ease;
-    }
-    .intro-prepare-inline{width:100%}
-    .intro-prepare-row{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:16px;
-      margin-bottom:13px;
-      font-size:.94rem;
-      font-weight:700;
-      letter-spacing:-.01em;
-      text-shadow:0 2px 12px rgba(0,0,0,.55);
-    }
-    .intro-prepare-percent{
-      color:#ffd09b;
-      font-size:1rem;
-      font-weight:800;
-      font-variant-numeric:tabular-nums;
-    }
-    .intro-prepare-track{
-      height:6px;
-      overflow:hidden;
-      border-radius:999px;
-      background:rgba(255,255,255,.15);
-    }
-    .intro-prepare-track i{
-      display:block;
-      width:100%;
-      height:100%;
-      border-radius:inherit;
-      transform:scaleX(0);
-      transform-origin:left center;
-      background:linear-gradient(90deg,#f4a65a,#ffd7a8);
-    }
-    .intro-loader:not(.is-ready) .intro-loader-ui{opacity:0;pointer-events:none}
-    .intro-loader.is-ready .intro-prepare{opacity:0;visibility:hidden;pointer-events:none}
-    .intro-loader.is-ready .intro-loader-ui{opacity:1;transition:opacity .35s ease}
-    .intro-loader-ui{
-      position:absolute;z-index:3;left:50%;bottom:32px;width:min(640px,calc(100vw - 120px));
-      transform:translateX(-50%);display:grid;grid-template-columns:auto minmax(120px,1fr) 42px;
-      align-items:center;gap:14px;color:rgba(244,243,238,.82);font-size:.61rem;font-weight:650;
-      letter-spacing:.13em;text-transform:uppercase;text-shadow:0 2px 15px rgba(0,0,0,.6);
-    }
-    .intro-loader-track{height:1px;overflow:hidden;background:rgba(255,255,255,.23)}
-    .intro-loader-track i{display:block;width:100%;height:100%;transform:scaleX(0);transform-origin:left center;background:#d1b36d;box-shadow:0 0 12px rgba(209,179,109,.45)}
-    .intro-skip{
-      position:absolute;z-index:4;top:24px;right:26px;min-width:72px;height:36px;padding:0 14px;
-      border:1px solid rgba(255,255,255,.16);border-radius:999px;background:rgba(5,6,5,.38);
-      color:rgba(244,243,238,.80);font-size:.62rem;font-weight:650;letter-spacing:.08em;
-      text-transform:uppercase;cursor:pointer;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-    }
-    .intro-skip:hover{border-color:rgba(209,179,109,.48);color:#fff}
-    /* Mobile skips the introductory loader completely, including its scroll lock. */
-    @media(max-width:767px), (hover:none) and (pointer:coarse){
-      .intro-loader{display:none!important}
-      html.intro-playing,html.intro-playing body{overflow:auto!important;overscroll-behavior:auto!important}
-      html.intro-playing .lux-header,
-      html.intro-playing main,
-      html.intro-playing .footer{opacity:1!important}
-    }
-    @media(prefers-reduced-motion:reduce){
-      .intro-loader{display:none!important}
-      html.intro-playing .lux-header,html.intro-playing main,html.intro-playing .footer{opacity:1!important}
-    }
-
   </style>
   <!-- Browser-native module imports for the optional, desktop-only 3D island.
        The existing static portfolio remains functional if this CDN is blocked. -->
@@ -2197,29 +2087,17 @@
   <link rel="stylesheet" href="assets/contact-journey.css" />
   <link rel="stylesheet" href="assets/project-hologram.css" />
   <link rel="stylesheet" href="assets/project-hologram-one-screen.css" />
+  <link rel="stylesheet" href="assets/experience-refresh.css" />
 </head>
 <body>
   <div class="cursor-follower" id="cursorFollower" aria-hidden="true"></div>
-  <div class="intro-loader" id="introLoader" aria-label="Portfolio introduction">
-    <canvas class="intro-loader-canvas" id="introLoaderCanvas" aria-hidden="true"></canvas>
-    <div class="intro-loader-shade" aria-hidden="true"></div>
-    <div class="intro-prepare" id="introPrepare" role="status" aria-live="polite" aria-label="Loading portfolio introduction">
-      <div class="intro-prepare-inline">
-        <div class="intro-prepare-row">
-          <span>Loading</span>
-          <span class="intro-prepare-percent" id="introPreparePercent" aria-hidden="true">0%</span>
-        </div>
-        <div class="intro-prepare-track" role="progressbar" aria-label="Loading animation" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="introPrepareMeter">
-          <i id="introPrepareProgress"></i>
-        </div>
-      </div>
+  <div class="intro-loader" id="introLoader" role="status" aria-live="polite" aria-label="Loading portfolio">
+    <div class="intro-loader-content">
+      <div class="intro-mark" aria-hidden="true"><span>R</span><i>/</i><span>P</span></div>
+      <p class="intro-loader-kicker">ROHIT PANT / PORTFOLIO</p>
+      <div class="intro-loading-track" aria-hidden="true"><i></i></div>
+      <span class="intro-loading-label">Preparing the experience</span>
     </div>
-    <div class="intro-loader-ui" aria-hidden="true">
-      <span id="introLoaderLabel">Preparing intro</span>
-      <div class="intro-loader-track"><i id="introLoaderProgress"></i></div>
-      <span id="introLoaderPercent">00%</span>
-    </div>
-    <button class="intro-skip" id="introSkip" type="button">Skip intro</button>
   </div>
   <header class="header lux-header" id="header">
     <a class="brand lux-brand" href="#home" aria-label="Rohit Pant home">
@@ -2383,25 +2261,79 @@
       </dialog>
     </section>
 
-    <section class="process-cinema" id="process" aria-label="Behind the code">
-      <div class="process-sticky" id="videoShell">
-        <canvas class="process-canvas" id="processCanvas" role="img" aria-label="Scroll-controlled WebP animation showing the development process"></canvas>
-        <div class="process-shade" aria-hidden="true"></div>
-
-        <div class="process-overlay shell">
-          <div class="process-cinema-copy">
-            <div class="eyebrow">Behind the code</div>
-            <h2 class="display">Ideas to<br />interfaces<span class="dot">.</span></h2>
-            <p>Scroll to move through the build — from focused execution to the finished experience.</p>
+    <section class="build-lab" id="process" data-stage="2" aria-labelledby="labTitle">
+      <div class="shell lab-shell">
+        <div class="lab-copy" data-reveal>
+          <div class="lux-section-index"><span>03</span> BEHIND THE PIXELS</div>
+          <h2 class="lab-title" id="labTitle">From rough idea <em>to remarkable UI.</em></h2>
+          <p class="lab-lede">Great interfaces don't begin with animation. They start with structure, grow through thoughtful components, and come alive in the details. Explore how I build.</p>
+          <div class="lab-steps" role="tablist" aria-label="Stages of building an interface">
+            <button class="lab-step" type="button" id="labTab0" role="tab" aria-controls="labPreview" aria-selected="false" tabindex="-1" data-lab-stage="0">
+              <span class="lab-step-num">01</span><span class="lab-step-text">Wireframe <small>Give every idea a clear structure</small></span><span class="lab-step-arrow" aria-hidden="true">↗</span>
+            </button>
+            <button class="lab-step" type="button" id="labTab1" role="tab" aria-controls="labPreview" aria-selected="false" tabindex="-1" data-lab-stage="1">
+              <span class="lab-step-num">02</span><span class="lab-step-text">Build <small>Turn the layout into real UI</small></span><span class="lab-step-arrow" aria-hidden="true">↗</span>
+            </button>
+            <button class="lab-step" type="button" id="labTab2" role="tab" aria-controls="labPreview" aria-selected="true" tabindex="0" data-lab-stage="2">
+              <span class="lab-step-num">03</span><span class="lab-step-text">Polish <small>Make the experience feel complete</small></span><span class="lab-step-arrow" aria-hidden="true">↗</span>
+            </button>
           </div>
-
-          <div class="process-scrub-ui" aria-hidden="true">
-            <span>Scroll to play</span>
-            <div class="process-track"><i id="processProgress"></i></div>
-            <span id="processPercent">00%</span>
-          </div>
+          <p class="lab-hint">Select a stage and watch the preview transform.</p>
         </div>
 
+        <div class="lab-showcase" id="labShowcase" data-reveal>
+          <div class="lab-topline">
+            <span class="lab-status">Interactive design lab</span>
+            <span class="lab-stage-label" id="labStageLabel" aria-live="polite">03 / POLISH</span>
+          </div>
+          <div class="lab-browser-wrap">
+            <div class="lab-browser" id="labPreview" role="tabpanel" aria-labelledby="labTab2" tabindex="0">
+              <div class="lab-browser-chrome" aria-hidden="true">
+                <div class="lab-chrome-dots"><i></i><i></i><i></i></div>
+                <span class="lab-url">concept-preview / frontend-lab</span>
+                <i class="fa-solid fa-arrow-up-right-from-square lab-chrome-icon"></i>
+              </div>
+              <div class="lab-browser-body">
+                <div class="lab-site-menu">
+                  <span class="lab-site-logo">pixelcraft<b>✳</b></span>
+                  <div class="lab-site-links"><span>Our work</span><span>Approach</span><span>Let's talk ↗</span></div>
+                </div>
+                <div class="lab-demo-layout">
+                  <div class="lab-demo-copy">
+                    <span class="lab-demo-kicker">MADE TO STAND OUT</span>
+                    <div class="lab-demo-title">Built to <span>feel different.</span></div>
+                    <p class="lab-demo-subtitle">Clean structure. Confident motion. Every pixel has a purpose.</p>
+                    <div class="lab-demo-actions"><span class="lab-demo-button">Explore work ↗</span><span class="lab-demo-link">Our story →</span></div>
+                  </div>
+                  <div class="lab-demo-art" aria-hidden="true">
+                    <div class="lab-orb"></div>
+                    <div class="lab-floating-tile"><span class="lab-tile-icon">✳ UI / 01</span><small>Design system</small><strong>Made to scale</strong></div>
+                  </div>
+                </div>
+                <div class="lab-demo-footer" aria-label="Sample interface qualities">
+                  <div class="lab-demo-mini"><strong>Responsive</strong><small>Every viewport</small></div>
+                  <div class="lab-demo-mini"><strong>Accessible</strong><small>Built for people</small></div>
+                  <div class="lab-demo-mini"><strong>Thoughtful</strong><small>Every interaction</small></div>
+                </div>
+                <div class="lab-wireframe" aria-hidden="true">
+                  <div class="lab-wire-top"><span class="lab-wire-line"></span><span class="lab-wire-line"></span></div>
+                  <div class="lab-wire-body">
+                    <div class="lab-wire-text"><span class="lab-wire-line"></span><span class="lab-wire-line"></span><span class="lab-wire-line"></span><span class="lab-wire-line"></span><span class="lab-wire-box"></span></div>
+                    <span class="lab-wire-box lab-wire-visual"></span>
+                  </div>
+                  <div class="lab-wire-bottom"><span class="lab-wire-box"></span><span class="lab-wire-box"></span><span class="lab-wire-box"></span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="lab-controls">
+            <span class="lab-control-caption">Responsive concept preview — no video or canvas.</span>
+            <div class="lab-view-switch" role="group" aria-label="Preview viewport">
+              <button class="lab-view" type="button" data-lab-viewport="desktop" aria-pressed="true"><i class="fa-solid fa-desktop" aria-hidden="true"></i>Desktop</button>
+              <button class="lab-view" type="button" data-lab-viewport="mobile" aria-pressed="false"><i class="fa-solid fa-mobile-screen-button" aria-hidden="true"></i>Mobile</button>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -2612,349 +2544,46 @@
     }
 
 
-    // Progressive WebP playback: small ImageBitmap previews across the timeline
-    // and a bounded set of sharp full-resolution frames near the scroll target.
-    const frameClamp=(n,low,high)=>Math.min(high,Math.max(low,n));
-    class WebPFrameSequence {
-      constructor(canvas,folder,count,onError,autoStart=true){
-        this.canvas=canvas;
-        this.ctx=canvas.getContext('2d',{alpha:false});
-        this.folder=folder;
-        this.count=count;
-        this.onError=onError||(()=>{});
-        this.mobile=matchMedia('(pointer:coarse)').matches;
-        this.smallWidth=this.mobile?256:384;
-        this.smallHeight=this.mobile?144:216;
-        this.preview=new Array(count);
-        this.full=new Map();
-        this.blobs=new Map();
-        this.requests=new Map();
-        this.lowJobs=new Map();
-        this.highJobs=new Map();
-        this.lowBusy=new Set();
-        this.highBusy=new Set();
-        this.failed=new Set();
-        this.abort=new AbortController();
-        this.target=0;
-        this.lastTarget=0;
-        this.painted=null;
-        this.raf=0;
-        this.dead=false;
-        this.started=false;
-        this.highEnabled=true;
-        this.previewProcessed=0;
-        this.previewGoal=0;
-        this.onPreviewProgress=null;
-        this.resize();
-        if(autoStart)this.warm();
-      }
-      warm(){
-        if(this.dead||this.started)return;
-        this.started=true;
-        // Decode a sparse overview first instead of fetching every frame at once.
-        // Missing frames are fetched on demand around the active scroll position.
-        const step=this.folder.includes('intro-frames')?4:6;
-        for(let i=0;i<this.count;i+=step)this.enqueueLow(i,50);
-        for(let i=0;i<Math.min(12,this.count);i++)this.enqueueLow(i,2000-i);
-        this.previewGoal=this.lowJobs.size;
-        this.pumpLow();
-        if(this.highEnabled){
-          this.enqueueHigh(this.target,1000);
-          this.pumpHigh();
-        }
-      }
-      url(i){
-        return this.folder+'frame-'+String(i+1).padStart(3,'0')+'.webp';
-      }
-      fetchBlob(i){
-        if(this.blobs.has(i))return Promise.resolve(this.blobs.get(i));
-        if(this.requests.has(i))return this.requests.get(i);
-        const promise=fetch(this.url(i),{signal:this.abort.signal})
-          .then(r=>{
-            if(!r.ok)throw Error('WebP frame '+i+': '+r.status);
-            return r.blob();
-          }).then(blob=>{
-            if(!this.dead)this.blobs.set(i,blob);
-            return blob;
-          }).finally(()=>this.requests.delete(i));
-        this.requests.set(i,promise);
-        return promise;
-      }
-      async bitmap(blob,small){
-        if(typeof createImageBitmap==='function'){
-          let img;
-          try{
-            img=small
-              ?await createImageBitmap(blob,{resizeWidth:this.smallWidth,resizeHeight:this.smallHeight,resizeQuality:'medium'})
-              :await createImageBitmap(blob);
-          }catch(e){
-            img=await createImageBitmap(blob);
-          }
-          if(!small||(img.width===this.smallWidth&&img.height===this.smallHeight))return img;
-          // Resize manually when a browser ignores ImageBitmap resize options.
-          const scaled=document.createElement('canvas');
-          scaled.width=this.smallWidth;
-          scaled.height=this.smallHeight;
-          scaled.getContext('2d').drawImage(img,0,0,scaled.width,scaled.height);
-          if(img.close)img.close();
-          return scaled;
-        }
-        const url=URL.createObjectURL(blob);
-        const img=new Image();
-        img.decoding='async';
-        try{
-          if(typeof img.decode==='function'){
-            img.src=url;
-            await img.decode();
-          }else{
-            await new Promise((resolve,reject)=>{
-              img.onload=resolve;
-              img.onerror=reject;
-              img.src=url;
-            });
-          }
-          if(!small)return img;
-          const scaled=document.createElement('canvas');
-          scaled.width=this.smallWidth;
-          scaled.height=this.smallHeight;
-          scaled.getContext('2d').drawImage(img,0,0,scaled.width,scaled.height);
-          return scaled;
-        }finally{
-          URL.revokeObjectURL(url);
-        }
-      }
-      close(img){
-        if(img&&typeof img.close==='function')img.close();
-      }
-      enqueueLow(i,p){
-        if(i<0||i>=this.count||this.preview[i]||this.lowBusy.has(i)||this.failed.has(i))return;
-        this.lowJobs.set(i,Math.max(p,this.lowJobs.get(i)||0));
-      }
-      enqueueHigh(i,p){
-        if(i<0||i>=this.count||this.full.has(i)||this.highBusy.has(i)||this.failed.has(i))return;
-        this.highJobs.set(i,Math.max(p,this.highJobs.get(i)||0));
-      }
-      pop(jobs){
-        let best=-1,priority=-1;
-        for(const [i,p] of jobs)if(p>priority){best=i;priority=p}
-        jobs.delete(best);
-        return best;
-      }
-      pumpLow(){
-        const max=this.mobile?2:3;
-        while(!this.dead&&this.lowBusy.size<max&&this.lowJobs.size){
-          const i=this.pop(this.lowJobs);
-          if(i<0||this.preview[i]||this.failed.has(i))continue;
-          this.lowBusy.add(i);
-          (async()=>{
-            try{
-              const img=await this.bitmap(await this.fetchBlob(i),true);
-              if(this.dead)this.close(img);
-              else{this.preview[i]=img;this.requestPaint()}
-            }catch(e){
-              if(!this.dead){this.failed.add(i);this.onError(i)}
-            }finally{
-              this.lowBusy.delete(i);
-              if(!this.dead){
-                this.previewProcessed++;
-                if(this.onPreviewProgress)
-                  this.onPreviewProgress(this.previewProcessed,this.previewGoal);
-                this.pumpLow();
-              }
-            }
-          })();
-        }
-      }
-      pumpHigh(){
-        if(!this.highEnabled)return;
-        while(!this.dead&&this.highBusy.size<1&&this.highJobs.size){
-          const i=this.pop(this.highJobs);
-          if(i<0||this.full.has(i)||this.failed.has(i))continue;
-          this.highBusy.add(i);
-          (async()=>{
-            try{
-              const img=await this.bitmap(await this.fetchBlob(i),false);
-              if(this.dead)this.close(img);
-              else{
-                this.full.set(i,img);
-                this.trimHigh();
-                this.requestPaint();
-              }
-            }catch(e){
-              // Keep the preview if a full-resolution decode cannot be completed.
-              if(!this.dead)this.enqueueLow(i,1000);
-            }finally{
-              this.highBusy.delete(i);
-              if(!this.dead)this.pumpHigh();
-            }
-          })();
-        }
-      }
-      trimHigh(){
-        // Keep only a few full-resolution decoded bitmaps in GPU/CPU memory.
-        const limit=this.folder.includes('intro-frames')?2:(this.mobile?2:3);
-        if(this.full.size<=limit)return;
-        const removable=[...this.full.keys()]
-          .filter(i=>i!==this.target)
-          .sort((a,b)=>Math.abs(b-this.target)-Math.abs(a-this.target));
-        for(const i of removable){
-          if(this.full.size<=limit)break;
-          this.close(this.full.get(i));
-          this.full.delete(i);
-        }
-      }
-      setFrame(value){
-        if(this.dead)return;
-        if(!this.started)this.warm();
-        const next=frameClamp(Math.round(value),0,this.count-1);
-        if(next!==this.target){
-          const direction=next>this.target?1:-1;
-          this.lastTarget=this.target;
-          this.target=next;
-          this.enqueueLow(next,10000);
-          for(let d=1;d<=10;d++)this.enqueueLow(next+direction*d,6000-d*100);
-          for(let d=1;d<=5;d++)this.enqueueLow(next-direction*d,3000-d*100);
-          for(const i of this.highJobs.keys())
-            if(Math.abs(i-next)>3)this.highJobs.delete(i);
-          if(this.highEnabled){
-            this.enqueueHigh(next,10000);
-            for(let d=1;d<=2;d++)this.enqueueHigh(next+direction*d,4500-d*500);
-            this.trimHigh();
-          }
-          this.pumpLow();
-          this.pumpHigh();
-        }else if(this.highEnabled&&!this.full.has(next)&&!this.highBusy.has(next)){
-          this.enqueueHigh(next,10000);
-          this.pumpHigh();
-        }
-        this.requestPaint();
-      }
-      resize(){
-        if(this.dead||!this.ctx)return;
-        const rect=this.canvas.getBoundingClientRect();
-        // Single CSS pixel per canvas pixel: much less upload/memory on retina screens.
-        const ratio=1;
-        const w=Math.max(1,Math.round(rect.width*ratio));
-        const h=Math.max(1,Math.round(rect.height*ratio));
-        if(this.canvas.width!==w||this.canvas.height!==h){
-          this.canvas.width=w;
-          this.canvas.height=h;
-          this.painted=null;
-        }
-        this.requestPaint();
-      }
-      requestPaint(){
-        if(this.dead||this.raf)return;
-        this.raf=requestAnimationFrame(()=>{
-          this.raf=0;
-          this.draw();
+    // Lightweight, accessible build-lab interactions. No frame downloads on scroll.
+    const processLab = document.getElementById('process');
+    if (processLab) {
+      const tabs = [...processLab.querySelectorAll('[data-lab-stage]')];
+      const label = processLab.querySelector('#labStageLabel');
+      const preview = processLab.querySelector('#labPreview');
+      const stages = ['01 / WIREFRAME', '02 / BUILD', '03 / POLISH'];
+      const setStage = (stage) => {
+        processLab.dataset.stage = String(stage);
+        tabs.forEach((tab, index) => {
+          const active = index === stage;
+          tab.setAttribute('aria-selected', String(active));
+          tab.tabIndex = active ? 0 : -1;
         });
-      }
-      draw(){
-        if(this.dead||!this.ctx)return;
-        let i=this.target;
-        let img=this.full.get(i)||this.preview[i];
-        if(!img){
-          let distance=Infinity;
-          for(let j=0;j<this.count;j++){
-            const candidate=this.full.get(j)||this.preview[j];
-            if(candidate&&Math.abs(j-this.target)<distance){
-              distance=Math.abs(j-this.target);
-              i=j;
-              img=candidate;
-            }
-          }
-        }
-        if(!img)return;
-        // Preserve the last frame until something closer is decoded.
-        if(this.painted&&i!==this.target&&
-          Math.abs(this.painted.i-this.target)<=Math.abs(i-this.target))return;
-        if(this.painted&&this.painted.i===i&&this.painted.img===img)return;
-        const iw=img.naturalWidth||img.width,ih=img.naturalHeight||img.height;
-        if(!iw||!ih)return;
-        const cw=this.canvas.width,ch=this.canvas.height;
-        const scale=Math.max(cw/iw,ch/ih);
-        const w=iw*scale,h=ih*scale;
-        this.ctx.fillStyle='#030403';
-        this.ctx.fillRect(0,0,cw,ch);
-        this.ctx.drawImage(img,(cw-w)/2,(ch-h)/2,w,h);
-        this.painted={i,img};
-      }
-      dispose(){
-        if(this.dead)return;
-        this.dead=true;
-        this.abort.abort();
-        if(this.raf)cancelAnimationFrame(this.raf);
-        this.lowJobs.clear();
-        this.highJobs.clear();
-        this.requests.clear();
-        this.blobs.clear();
-        this.preview.forEach(img=>this.close(img));
-        this.preview.length=0;
-        for(const img of this.full.values())this.close(img);
-        this.full.clear();
-      }
-    }
-
-    // Only initiate the process sequence as it approaches the viewport.
-    const processSection=document.getElementById('process');
-    const processCanvas=document.getElementById('processCanvas');
-    const processProgress=document.getElementById('processProgress');
-    const processPercent=document.getElementById('processPercent');
-    if(processSection&&processCanvas){
-      // Avoid competing with the 196-frame intro on first load.
-      const sequence=new WebPFrameSequence(processCanvas,'assets/process-frames/',90,null,false);
-      // No eager warm on intro completion. setFrame() warms only when the
-      // process section approaches the viewport via IntersectionObserver.
-      let visible=false,frameRaf=0,eased=0,target=0,first=true,lastTime=0,lastPercent=-1;
-      const getProcessProgress=()=>{
-        const rect=processSection.getBoundingClientRect();
-        return frameClamp(-rect.top/Math.max(1,rect.height-innerHeight),0,1);
+        label.textContent = stages[stage];
+        preview.setAttribute('aria-labelledby', tabs[stage].id);
       };
-      const requestProcess=()=>{
-        if(visible&&!frameRaf)frameRaf=requestAnimationFrame(paintProcess);
-      };
-      const updateProcessTarget=()=>{
-        if(!visible)return;
-        // Read layout on scroll, not repeatedly during every easing frame.
-        target=reduceMotion||saveData?0:getProcessProgress();
-        if(first){eased=target;first=false}
-        requestProcess();
-      };
-      function paintProcess(now){
-        frameRaf=0;
-        if(!visible)return;
-        const elapsed=lastTime?Math.min(64,now-lastTime):16.7;
-        lastTime=now;
-        // Frame-rate independent damping for 60Hz and high-refresh monitors.
-        eased+=(target-eased)*(1-Math.exp(-elapsed/80));
-        if(Math.abs(eased-target)<.0006)eased=target;
-        sequence.setFrame(eased*89);
-        const progress=eased.toFixed(4);
-        processSection.style.setProperty('--process-p',progress);
-        processProgress.style.transform='scaleX('+progress+')';
-        const percent=Math.round(eased*100);
-        if(percent!==lastPercent){
-          processPercent.textContent=String(percent).padStart(2,'0')+'%';
-          lastPercent=percent;
-        }
-        if(eased!==target)requestProcess();
-      }
-      const processObserver=new IntersectionObserver(entries=>{
-        for(const entry of entries){
-          visible=entry.isIntersecting;
-          if(visible){sequence.resize();updateProcessTarget()}
-          else{
-            lastTime=0;
-            if(frameRaf){cancelAnimationFrame(frameRaf);frameRaf=0}
-          }
-        }
-      },{rootMargin:(matchMedia('(pointer:coarse)').matches?'160px':'300px')+' 0px',threshold:0});
-      processObserver.observe(processSection);
-      addEventListener('scroll',updateProcessTarget,{passive:true});
-      addEventListener('resize',()=>{
-        if(visible){sequence.resize();updateProcessTarget()}
-      },{passive:true});
+      tabs.forEach((tab, index) => {
+        tab.addEventListener('click', () => setStage(index));
+        tab.addEventListener('keydown', event => {
+          let next = index;
+          if (event.key === 'ArrowRight' || event.key === 'ArrowDown') next = (index + 1) % tabs.length;
+          else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') next = (index + tabs.length - 1) % tabs.length;
+          else if (event.key === 'Home') next = 0;
+          else if (event.key === 'End') next = tabs.length - 1;
+          else return;
+          event.preventDefault();
+          setStage(next);
+          tabs[next].focus();
+        });
+      });
+      const showcase = processLab.querySelector('#labShowcase');
+      const viewportButtons = [...processLab.querySelectorAll('[data-lab-viewport]')];
+      viewportButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const mobile = button.dataset.labViewport === 'mobile';
+          showcase.classList.toggle('is-mobile', mobile);
+          viewportButtons.forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+        });
+      });
     }
 
     const revealEls = document.querySelectorAll('[data-reveal]');
@@ -3007,158 +2636,27 @@
     watchedSections.forEach(section => navObserver.observe(section));
 
 
-    // Intro-only playback: prepare all 196 small previews before accepting
-    // wheel/touch input, then advance at a bounded, refresh-rate-aware speed.
-    // The below-the-fold process animation still uses its existing renderer.
-    const introLoader=document.getElementById('introLoader');
-    const introCanvas=document.getElementById('introLoaderCanvas');
-    const introProgress=document.getElementById('introLoaderProgress');
-    const introPercent=document.getElementById('introLoaderPercent');
-    const introLabel=document.getElementById('introLoaderLabel');
-    const introSkip=document.getElementById('introSkip');
-    const introPrepare=document.getElementById('introPrepare');
-    const introPrepareProgress=document.getElementById('introPrepareProgress');
-    const introPreparePercent=document.getElementById('introPreparePercent');
-    const introPrepareMeter=document.getElementById('introPrepareMeter');
-    const isPhoneIntro=matchMedia('(max-width:767px), (hover:none) and (pointer:coarse)').matches;
-    const introShouldPlay=!!introLoader&&!!introCanvas&&!isPhoneIntro&&
-      !document.documentElement.classList.contains('intro-seen')&&!reduceMotion&&!saveData;
-
-    if(introShouldPlay){
-      const DISTANCE=3600;
-      const frameCount=196;
-      let distance=0,frame=0,raf=0,touchY=null,done=false,endTimer=0,player=null;
-      let prepared=false,lastTime=0,lastPercent=-1,preloadTimeout=0;
-      const updateIntroDisplay=(progress)=>{
-        const p=frameClamp(progress,0,1);
-        introProgress.style.transform='scaleX('+p.toFixed(4)+')';
-        const percent=Math.round(p*100);
-        if(percent!==lastPercent){
-          introPercent.textContent=String(percent).padStart(2,'0')+'%';
-          lastPercent=percent;
-        }
-      };
-      const tickIntro=now=>{
-        raf=0;
-        if(done||!player||!prepared)return;
-        const target=distance/DISTANCE*(frameCount-1);
-        const elapsed=lastTime?Math.min(50,now-lastTime):16.7;
-        lastTime=now;
-        const diff=target-frame;
-        // Never skip several source frames in one refresh, even if the wheel
-        // sends multiple large deltas at once.
-        const maxStep=Math.min(1,elapsed/16.7);
-        const easing=1-Math.exp(-elapsed/75);
-        const step=Math.sign(diff)*Math.min(Math.abs(diff),maxStep,Math.max(.04,Math.abs(diff)*easing));
-        frame+=step;
-        if(Math.abs(target-frame)<.02)frame=target;
-        player.setFrame(frame);
-        updateIntroDisplay(frame/(frameCount-1));
-        if(frame>=frameCount-1-.02&&distance>=DISTANCE){
-          if(!endTimer)endTimer=setTimeout(finishIntro,650);
-        }else if(endTimer){
-          clearTimeout(endTimer);
-          endTimer=0;
-        }
-        if(Math.abs(target-frame)>.02)raf=requestAnimationFrame(tickIntro);
-        else lastTime=0;
-      };
-      const queueIntro=()=>{
-        if(!done&&prepared&&!raf)raf=requestAnimationFrame(tickIntro);
-      };
-      const addIntro=delta=>{
-        if(done||!prepared)return;
-        distance=frameClamp(distance+delta,0,DISTANCE);
-        queueIntro();
-      };
-      const wheelIntro=e=>{
-        if(done)return;
-        e.preventDefault();
-        const unit=e.deltaMode===1?16:e.deltaMode===2?innerHeight:1;
-        addIntro(frameClamp(e.deltaY*unit,-110,110)*.94);
-      };
-      const touchStart=e=>{touchY=e.touches[0]?e.touches[0].clientY:null};
-      const touchMove=e=>{
-        if(done||touchY===null||!e.touches[0])return;
-        e.preventDefault();
-        const y=e.touches[0].clientY;
-        addIntro((touchY-y)*1.25);
-        touchY=y;
-      };
-      const touchEnd=()=>{touchY=null};
-      const keyIntro=e=>{
-        if(['ArrowDown','PageDown',' ','Enter'].includes(e.key)){
-          e.preventDefault();
-          addIntro(200);
-        }else if(['ArrowUp','PageUp'].includes(e.key)){
-          e.preventDefault();
-          addIntro(-170);
-        }
-      };
-      const resizeIntro=()=>{if(player)player.resize()};
-      function finishIntro(){
-        if(done)return;
-        done=true;
-        removeEventListener('wheel',wheelIntro);
-        removeEventListener('touchstart',touchStart);
-        removeEventListener('touchmove',touchMove);
-        removeEventListener('touchend',touchEnd);
-        removeEventListener('keydown',keyIntro);
-        removeEventListener('resize',resizeIntro);
-        if(raf)cancelAnimationFrame(raf);
-        if(endTimer)clearTimeout(endTimer);
-        if(preloadTimeout)clearTimeout(preloadTimeout);
-        if(player)player.dispose();
-        try { sessionStorage.setItem('rp-portfolio-intro-seen','1'); } catch (_) {}
-        scrollTo(0,0);
+    // A normal first-visit loader. It never intercepts wheel or touch scrolling.
+    const introLoader = document.getElementById('introLoader');
+    if (introLoader && document.documentElement.classList.contains('intro-playing')) {
+      let completed = false;
+      const finishIntro = () => {
+        if (completed) return;
+        completed = true;
+        try { sessionStorage.setItem('rp-portfolio-intro-seen', '1'); } catch (_) {}
         document.documentElement.classList.remove('intro-playing');
         document.documentElement.classList.add('intro-complete');
         introLoader.classList.add('is-done');
         document.dispatchEvent(new Event('portfolio:intro-ended'));
-        setTimeout(()=>{
+        setTimeout(() => {
           introLoader.remove();
           document.documentElement.classList.remove('intro-complete');
           document.documentElement.classList.add('intro-seen');
-        },820);
-      }
-      introSkip.addEventListener('click',finishIntro,{once:true});
-      addEventListener('wheel',wheelIntro,{passive:false});
-      addEventListener('touchstart',touchStart,{passive:true});
-      addEventListener('touchmove',touchMove,{passive:false});
-      addEventListener('touchend',touchEnd,{passive:true});
-      addEventListener('keydown',keyIntro);
-      addEventListener('resize',resizeIntro,{passive:true});
-      // Avoid a competition between full-resolution decoding and preparing
-      // previews. Full frames load near the cursor as the intro advances.
-      player=new WebPFrameSequence(introCanvas,'assets/intro-frames/',frameCount,(index)=>{
-        if(index===0)finishIntro();
-      },false);
-      player.highEnabled=false;
-      player.onPreviewProgress=(complete,total)=>{
-        if(done)return;
-        if(!prepared){
-          const progress=frameClamp(complete/total,0,1);
-          const percent=Math.round(progress*100);
-          introPrepareProgress.style.transform='scaleX('+progress.toFixed(4)+')';
-          introPreparePercent.textContent=percent+'%';
-          introPrepareMeter.setAttribute('aria-valuenow',String(percent));
-        }
-        if(complete>=total&&!prepared){
-          prepared=true;
-          introLoader.classList.add('is-ready');
-          introPrepare.setAttribute('aria-label','Animation ready. Scroll to enter.');
-          introLabel.textContent='Scroll to enter';
-          lastPercent=-1;
-          updateIntroDisplay(0);
-          player.highEnabled=true;
-          player.setFrame(0);
-        }
+        }, 540);
       };
-      player.warm();
-      // Fail open rather than trapping visitors behind a stalled image download.
-      preloadTimeout=setTimeout(()=>{ if(!prepared)finishIntro(); },9000);
-      updateIntroDisplay(0);
-    }else if(introLoader){
+      setTimeout(finishIntro, 1050);
+      addEventListener('pageshow', event => { if (event.persisted) finishIntro(); });
+    } else if (introLoader) {
       introLoader.remove();
       document.documentElement.classList.remove('intro-playing');
       document.documentElement.classList.add('intro-seen');
