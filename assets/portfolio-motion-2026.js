@@ -157,4 +157,48 @@
       if (!card.contains(event.relatedTarget)) resetTilt();
     });
   });
+
+  // One composited cursor glow. Desktop only; no blur, canvas or perpetual RAF.
+  if (finePointer) {
+    const main = document.querySelector('main');
+    if (main) {
+      const spotlight = document.createElement('div');
+      spotlight.className = 'cursor-spotlight';
+      spotlight.setAttribute('aria-hidden', 'true');
+      document.body.appendChild(spotlight);
+
+      let targetX = -500;
+      let targetY = -500;
+      let spotlightFrame = 0;
+
+      const renderSpotlight = () => {
+        spotlightFrame = 0;
+        spotlight.style.transform =
+          'translate3d(' + targetX + 'px,' + targetY + 'px,0)';
+      };
+      const hideSpotlight = () => {
+        spotlight.classList.remove('is-visible');
+      };
+
+      main.addEventListener('pointermove', (event) => {
+        if (event.pointerType !== 'mouse') return;
+        const dialogOpen = document.querySelector('dialog[open]');
+        if (document.hidden || root.classList.contains('menu-open') || dialogOpen) {
+          hideSpotlight();
+          return;
+        }
+        targetX = event.clientX;
+        targetY = event.clientY;
+        if (!spotlightFrame) spotlightFrame = requestAnimationFrame(renderSpotlight);
+        spotlight.classList.add('is-visible');
+      }, {passive:true});
+
+      main.addEventListener('pointerleave', hideSpotlight, {passive:true});
+      window.addEventListener('blur', hideSpotlight);
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) hideSpotlight();
+      });
+    }
+  }
+
 })();
