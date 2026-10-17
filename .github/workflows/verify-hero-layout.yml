@@ -6,6 +6,7 @@ on:
     paths:
       - "index.html"
       - "assets/agency-v2.css"
+      - "assets/editorial-2026.css"
       - "scripts/verify-agency-layout.mjs"
       - "assets/hero-fluid.css"
       - "assets/hero-cinematic.css"
