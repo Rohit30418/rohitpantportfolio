@@ -5,6 +5,8 @@ on:
   push:
     paths:
       - "index.html"
+      - "assets/agency-v2.css"
+      - "scripts/verify-agency-layout.mjs"
       - "assets/skills-showcase.css"
       - "assets/skills-showcase.js"
       - "scripts/verify-skills-showcase.mjs"
@@ -30,5 +32,5 @@ jobs:
         run: |
           python3 -m http.server 8777 --bind 127.0.0.1 > /tmp/skills-site.log 2>&1 &
           sleep 2
-      - name: Test readable cards and interactions at eight screen sizes
+      - name: Check agency skill grid across screen sizes
         run: node scripts/verify-skills-showcase.mjs
