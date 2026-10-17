@@ -115,6 +115,9 @@ export async function verifyAgency(mode='all'){
         }
       }
       if(mode==='hero'){
+        // On short phone screens the hero visual starts below the fold.
+        // Scroll to it before expecting the intersection-triggered WebGL scene.
+        await page.locator('#reactHeroStage').scrollIntoViewIfNeeded();
         // Camera-framing regression: ensure the complete 3D sculpture + badges
         // stay within a 10% safe area of the visible WebGL stage at every size.
         const fitted=await page.waitForFunction(()=>{
