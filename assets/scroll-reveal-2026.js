@@ -11,7 +11,7 @@
     ['.agency-about-copy', 0],
     ['.agency-about-art', 100],
     ['.agency-section-head', 0],
-    ['.agency-project-card', 85],
+    // Project cards now have a standalone one-shot entrance and hover treatment.
     ['.agency-process-top', 0],
     // Keep 3D object anchors stationary; animating these cards caused a
     // visible offset against the shared WebGL overlay during scroll.
