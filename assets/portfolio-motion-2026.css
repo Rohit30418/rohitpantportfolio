@@ -107,3 +107,34 @@ body.agency-v2.motion-enhanced .agency-project-card.motion-card:focus-within::be
     transition:none!important;animation:none!important;transform:none!important;opacity:1!important;
   }
 }
+
+
+/* Single GPU-composited glow; no costly backdrop or blur filters. */
+@media (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference) {
+  body.agency-v2.motion-enhanced .cursor-spotlight {
+    position:fixed;
+    top:-185px;
+    left:-185px;
+    width:370px;
+    height:370px;
+    border-radius:50%;
+    z-index:12;
+    pointer-events:none;
+    user-select:none;
+    opacity:0;
+    background:radial-gradient(circle at center,
+      rgba(179,220,255,.14) 0%,
+      rgba(105,177,235,.105) 19%,
+      rgba(115,139,235,.06) 39%,
+      rgba(235,212,185,.022) 55%,
+      transparent 72%);
+    transform:translate3d(-500px,-500px,0);
+    transition:opacity .32s ease,transform .075s linear;
+    will-change:transform;
+    contain:paint;
+  }
+  body.agency-v2.motion-enhanced .cursor-spotlight.is-visible {opacity:1}
+}
+@media (hover:none), (pointer:coarse), (prefers-reduced-motion:reduce) {
+  body.agency-v2 .cursor-spotlight {display:none!important}
+}
