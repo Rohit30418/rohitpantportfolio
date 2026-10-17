@@ -39,6 +39,8 @@ export async function verifyAgency(mode='all'){
           hero:box('#agencyHeroTitle'),
           header:box('.lux-header'),
           projects:document.querySelectorAll('.agency-project-card').length,
+          projectColumns:getComputedStyle(document.querySelector('.agency-project-grid')).gridTemplateColumns.trim().split(/\s+/).length,
+          projectNames:[...document.querySelectorAll('.agency-project-card h3')].map(x=>x.textContent.trim()),
           skills:document.querySelectorAll('.agency-skill').length,
           caseDialog:!!document.getElementById('holoCaseDialog'),
           caseBridge:typeof window.openPortfolioCaseStudy==='function',
@@ -52,13 +54,13 @@ export async function verifyAgency(mode='all'){
       // Every featured visual must resolve to a real, decoded image, not an empty mockup.
       await page.waitForFunction(()=>{
         const images=[...document.querySelectorAll('.agency-project-thumb img')];
-        return images.length===4 && images.every(img=>img.complete);
+        return images.length===3 && images.every(img=>img.complete);
       },null,{timeout:6000}).catch(()=>{});
       const imageStats=await page.evaluate(()=>[...document.querySelectorAll('.agency-project-thumb img')].map(img=>({
         source:img.getAttribute('src'),naturalWidth:img.naturalWidth,naturalHeight:img.naturalHeight
       })));
       const id=view.name+': ';
-      requireCheck(imageStats.length===4 && imageStats.every(img=>img.naturalWidth>0 && img.naturalHeight>0),
+      requireCheck(imageStats.length===3 && imageStats.every(img=>img.naturalWidth>0 && img.naturalHeight>0),
         id+'one or more featured project screenshots failed to load: '+JSON.stringify(imageStats));
 
       requireCheck(report.newTheme,id+'V2 body class absent');
@@ -68,7 +70,10 @@ export async function verifyAgency(mode='all'){
       requireCheck(report.header && report.header.width>160,id+'header unavailable');
       requireCheck(!report.heroWebGL,id+'unexpected hero WebGL scene');
       requireCheck(report.processFallbacks===4 && report.processThreeJS,id+'3D process or fallback missing');
-      requireCheck(report.projects===4,id+'featured projects count incorrect');
+      requireCheck(report.projects===3,id+'featured projects count incorrect');
+      requireCheck(report.projectNames.join('|')==='EventHive|Vaani|Argus',id+'unexpected featured project names');
+      const expectedColumns=view.width>1150?3:view.width>700?2:1;
+      requireCheck(report.projectColumns===expectedColumns,id+'expected '+expectedColumns+' project grid columns, got '+report.projectColumns);
       requireCheck(report.skills===10,id+'skills count incorrect');
       requireCheck(report.contactEmail,id+'contact method missing');
       if(mode==='projects'||mode==='all'){
