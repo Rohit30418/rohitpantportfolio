@@ -30,10 +30,36 @@
     renderer.setPixelRatio(Math.min(devicePixelRatio||1,coarse?1.15:1.55));
     renderer.setSize(width,height,false);
     camera.aspect=width/height;
-    camera.updateProjectionMatrix();
     techBadges.forEach(badge=>{
       badge.visible=!(width<345 && badge.userData.hideOnCompact);
     });
+
+    // Fit the *whole* composition into the canvas, not just the central atom.
+    // The previous fixed camera distance clipped JS, HTML, CSS and Firebase
+    // near the edges, especially at browser zoom and smaller viewport sizes.
+    scene.updateMatrixWorld(true);
+    const bounds=new THREE.Box3().setFromObject(atom);
+    for(const badge of techBadges){
+      if(badge.visible)bounds.expandByObject(badge);
+    }
+    const padding=.28; // reserve room for floating and pointer rotation
+    const furthestX=Math.max(Math.abs(bounds.min.x),Math.abs(bounds.max.x))+padding;
+    const furthestY=Math.max(Math.abs(bounds.min.y),Math.abs(bounds.max.y))+padding;
+    const frontZ=bounds.max.z+.22;
+    const halfFov=Math.tan(THREE.MathUtils.degToRad(camera.fov*.5));
+    const usableX=.76; // 12% left/right inset protects floating cards
+    const usableY=.76; // 12% top/bottom inset protects labels and cards
+    camera.position.z=Math.max(9.3,frontZ+Math.max(
+      furthestX/(halfFov*camera.aspect*usableX),
+      furthestY/(halfFov*usableY)
+    ));
+    camera.lookAt(0,0,0);
+    camera.updateProjectionMatrix();
+
+    const projectedX=furthestX/((camera.position.z-frontZ)*halfFov*camera.aspect);
+    const projectedY=furthestY/((camera.position.z-frontZ)*halfFov);
+    stage.dataset.cameraDistance=camera.position.z.toFixed(2);
+    stage.dataset.compositionMargin=Math.max(0,(1-Math.max(projectedX,projectedY))/2).toFixed(3);
     draw();
   }
 
@@ -195,12 +221,12 @@
 
   function addTechBadges(){
     const specs=[
-      {key:'JS',label:'JAVASCRIPT',color:'#f7df1e',x:-1.90,y:1.64,z:1.07,yaw:.17,roll:-.10},
-      {key:'TS',label:'TYPESCRIPT',color:'#3178c6',x:-.23,y:2.26,z:.60,yaw:-.17,roll:.13},
-      {key:'CSS',label:'CSS3',color:'#2196f3',x:1.98,y:1.36,z:.84,yaw:-.26,roll:.10},
-      {key:'HTML',label:'HTML5',color:'#ed642e',x:-2.19,y:-.53,z:1.0,yaw:.22,roll:-.12},
-      {key:'FIRE',label:'FIREBASE',color:'#ffb32d',x:2.14,y:-.63,z:1.05,yaw:-.17,roll:.13},
-      {key:'GIT',label:'GIT',color:'#e86f52',x:1.16,y:-1.95,z:.82,yaw:-.10,roll:-.11}
+      {key:'JS',label:'JAVASCRIPT',color:'#f7df1e',x:-1.94,y:1.45,z:.89,yaw:.17,roll:-.10},
+      {key:'TS',label:'TYPESCRIPT',color:'#3178c6',x:-.32,y:2.04,z:.52,yaw:-.17,roll:.13},
+      {key:'CSS',label:'CSS3',color:'#2196f3',x:1.94,y:1.29,z:.80,yaw:-.26,roll:.10},
+      {key:'HTML',label:'HTML5',color:'#ed642e',x:-2.08,y:-.60,z:.82,yaw:.22,roll:-.12},
+      {key:'FIRE',label:'FIREBASE',color:'#ffb32d',x:2.05,y:-.60,z:.84,yaw:-.17,roll:.13},
+      {key:'GIT',label:'GIT',color:'#e86f52',x:1.01,y:-1.93,z:.65,yaw:-.10,roll:-.11}
     ];
     // Share one beveled extrusion and one matte-metal chassis material.
     const shape=new THREE.Shape();
