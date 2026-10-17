@@ -13,7 +13,7 @@
     document.documentElement.classList.add(introAlreadySeen || prefersSimpleEntry ? 'intro-seen' : 'intro-playing');
   </script>
   <title>Rohit Pant | Frontend & UI Developer</title>
-  <meta name="description" content="Rohit Pant is a Frontend and UI Developer building responsive production interfaces, realtime experiences and polished web products with React, TypeScript and modern frontend tooling." />
+  <meta name="description" content="Rohit Pant — frontend and UI developer with 4+ years of production web experience and independent React, TypeScript, WebRTC and testing projects." />
   <meta property="og:title" content="Rohit Pant | Frontend & UI Developer" />
   <meta property="og:description" content="Frontend engineering, polished UI, realtime products and production-focused web experiences." />
   <meta property="og:type" content="website" />
@@ -2031,22 +2031,6 @@
   </style>
   <!-- Browser-native module imports for the optional, desktop-only 3D island.
        The existing static portfolio remains functional if this CDN is blocked. -->
-  <script type="importmap">
-  {
-    "imports": {
-      "react": "https://esm.sh/react@19.2.0",
-      "react/": "https://esm.sh/react@19.2.0/",
-      "react-dom": "https://esm.sh/react-dom@19.2.0?external=react",
-      "react-dom/": "https://esm.sh/react-dom@19.2.0/",
-      "react-dom/client": "https://esm.sh/react-dom@19.2.0/client?external=react",
-      "three": "https://esm.sh/three@0.185.0",
-      "three/": "https://esm.sh/three@0.185.0/",
-      "@react-three/fiber": "https://esm.sh/@react-three/fiber@9.6.1?external=react,react-dom,three",
-      "@react-three/drei": "https://esm.sh/@react-three/drei@10.7.7?external=@react-three/fiber,react,react-dom,three",
-      "gsap": "https://esm.sh/gsap@3.13.0"
-    }
-  }
-  </script>
   <style id="react-hero-style">
     /* One lightweight React atom behind the original portrait and typography. */
     .hero-react-3d {
@@ -2081,16 +2065,16 @@
     }
   </style>
 
-  <link rel="stylesheet" href="assets/hero-cinematic.css" />
-  <link rel="stylesheet" href="assets/hero-fluid.css" />
-  <link rel="stylesheet" href="assets/skills-showcase.css" />
-  <link rel="stylesheet" href="assets/contact-journey.css" />
+  
+  
+  
+  
   <link rel="stylesheet" href="assets/project-hologram.css" />
   <link rel="stylesheet" href="assets/project-hologram-one-screen.css" />
   <link rel="stylesheet" href="assets/experience-refresh.css" />
+  <link rel="stylesheet" href="assets/agency-v2.css" />
 </head>
-<body>
-  <div class="cursor-follower" id="cursorFollower" aria-hidden="true"></div>
+<body class="agency-v2">
   <div class="intro-loader" id="introLoader" role="status" aria-live="polite" aria-label="Loading portfolio">
     <div class="intro-loader-content">
       <div class="intro-mark" aria-hidden="true"><span>R</span><i>/</i><span>P</span></div>
@@ -2105,55 +2089,124 @@
       <span>Rohit Pant</span>
     </a>
     <nav class="nav lux-nav" aria-label="Primary navigation">
-      <a href="#work">Projects</a>
-      <a href="#skills">Skills</a>
-      <a href="#contact">Contact</a>
+      <a href="#home">Home</a><a href="#about">About</a><a href="#work">Projects</a>
+      <a href="#process">Process</a><a href="#skills">Skills</a><a href="#experience">Experience</a><a href="#contact">Contact</a>
     </nav>
     <a class="top-cta lux-top-cta" href="#contact">Let’s Talk <span aria-hidden="true">→</span></a>
     <button class="menu-button" id="menuButton" aria-label="Open menu" aria-expanded="false">☰</button>
   </header>
 
   <nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation">
-    <a href="#work">Projects</a><a href="#skills">Skills</a><a href="#contact">Contact</a>
+    <a href="#home">Home</a><a href="#about">About</a><a href="#work">Projects</a><a href="#process">Process</a><a href="#skills">Skills</a><a href="#experience">Experience</a><a href="#contact">Contact</a>
   </nav>
 
   <main>
-    <section class="hero lux-hero" id="home">
-      <div class="hero-grid" aria-hidden="true"></div>
-      <div class="hero-glow" aria-hidden="true"></div>
-      <div class="hero-portrait-glow" aria-hidden="true"></div>
-      <div class="shell hero-inner lux-hero-inner">
-        <p class="hero-kicker">Frontend / UI Developer</p>
-
-        <h1 class="lux-hero-name" aria-label="Rohit Pant">
-          <span>ROHIT</span><span>PANT</span>
-        </h1>
-
-        <div class="hero-copy-column">
-          <div class="lux-role hero-design-role">Frontend <span>UI Developer</span></div>
-          <div class="lux-intro">
-            <div class="availability"><span aria-hidden="true"></span>Open to frontend opportunities</div>
-            <p>I build polished web products with React, TypeScript, realtime features and thoughtful interaction.</p>
-            <div class="hero-actions">
-              <a class="btn btn-primary lux-primary" href="#work">View Projects <span class="hero-cta-arrow" aria-hidden="true">→</span></a>
-              <a class="lux-text-link hero-contact-button" href="#contact"><span aria-hidden="true">✉</span> Contact Me</a>
-            </div>
+    <section class="agency-hero" id="home" aria-labelledby="agencyHeroTitle">
+      <div class="shell agency-hero-inner">
+        <div class="agency-hero-copy">
+          <p class="agency-eyebrow">Frontend / UI Developer <span aria-hidden="true">·</span> Building for the web</p>
+          <h1 id="agencyHeroTitle"><span>Creating</span><span>Digital</span><span>Experiences</span><span>That <em>Matter.</em></span></h1>
+          <p class="agency-hero-lede">I design and develop responsive, high-performing web experiences — from production websites and dashboards to independent React applications.</p>
+          <div class="agency-hero-ctas">
+            <a class="agency-btn agency-btn-light" href="#work">View My Work <span aria-hidden="true">↗</span></a>
+            <a class="agency-btn agency-btn-outline" href="#about">More About Me <span aria-hidden="true">→</span></a>
+          </div>
+          <div class="agency-hero-metrics" aria-label="Experience highlights">
+            <div class="agency-hero-metric"><strong>4+</strong><small>Years in frontend</small></div>
+            <div class="agency-hero-metric"><strong>7+</strong><small>Major web projects</small></div>
+            <div class="agency-hero-metric"><strong>60+</strong><small>Pages on large builds</small></div>
           </div>
         </div>
+        <div class="agency-sculpture" aria-hidden="true">
+          <span class="agency-sculpture-halo"></span>
+          <span class="agency-sculpture-core"></span>
+          <span class="agency-sculpture-ring"></span>
+          <span class="agency-sculpture-ring agency-sculpture-ring--two"></span>
+          <span class="agency-sculpture-ring agency-sculpture-ring--three"></span>
+          <span class="agency-sculpture-spec"></span>
+          <span class="agency-sculpture-tag"><span>CODE</span><span>DESIGN</span><span>BUILD</span><span>REFINE</span></span>
+        </div>
+      </div>
+      <a class="agency-hero-scroll" href="#about">Scroll to explore</a>
+    </section>
 
-        <img class="hero-person" src="assets/rohit-hero.webp" width="336" height="420" alt="Rohit Pant, Frontend and UI Developer" fetchpriority="high" decoding="async" />
-        <div class="hero-atom-platform" aria-hidden="true"></div>
-        <div class="hero-react-3d" id="heroReact3D" aria-hidden="true"></div>
-        <div class="hero-side-caption" aria-hidden="true">BUILD<br />BEAUTIFUL<br />EXPERIENCES</div>
-
-        <div class="hero-skillrail" aria-label="Core technologies">
-          <span>React</span><span>TypeScript</span><span>JavaScript</span><span>Realtime UI</span>
+    <section class="agency-section agency-about" id="about" aria-labelledby="agencyAboutHeading">
+      <div class="shell agency-about-grid">
+        <div class="agency-about-copy">
+          <p class="agency-eyebrow">01 / About me</p>
+          <h2 class="agency-title" id="agencyAboutHeading">Turning Ideas<br>Into Digital Reality.</h2>
+          <p class="agency-muted">I'm a frontend and UI developer with 4+ years of experience delivering responsive client websites, registration platforms, admin panels and dashboards.</p>
+          <p class="agency-muted">My day-to-day production work spans HTML, CSS, JavaScript, Bootstrap, jQuery and integrations. I also build independent React and TypeScript applications, including Vaani and EventHive.</p>
+          <a class="agency-btn agency-btn-light" href="#contact">Let's Work Together <span aria-hidden="true">↗</span></a>
+          <div class="agency-about-points">
+            <article class="agency-point"><i class="fa-solid fa-code" aria-hidden="true"></i><h3>Frontend Development</h3><p>Maintainable, responsive interfaces.</p></article>
+            <article class="agency-point"><i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i><h3>UI Implementation</h3><p>Thoughtful, pixel-conscious layouts.</p></article>
+            <article class="agency-point"><i class="fa-solid fa-gauge-high" aria-hidden="true"></i><h3>Performance</h3><p>Optimized loading and interactions.</p></article>
+            <article class="agency-point"><i class="fa-solid fa-plug" aria-hidden="true"></i><h3>API Integration</h3><p>Dynamic UI and realtime experiences.</p></article>
+          </div>
+        </div>
+        <div class="agency-about-art">
+          <span class="agency-about-art-note">DESIGN<br>DEVELOP<br>IMPROVE<br>REPEAT.</span>
+          <img class="agency-about-photo" src="assets/rohit-hero.webp" width="336" height="420" alt="Portrait of Rohit Pant" loading="lazy" decoding="async">
+          <span class="agency-about-signature" aria-hidden="true">Rohit Pant</span>
         </div>
       </div>
     </section>
 
-
-    <section class="section lux-projects holo-projects" id="work" aria-labelledby="holoHeading">
+    <section class="agency-section agency-work holo-projects" id="work" aria-labelledby="agencyWorkHeading">
+      <div class="shell">
+        <div class="agency-section-head">
+          <div><p class="agency-eyebrow">02 / Featured Projects</p><h2 class="agency-title" id="agencyWorkHeading">Projects That<br>Create Real Impact.</h2></div>
+          <p class="agency-muted">A selection of production-focused interfaces, personal React apps, testing tools, and interactive engineering.</p>
+        </div>
+        <div class="agency-project-grid">
+          <article class="agency-project-card">
+            <a class="agency-project-thumb" href="https://eventhive.rohitpant.in/" target="_blank" rel="noopener noreferrer" aria-label="Open EventHive">
+              <img src="assets/project-shots/eventhive.jpg" alt="Actual EventHive application screen" loading="lazy" decoding="async">
+              <span class="agency-project-label">Event platform</span>
+            </a>
+            <div class="agency-project-body"><div class="agency-project-head"><h3>EventHive</h3><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></div>
+              <div class="agency-project-tech">React · TypeScript · Firebase</div>
+              <p>Event discovery, registration, microsites and organizer dashboards with role-based workflows.</p>
+              <div class="agency-project-actions"><a href="https://eventhive.rohitpant.in/" target="_blank" rel="noopener noreferrer">Live Project ↗</a><button type="button" class="agency-case-trigger" data-project-key="eventhive" aria-haspopup="dialog">Case Study →</button></div>
+            </div>
+          </article>
+          <article class="agency-project-card">
+            <a class="agency-project-thumb" href="https://vaani.rohitpant.in/" target="_blank" rel="noopener noreferrer" aria-label="Open Vaani">
+              <img src="assets/project-shots/vaani.jpg" alt="Actual Vaani realtime calling application screen" loading="lazy" decoding="async">
+              <span class="agency-project-label">Realtime app</span>
+            </a>
+            <div class="agency-project-body"><div class="agency-project-head"><h3>Vaani</h3><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></div>
+              <div class="agency-project-tech">React · WebRTC · Firebase</div>
+              <p>Peer-to-peer rooms with device checks, responsive controls and live participant states.</p>
+              <div class="agency-project-actions"><a href="https://vaani.rohitpant.in/" target="_blank" rel="noopener noreferrer">Live Project ↗</a><button type="button" class="agency-case-trigger" data-project-key="vaani" aria-haspopup="dialog">Case Study →</button></div>
+            </div>
+          </article>
+          <article class="agency-project-card">
+            <a class="agency-project-thumb" href="https://argus-pro-a2px.onrender.com" target="_blank" rel="noopener noreferrer" aria-label="Open Argus">
+              <img src="assets/project-shots/argus.jpg" alt="Actual Argus QA auditor interface" loading="lazy" decoding="async">
+              <span class="agency-project-label">Quality engineering</span>
+            </a>
+            <div class="agency-project-body"><div class="agency-project-head"><h3>Argus</h3><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></div>
+              <div class="agency-project-tech">Node.js · Playwright · JavaScript</div>
+              <p>Browser-powered website audits for accessibility, links, performance and runtime issues.</p>
+              <div class="agency-project-actions"><a href="https://argus-pro-a2px.onrender.com" target="_blank" rel="noopener noreferrer">Live Project ↗</a><button type="button" class="agency-case-trigger" data-project-key="argus" aria-haspopup="dialog">Case Study →</button></div>
+            </div>
+          </article>
+          <article class="agency-project-card">
+            <a class="agency-project-thumb" href="https://github.com/Rohit30418/hall-layout" target="_blank" rel="noopener noreferrer" aria-label="View Hall Navigation source code">
+              <img src="assets/project-shots/hall.jpg" alt="Hall navigation and floor-plan interface" loading="lazy" decoding="async">
+              <span class="agency-project-label">Interactive navigation</span>
+            </a>
+            <div class="agency-project-body"><div class="agency-project-head"><h3>Hall Navigation</h3><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></div>
+              <div class="agency-project-tech">JavaScript · Interactive UI</div>
+              <p>Explore exhibition floor plans, highlight stalls, and guide visitors through the venue.</p>
+              <div class="agency-project-actions"><a href="https://github.com/Rohit30418/hall-layout" target="_blank" rel="noopener noreferrer">View Source ↗</a></div>
+            </div>
+          </article>
+        </div>
+      </div>
+      <div class="agency-holo-legacy" aria-hidden="true">
       <div class="shell">
         <div class="holo-layout">
           <div class="holo-copy">
@@ -2211,6 +2264,7 @@
           </div>
         </div>
       </div>
+      </div>
       <dialog class="holo-dialog" id="holoCaseDialog" aria-labelledby="holoDialogTitle" aria-describedby="holoDialogSummary">
         <div class="holo-dialog-inner">
           <header class="holo-case-header">
@@ -2261,213 +2315,70 @@
       </dialog>
     </section>
 
-    <section class="build-lab" id="process" data-stage="2" aria-labelledby="labTitle">
-      <div class="shell lab-shell">
-        <div class="lab-copy" data-reveal>
-          <div class="lux-section-index"><span>03</span> BEHIND THE PIXELS</div>
-          <h2 class="lab-title" id="labTitle">From rough idea <em>to remarkable UI.</em></h2>
-          <p class="lab-lede">Great interfaces don't begin with animation. They start with structure, grow through thoughtful components, and come alive in the details. Explore how I build.</p>
-          <div class="lab-steps" role="tablist" aria-label="Stages of building an interface">
-            <button class="lab-step" type="button" id="labTab0" role="tab" aria-controls="labPreview" aria-selected="false" tabindex="-1" data-lab-stage="0">
-              <span class="lab-step-num">01</span><span class="lab-step-text">Wireframe <small>Give every idea a clear structure</small></span><span class="lab-step-arrow" aria-hidden="true">↗</span>
-            </button>
-            <button class="lab-step" type="button" id="labTab1" role="tab" aria-controls="labPreview" aria-selected="false" tabindex="-1" data-lab-stage="1">
-              <span class="lab-step-num">02</span><span class="lab-step-text">Build <small>Turn the layout into real UI</small></span><span class="lab-step-arrow" aria-hidden="true">↗</span>
-            </button>
-            <button class="lab-step" type="button" id="labTab2" role="tab" aria-controls="labPreview" aria-selected="true" tabindex="0" data-lab-stage="2">
-              <span class="lab-step-num">03</span><span class="lab-step-text">Polish <small>Make the experience feel complete</small></span><span class="lab-step-arrow" aria-hidden="true">↗</span>
-            </button>
-          </div>
-          <p class="lab-hint">Select a stage and watch the preview transform.</p>
+    <section class="agency-section agency-process" id="process" aria-labelledby="agencyProcessHeading">
+      <div class="shell">
+        <div class="agency-process-top">
+          <div><p class="agency-eyebrow">03 / My Approach</p><h2 class="agency-title" id="agencyProcessHeading">From Idea<br>to Launch.</h2>
+          <p class="agency-muted">A clear process to turn requirements into useful, responsive web experiences.</p></div>
         </div>
-
-        <div class="lab-showcase" id="labShowcase" data-reveal>
-          <div class="lab-topline">
-            <span class="lab-status">Interactive design lab</span>
-            <span class="lab-stage-label" id="labStageLabel" aria-live="polite">03 / POLISH</span>
-          </div>
-          <div class="lab-browser-wrap">
-            <div class="lab-browser" id="labPreview" role="tabpanel" aria-labelledby="labTab2" tabindex="0">
-              <div class="lab-browser-chrome" aria-hidden="true">
-                <div class="lab-chrome-dots"><i></i><i></i><i></i></div>
-                <span class="lab-url">concept-preview / frontend-lab</span>
-                <i class="fa-solid fa-arrow-up-right-from-square lab-chrome-icon"></i>
-              </div>
-              <div class="lab-browser-body">
-                <div class="lab-site-menu">
-                  <span class="lab-site-logo">pixelcraft<b>✳</b></span>
-                  <div class="lab-site-links"><span>Our work</span><span>Approach</span><span>Let's talk ↗</span></div>
-                </div>
-                <div class="lab-demo-layout">
-                  <div class="lab-demo-copy">
-                    <span class="lab-demo-kicker">MADE TO STAND OUT</span>
-                    <div class="lab-demo-title">Built to <span>feel different.</span></div>
-                    <p class="lab-demo-subtitle">Clean structure. Confident motion. Every pixel has a purpose.</p>
-                    <div class="lab-demo-actions"><span class="lab-demo-button">Explore work ↗</span><span class="lab-demo-link">Our story →</span></div>
-                  </div>
-                  <div class="lab-demo-art" aria-hidden="true">
-                    <div class="lab-orb"></div>
-                    <div class="lab-floating-tile"><span class="lab-tile-icon">✳ UI / 01</span><small>Design system</small><strong>Made to scale</strong></div>
-                  </div>
-                </div>
-                <div class="lab-demo-footer" aria-label="Sample interface qualities">
-                  <div class="lab-demo-mini"><strong>Responsive</strong><small>Every viewport</small></div>
-                  <div class="lab-demo-mini"><strong>Accessible</strong><small>Built for people</small></div>
-                  <div class="lab-demo-mini"><strong>Thoughtful</strong><small>Every interaction</small></div>
-                </div>
-                <div class="lab-wireframe" aria-hidden="true">
-                  <div class="lab-wire-top"><span class="lab-wire-line"></span><span class="lab-wire-line"></span></div>
-                  <div class="lab-wire-body">
-                    <div class="lab-wire-text"><span class="lab-wire-line"></span><span class="lab-wire-line"></span><span class="lab-wire-line"></span><span class="lab-wire-line"></span><span class="lab-wire-box"></span></div>
-                    <span class="lab-wire-box lab-wire-visual"></span>
-                  </div>
-                  <div class="lab-wire-bottom"><span class="lab-wire-box"></span><span class="lab-wire-box"></span><span class="lab-wire-box"></span></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="lab-controls">
-            <span class="lab-control-caption">Responsive concept preview — no video or canvas.</span>
-            <div class="lab-view-switch" role="group" aria-label="Preview viewport">
-              <button class="lab-view" type="button" data-lab-viewport="desktop" aria-pressed="true"><i class="fa-solid fa-desktop" aria-hidden="true"></i>Desktop</button>
-              <button class="lab-view" type="button" data-lab-viewport="mobile" aria-pressed="false"><i class="fa-solid fa-mobile-screen-button" aria-hidden="true"></i>Mobile</button>
-            </div>
-          </div>
+        <div class="agency-process-flow">
+          <article class="agency-process-step"><div class="agency-process-art" aria-hidden="true"><span class="agency-primitive agency-primitive--cube"></span></div><div class="agency-process-number">01 / DISCOVER</div><h3>Understand</h3><p>Explore the problem, users, scope and real project requirements.</p></article>
+          <article class="agency-process-step"><div class="agency-process-art" aria-hidden="true"><span class="agency-primitive agency-primitive--rings"></span></div><div class="agency-process-number">02 / PLAN</div><h3>Design</h3><p>Organize the experience with clear flows and responsive structure.</p></article>
+          <article class="agency-process-step"><div class="agency-process-art" aria-hidden="true"><span class="agency-primitive agency-primitive--pyramid"></span></div><div class="agency-process-number">03 / BUILD</div><h3>Develop</h3><p>Implement components, integrate APIs and test interactions.</p></article>
+          <article class="agency-process-step"><div class="agency-process-art" aria-hidden="true"><span class="agency-primitive agency-primitive--sphere"></span></div><div class="agency-process-number">04 / SHIP</div><h3>Launch</h3><p>Review, optimize, deploy and support the finished product.</p></article>
         </div>
       </div>
     </section>
 
-    <section class="skills-marquee-section" id="skills" aria-label="Technology skills">
-      <div class="shell skills-marquee-head" data-reveal>
-        <div>
-          <div class="lux-section-index"><span>04</span> Technology stack</div>
-          <h2 class="skills-marquee-title"><span>TOOLS I USE</span><span>TO BUILD</span></h2>
+    <section class="agency-section agency-skills" id="skills" aria-labelledby="agencySkillsHeading">
+      <div class="shell">
+        <div class="agency-skills-head">
+          <div><p class="agency-eyebrow">04 / Skills & Tools</p><h2 class="agency-title" id="agencySkillsHeading">Tools I Work With.</h2></div>
+          <p class="agency-muted">Modern frontend tooling combined with production web fundamentals.</p>
         </div>
-        <p>Production-focused frontend tools I use across interfaces, realtime products, APIs, testing and deployment.</p>
-      </div>
-
-      <div class="skills-universe-3d" id="skillsUniverse" aria-label="Interactive technology gallery"></div>
-
-      <div class="skills-marquee-wrap" data-reveal>
-        <div class="skills-marquee-row skills-marquee-left">
-          <div class="skills-marquee-track">
-            <div class="skills-marquee-set">
-            <div class="skill-chip" style="--skill:#e34f26"><i class="fa-brands fa-html5"></i><span>HTML5</span></div>
-            <div class="skill-chip" style="--skill:#1572b6"><i class="fa-brands fa-css3-alt"></i><span>CSS3</span></div>
-            <div class="skill-chip" style="--skill:#f7df1e"><i class="fa-brands fa-square-js"></i><span>JavaScript</span></div>
-            <div class="skill-chip" style="--skill:#3178c6"><i class="fa-solid fa-code"></i><span>TypeScript</span></div>
-            <div class="skill-chip" style="--skill:#61dafb"><i class="fa-brands fa-react"></i><span>React</span></div>
-            <div class="skill-chip" style="--skill:#764abc"><i class="fa-solid fa-layer-group"></i><span>Redux Toolkit</span></div>
-            <div class="skill-chip" style="--skill:#38bdf8"><i class="fa-solid fa-wind"></i><span>Tailwind CSS</span></div>
-            <div class="skill-chip" style="--skill:#7952b3"><i class="fa-brands fa-bootstrap"></i><span>Bootstrap</span></div>
-            <div class="skill-chip" style="--skill:#0769ad"><i class="fa-brands fa-square-js"></i><span>jQuery</span></div>
-            </div>
-            <div class="skills-marquee-set" aria-hidden="true">
-            <div class="skill-chip" style="--skill:#e34f26"><i class="fa-brands fa-html5"></i><span>HTML5</span></div>
-            <div class="skill-chip" style="--skill:#1572b6"><i class="fa-brands fa-css3-alt"></i><span>CSS3</span></div>
-            <div class="skill-chip" style="--skill:#f7df1e"><i class="fa-brands fa-square-js"></i><span>JavaScript</span></div>
-            <div class="skill-chip" style="--skill:#3178c6"><i class="fa-solid fa-code"></i><span>TypeScript</span></div>
-            <div class="skill-chip" style="--skill:#61dafb"><i class="fa-brands fa-react"></i><span>React</span></div>
-            <div class="skill-chip" style="--skill:#764abc"><i class="fa-solid fa-layer-group"></i><span>Redux Toolkit</span></div>
-            <div class="skill-chip" style="--skill:#38bdf8"><i class="fa-solid fa-wind"></i><span>Tailwind CSS</span></div>
-            <div class="skill-chip" style="--skill:#7952b3"><i class="fa-brands fa-bootstrap"></i><span>Bootstrap</span></div>
-            <div class="skill-chip" style="--skill:#0769ad"><i class="fa-brands fa-square-js"></i><span>jQuery</span></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="skills-marquee-row skills-marquee-right">
-          <div class="skills-marquee-track">
-            <div class="skills-marquee-set">
-            <div class="skill-chip" style="--skill:#ffca28"><i class="fa-solid fa-fire-flame-curved"></i><span>Firebase</span></div>
-            <div class="skill-chip" style="--skill:#59c3c3"><i class="fa-solid fa-video"></i><span>WebRTC</span></div>
-            <div class="skill-chip" style="--skill:#68a063"><i class="fa-brands fa-node-js"></i><span>Node.js</span></div>
-            <div class="skill-chip" style="--skill:#f05032"><i class="fa-brands fa-git-alt"></i><span>Git</span></div>
-            <div class="skill-chip" style="--skill:#f2f2f2"><i class="fa-brands fa-github"></i><span>GitHub</span></div>
-            <div class="skill-chip" style="--skill:#2ead33"><i class="fa-solid fa-robot"></i><span>Playwright</span></div>
-            <div class="skill-chip" style="--skill:#a78bfa"><i class="fa-solid fa-bolt"></i><span>Vite</span></div>
-            <div class="skill-chip" style="--skill:#ff4154"><i class="fa-solid fa-database"></i><span>React Query</span></div>
-            <div class="skill-chip" style="--skill:#88ce02"><i class="fa-solid fa-wand-magic-sparkles"></i><span>GSAP</span></div>
-            <div class="skill-chip" style="--skill:#f4a65a"><i class="fa-solid fa-plug"></i><span>REST APIs</span></div>
-            </div>
-            <div class="skills-marquee-set" aria-hidden="true">
-            <div class="skill-chip" style="--skill:#ffca28"><i class="fa-solid fa-fire-flame-curved"></i><span>Firebase</span></div>
-            <div class="skill-chip" style="--skill:#59c3c3"><i class="fa-solid fa-video"></i><span>WebRTC</span></div>
-            <div class="skill-chip" style="--skill:#68a063"><i class="fa-brands fa-node-js"></i><span>Node.js</span></div>
-            <div class="skill-chip" style="--skill:#f05032"><i class="fa-brands fa-git-alt"></i><span>Git</span></div>
-            <div class="skill-chip" style="--skill:#f2f2f2"><i class="fa-brands fa-github"></i><span>GitHub</span></div>
-            <div class="skill-chip" style="--skill:#2ead33"><i class="fa-solid fa-robot"></i><span>Playwright</span></div>
-            <div class="skill-chip" style="--skill:#a78bfa"><i class="fa-solid fa-bolt"></i><span>Vite</span></div>
-            <div class="skill-chip" style="--skill:#ff4154"><i class="fa-solid fa-database"></i><span>React Query</span></div>
-            <div class="skill-chip" style="--skill:#88ce02"><i class="fa-solid fa-wand-magic-sparkles"></i><span>GSAP</span></div>
-            <div class="skill-chip" style="--skill:#f4a65a"><i class="fa-solid fa-plug"></i><span>REST APIs</span></div>
-            </div>
-          </div>
+        <div class="agency-skill-grid" role="list" aria-label="Frontend technologies">
+          <div class="agency-skill" role="listitem" style="--skill-accent:#e95c37"><i class="fa-brands fa-html5" aria-hidden="true"></i><span>HTML5</span></div>
+          <div class="agency-skill" role="listitem" style="--skill-accent:#52a5f5"><i class="fa-brands fa-css3-alt" aria-hidden="true"></i><span>CSS3</span></div>
+          <div class="agency-skill" role="listitem" style="--skill-accent:#f7df1e"><i class="fa-brands fa-square-js" aria-hidden="true"></i><span>JavaScript</span></div>
+          <div class="agency-skill" role="listitem" style="--skill-accent:#4b9ef7"><i class="fa-solid fa-code" aria-hidden="true"></i><span>TypeScript</span></div>
+          <div class="agency-skill" role="listitem" style="--skill-accent:#61dafb"><i class="fa-brands fa-react" aria-hidden="true"></i><span>React</span></div>
+          <div class="agency-skill" role="listitem" style="--skill-accent:#ae88e6"><i class="fa-solid fa-layer-group" aria-hidden="true"></i><span>Redux</span></div>
+          <div class="agency-skill" role="listitem" style="--skill-accent:#55c5f0"><i class="fa-solid fa-wind" aria-hidden="true"></i><span>Tailwind</span></div>
+          <div class="agency-skill" role="listitem" style="--skill-accent:#ffbd43"><i class="fa-solid fa-fire-flame-curved" aria-hidden="true"></i><span>Firebase</span></div>
+          <div class="agency-skill" role="listitem" style="--skill-accent:#ff9979"><i class="fa-brands fa-git-alt" aria-hidden="true"></i><span>Git</span></div>
+          <div class="agency-skill" role="listitem" style="--skill-accent:#7db789"><i class="fa-solid fa-robot" aria-hidden="true"></i><span>Playwright</span></div>
         </div>
       </div>
     </section>
 
-    <section class="section contact contact-journey" id="contact" aria-labelledby="contactHeading">
-      <div class="contact-journey-art" aria-hidden="true">
-        <svg class="contact-journey-lines" viewBox="0 0 1600 750" preserveAspectRatio="xMidYMid slice" focusable="false">
-          <defs>
-            <linearGradient id="contact-journey-trail" x1="0" y1="630" x2="1040" y2="200" gradientUnits="userSpaceOnUse">
-              <stop offset="0" stop-color="#0b668e" stop-opacity=".1"/>
-              <stop offset=".39" stop-color="#03c9e7" stop-opacity=".8"/>
-              <stop offset=".76" stop-color="#05bbdc" stop-opacity=".52"/>
-              <stop offset="1" stop-color="#0981b1" stop-opacity=".15"/>
-            </linearGradient>
-            <linearGradient id="contact-journey-warm" x1="450" y1="580" x2="845" y2="340" gradientUnits="userSpaceOnUse">
-              <stop stop-color="#0cc7df" stop-opacity=".10"/>
-              <stop offset=".42" stop-color="#11c7e5" stop-opacity=".78"/>
-              <stop offset=".8" stop-color="#e7b35a"/>
-              <stop offset="1" stop-color="#fbc073" stop-opacity=".08"/>
-            </linearGradient>
-          </defs>
-          <g opacity=".84">
-            <path d="M-90 710 C95 448 227 657 372 608 C526 561 575 343 730 279 C811 245 915 239 1071 274" stroke="#08799f" opacity=".42"/>
-            <path d="M-120 753 C104 466 245 697 408 609 C592 512 574 332 765 229 C888 164 1001 200 1124 238" stroke="url(#contact-journey-trail)" class="contact-path-bright"/>
-            <path d="M-45 723 C135 510 261 690 425 629 C562 578 620 426 716 348 C796 286 842 310 913 325" stroke="#03aac9" opacity=".52"/>
-            <path d="M-70 770 C127 540 229 708 404 670 C598 626 648 400 776 318 C854 268 939 260 1013 285" stroke="#0d6286" opacity=".38"/>
-            <path class="contact-path-gold" d="M310 643 C466 648 559 693 683 508 C723 445 730 367 794 343 C819 334 839 336 858 333" stroke="url(#contact-journey-warm)"/>
-          </g>
-        </svg>
-        <span class="contact-journey-spark contact-journey-spark--one"></span>
-        <span class="contact-journey-spark contact-journey-spark--two"></span>
-        <span class="contact-journey-star contact-journey-star--one"></span>
-        <span class="contact-journey-star contact-journey-star--two"></span>
-        <span class="contact-journey-plane"><i class="fa-solid fa-paper-plane"></i></span>
+    <section class="agency-section agency-experience" id="experience" aria-labelledby="agencyExperienceHeading">
+      <div class="shell agency-experience-grid">
+        <div class="agency-experience-intro"><p class="agency-eyebrow">05 / Experience</p><h2 class="agency-title" id="agencyExperienceHeading">My Professional Journey.</h2><p class="agency-muted">Hands-on frontend delivery across client websites, dashboards and production workflows.</p></div>
+        <div class="agency-timeline">
+          <article class="agency-job"><time datetime="2022-08">2022 — Present</time><h3>Promithues Solutions Pvt. Ltd.</h3><p class="agency-job-label">Frontend / UI Developer</p><p>Build and maintain client-facing websites, registration systems, admin dashboards and reusable UI. Handle API integration, deployment fixes and client change requests.</p></article>
+          <article class="agency-job"><time datetime="2021">Earlier Experience</time><h3>nGauge Solutions</h3><p class="agency-job-label">Frontend Developer</p><p>Contributed to responsive web portals and dashboard interfaces, integrating UI functionality and improving usability across devices.</p></article>
+        </div>
       </div>
+    </section>
 
-      <div class="shell contact-journey-inner">
-        <div class="contact-journey-copy" data-reveal>
-          <div class="contact-journey-index"><strong>05</strong><span>/ GET IN TOUCH</span></div>
-          <h2 class="contact-journey-title" id="contactHeading">Let’s have<br />a chat<span class="contact-journey-dot">.</span></h2>
-          <p class="contact-journey-lede">Have a project, opportunity, or collaboration in mind? I’d love to hear about it. Let’s build something great together.</p>
+    <section class="agency-section agency-contact" id="contact" aria-labelledby="agencyContactHeading">
+      <div class="shell agency-contact-grid">
+        <div><p class="agency-eyebrow">06 / Let's Work Together</p><h2 class="agency-title" id="agencyContactHeading">Have a Project<br>in Mind?</h2>
+          <p class="agency-muted">I'm open to frontend opportunities, interesting projects and collaborations. Let's create something thoughtful together.</p>
+          <div class="agency-contact-info">
+            <a href="mailto:rohitpant090@gmail.com"><i class="fa-solid fa-envelope" aria-hidden="true"></i>rohitpant090@gmail.com</a>
+            <span><i class="fa-solid fa-location-dot" aria-hidden="true"></i>Delhi NCR, India</span>
+            <a href="https://www.linkedin.com/in/rohitpantdev/" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-linkedin" aria-hidden="true"></i>LinkedIn</a>
+            <a href="https://github.com/Rohit30418" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-github" aria-hidden="true"></i>GitHub</a>
+          </div>
+          <a class="agency-btn agency-btn-light" href="mailto:rohitpant090@gmail.com?subject=Let's%20work%20together">Let's Talk <span aria-hidden="true">↗</span></a>
         </div>
-
-        <div class="contact-journey-panel" aria-label="Contact methods" data-reveal>
-          <a class="contact-journey-link" href="mailto:rohitpant090@gmail.com">
-            <span class="contact-journey-icon" aria-hidden="true"><i class="fa-solid fa-envelope"></i></span>
-            <span class="contact-journey-meta"><small>Email</small><strong>rohitpant090@gmail.com</strong></span>
-            <span class="contact-journey-arrow" aria-hidden="true"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
-          </a>
-          <a class="contact-journey-link" href="https://www.linkedin.com/in/rohitpantdev/" target="_blank" rel="noopener noreferrer">
-            <span class="contact-journey-icon" aria-hidden="true"><i class="fa-brands fa-linkedin"></i></span>
-            <span class="contact-journey-meta"><small>LinkedIn</small><strong>linkedin.com/in/rohitpantdev</strong></span>
-            <span class="contact-journey-arrow" aria-hidden="true"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
-          </a>
-          <a class="contact-journey-link" href="https://github.com/Rohit30418" target="_blank" rel="noopener noreferrer">
-            <span class="contact-journey-icon" aria-hidden="true"><i class="fa-brands fa-github"></i></span>
-            <span class="contact-journey-meta"><small>GitHub</small><strong>github.com/Rohit30418</strong></span>
-            <span class="contact-journey-arrow" aria-hidden="true"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
-          </a>
-        </div>
+        <div class="agency-portal-stage" aria-hidden="true"><span class="agency-portal-horizon"></span><span class="agency-portal"></span><span class="agency-portal-caption">GOOD IDEAS<br>BUILD BETTER<br>EXPERIENCES.</span></div>
       </div>
     </section>
   </main>
 
-  <footer class="footer"><span><strong>RP/</strong> · © <span id="year"></span> Rohit Pant</span><span>Frontend / UI Developer</span></footer>
+  <footer class="footer"><span><strong>Rohit Pant</strong> · © <span id="year"></span> · Frontend / UI Developer</span><span><a href="#home">Back to top ↑</a> · Crafted for the web.</span></footer>
 
   <script>
     const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -2479,112 +2390,12 @@
     document.getElementById('year').textContent = new Date().getFullYear();
 
 
-    // Hero parallax — desktop pointer only. No scroll work.
-    const hero = document.getElementById('home');
-    // With a WebGL atom mounted, avoid running competing text/portrait parallax.
-    const heroCanParallax = finePointer && innerWidth > 900 && !reduceMotion && !document.getElementById('heroReact3D');
-    let heroRaf = 0;
-    let heroTargetX = 0;
-    let heroTargetY = 0;
-    let heroX = 0;
-    let heroY = 0;
-    let heroRect = null;
-
-    function renderHeroParallax(){
-      heroRaf = 0;
-      if(!hero || !heroCanParallax) return;
-
-      heroX += (heroTargetX - heroX) * .12;
-      heroY += (heroTargetY - heroY) * .12;
-
-      hero.style.setProperty('--hero-name-x',(heroX * -7).toFixed(2) + 'px');
-      hero.style.setProperty('--hero-name-y',(heroY * -4).toFixed(2) + 'px');
-      hero.style.setProperty('--hero-role-x',(heroX * -11).toFixed(2) + 'px');
-      hero.style.setProperty('--hero-role-y',(heroY * -6).toFixed(2) + 'px');
-      hero.style.setProperty('--hero-person-x',(heroX * 13).toFixed(2) + 'px');
-      hero.style.setProperty('--hero-person-y',(heroY * 7).toFixed(2) + 'px');
-
-      if(
-        Math.abs(heroTargetX - heroX) > .003 ||
-        Math.abs(heroTargetY - heroY) > .003
-      ){
-        requestHeroParallax();
-      }else if(Math.abs(heroX) < .01 && Math.abs(heroY) < .01){
-        hero.classList.remove('is-parallax-active');
-      }
-    }
-
-    function requestHeroParallax(){
-      if(!heroRaf) heroRaf = requestAnimationFrame(renderHeroParallax);
-    }
-
-    if(hero && heroCanParallax){
-      const cacheHeroRect=()=>{ heroRect=hero.getBoundingClientRect(); };
-
-      hero.addEventListener('pointerenter',()=>{
-        cacheHeroRect();
-        hero.classList.add('is-parallax-active');
-      },{passive:true});
-
-      hero.addEventListener('pointermove',e=>{
-        const rect=heroRect;
-        if(!rect) return;
-        heroTargetX=((e.clientX-rect.left)/Math.max(1,rect.width)-.5)*2;
-        heroTargetY=((e.clientY-rect.top)/Math.max(1,rect.height)-.5)*2;
-        requestHeroParallax();
-      },{passive:true});
-
-      hero.addEventListener('pointerleave',()=>{
-        heroTargetX=0;
-        heroTargetY=0;
-        requestHeroParallax();
-      },{passive:true});
-
-      window.addEventListener('resize',cacheHeroRect,{passive:true});
-    }
-
-
-    // Lightweight, accessible build-lab interactions. No frame downloads on scroll.
-    const processLab = document.getElementById('process');
-    if (processLab) {
-      const tabs = [...processLab.querySelectorAll('[data-lab-stage]')];
-      const label = processLab.querySelector('#labStageLabel');
-      const preview = processLab.querySelector('#labPreview');
-      const stages = ['01 / WIREFRAME', '02 / BUILD', '03 / POLISH'];
-      const setStage = (stage) => {
-        processLab.dataset.stage = String(stage);
-        tabs.forEach((tab, index) => {
-          const active = index === stage;
-          tab.setAttribute('aria-selected', String(active));
-          tab.tabIndex = active ? 0 : -1;
-        });
-        label.textContent = stages[stage];
-        preview.setAttribute('aria-labelledby', tabs[stage].id);
-      };
-      tabs.forEach((tab, index) => {
-        tab.addEventListener('click', () => setStage(index));
-        tab.addEventListener('keydown', event => {
-          let next = index;
-          if (event.key === 'ArrowRight' || event.key === 'ArrowDown') next = (index + 1) % tabs.length;
-          else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') next = (index + tabs.length - 1) % tabs.length;
-          else if (event.key === 'Home') next = 0;
-          else if (event.key === 'End') next = tabs.length - 1;
-          else return;
-          event.preventDefault();
-          setStage(next);
-          tabs[next].focus();
-        });
+    // Agency V2 intentionally starts without scroll-controlled visual animation.
+    document.querySelectorAll('.agency-case-trigger').forEach(button=>{
+      button.addEventListener('click',()=>{
+        if(typeof window.openPortfolioCaseStudy==='function')window.openPortfolioCaseStudy(button.dataset.projectKey,button);
       });
-      const showcase = processLab.querySelector('#labShowcase');
-      const viewportButtons = [...processLab.querySelectorAll('[data-lab-viewport]')];
-      viewportButtons.forEach(button => {
-        button.addEventListener('click', () => {
-          const mobile = button.dataset.labViewport === 'mobile';
-          showcase.classList.toggle('is-mobile', mobile);
-          viewportButtons.forEach(item => item.setAttribute('aria-pressed', String(item === button)));
-        });
-      });
-    }
+    });
 
     const revealEls = document.querySelectorAll('[data-reveal]');
     if(reduceMotion){
@@ -2663,97 +2474,7 @@
       document.dispatchEvent(new Event('portfolio:intro-ended'));
     }
 
-    // Premium cursor follower — one tiny transform-only element.
-    const cursorFollower = document.getElementById('cursorFollower');
-    // Avoid a second pointer-follow animation competing with the 3D hero.
-    const cursorEnabled = false;
-    if(cursorFollower && cursorEnabled){
-      let cursorX = -80;
-      let cursorY = -80;
-      let cursorTargetX = -80;
-      let cursorTargetY = -80;
-      let cursorRaf = 0;
-
-      const renderCursor = () => {
-        cursorRaf = 0;
-        cursorX += (cursorTargetX - cursorX) * .22;
-        cursorY += (cursorTargetY - cursorY) * .22;
-        cursorFollower.style.transform =
-          'translate3d(' + (cursorX - 14).toFixed(1) + 'px,' + (cursorY - 14).toFixed(1) + 'px,0) scale(var(--cursor-scale))';
-
-        if(Math.abs(cursorTargetX-cursorX) > .08 || Math.abs(cursorTargetY-cursorY) > .08){
-          requestCursor();
-        }
-      };
-
-      const requestCursor = () => {
-        if(!cursorRaf) cursorRaf = requestAnimationFrame(renderCursor);
-      };
-
-      document.addEventListener('pointermove',e => {
-        cursorTargetX = e.clientX;
-        cursorTargetY = e.clientY;
-        cursorFollower.classList.add('is-visible');
-        requestCursor();
-      },{passive:true});
-
-      document.addEventListener('pointerover',e => {
-        if(e.target.closest('a,button,.project-card,.skill-chip')){
-          cursorFollower.classList.add('is-active');
-        }
-      },{passive:true});
-
-      document.addEventListener('pointerout',e => {
-        if(e.target.closest('a,button,.project-card,.skill-chip')){
-          const next=e.relatedTarget;
-          if(!next || !next.closest || !next.closest('a,button,.project-card,.skill-chip')){
-            cursorFollower.classList.remove('is-active');
-          }
-        }
-      },{passive:true});
-
-      document.documentElement.addEventListener('mouseleave',()=>{
-        cursorFollower.classList.remove('is-visible','is-active');
-      },{passive:true});
-    }
-
   </script>
-  <!-- Optional 3D React atom: load once after intro and only on capable desktop devices. -->
-  <script type="module">
-    const reactHeroHost = document.getElementById('heroReact3D');
-    const reactHeroSection = document.getElementById('home');
-    const reactHeroEligible =
-      matchMedia('(min-width:1101px) and (hover:hover) and (pointer:fine)').matches &&
-      !matchMedia('(prefers-reduced-motion:reduce)').matches &&
-      !(navigator.connection && navigator.connection.saveData) &&
-      (!navigator.deviceMemory || navigator.deviceMemory >= 4) &&
-      !!window.WebGLRenderingContext;
-    if (reactHeroHost && reactHeroSection && reactHeroEligible) {
-      let started = false;
-      const startHeroAtom = () => {
-        if (started) return;
-        if (document.documentElement.classList.contains('intro-playing')) {
-          document.addEventListener('portfolio:intro-ended', startHeroAtom, { once:true });
-          return;
-        }
-        started = true;
-        import('./assets/hero-react-object.mjs').catch(error => {
-          reactHeroHost.classList.remove('is-mounted');
-          reactHeroSection.classList.remove('has-react-object');
-          console.warn('Optional React 3D hero unavailable:', error);
-        });
-      };
-      const observer = new IntersectionObserver(entries => {
-        if (!entries[0].isIntersecting) return;
-        observer.disconnect();
-        startHeroAtom();
-      }, { rootMargin:'120px 0px', threshold:0 });
-      observer.observe(reactHeroSection);
-    }
-  </script>
-
-  <!-- Lightweight HTML skill carousel. Original marquee remains as a fallback. -->
-  <script src="assets/skills-showcase.js" defer></script>
   <script src="assets/project-hologram.js" defer></script>
 </body>
 </html>
