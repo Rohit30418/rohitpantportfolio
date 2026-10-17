@@ -5,6 +5,8 @@ on:
   push:
     paths:
       - "index.html"
+      - "assets/agency-v2.css"
+      - "scripts/verify-agency-layout.mjs"
       - "assets/hero-fluid.css"
       - "assets/hero-cinematic.css"
       - "scripts/verify-hero-layout.mjs"
@@ -30,5 +32,5 @@ jobs:
         run: |
           python3 -m http.server 8777 --bind 127.0.0.1 > /tmp/portfolio-hero.log 2>&1 &
           sleep 2
-      - name: Test hero on 15 viewport and zoom-equivalent sizes
+      - name: Test agency hero and navigation at seven viewport sizes
         run: node scripts/verify-hero-layout.mjs
