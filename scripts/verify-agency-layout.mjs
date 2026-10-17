@@ -4,7 +4,7 @@ import {chromium} from 'playwright';
 
 export async function verifyAgency(mode='all'){
   const viewports=mode==='hero'?
-    [{name:'wide desktop',width:1920,height:1080},{name:'laptop',width:1440,height:900},{name:'125% zoom equivalent',width:1152,height:720},{name:'tablet landscape',width:1024,height:768},{name:'tablet portrait',width:768,height:1024},{name:'phone',width:390,height:844},{name:'small phone',width:320,height:640}]:
+    [{name:'wide desktop',width:1920,height:1080},{name:'laptop',width:1440,height:900},{name:'125% zoom equivalent',width:1152,height:720},{name:'compact desktop',width:900,height:720},{name:'tablet landscape',width:1024,height:768},{name:'tablet portrait',width:768,height:1024},{name:'phone',width:390,height:844},{name:'small phone',width:320,height:640}]:
     [{name:'laptop',width:1440,height:900},{name:'tablet',width:768,height:1024},{name:'phone',width:390,height:844},{name:'minimum',width:320,height:640}];
   const browser=await chromium.launch({headless:true,args:['--disable-dev-shm-usage']});
   const errors=[];
@@ -112,6 +112,27 @@ export async function verifyAgency(mode='all'){
           console.log('Floating 3D tech icons:',JSON.stringify(tech));
           requireCheck(tech.count===6 && tech.canvases===1 && tech.names.includes('JAVASCRIPT') &&
             tech.names.includes('FIREBASE'),id+'3D badge meshes or texture creation missing');
+        }
+      }
+      if(mode==='hero'){
+        // Camera-framing regression: ensure the complete 3D sculpture + badges
+        // stay within a 10% safe area of the visible WebGL stage at every size.
+        const fitted=await page.waitForFunction(()=>{
+          const el=document.getElementById('reactHeroStage');
+          return el?.classList.contains('has-webgl') &&
+            Number.isFinite(Number(el.dataset.compositionMargin)) &&
+            Number(el.dataset.cameraDistance)>0;
+        },null,{timeout:12000}).then(()=>true).catch(()=>false);
+        requireCheck(fitted,id+'3D composition failed to initialize');
+        if(fitted){
+          const frame=await page.locator('#reactHeroStage').evaluate(el=>({
+            margin:Number(el.dataset.compositionMargin),
+            cameraDistance:Number(el.dataset.cameraDistance),
+            canvas:el.querySelectorAll('.react-hero-canvas-slot canvas').length
+          }));
+          console.log('React 3D camera fit',view.name,JSON.stringify(frame));
+          requireCheck(frame.margin>=.105 && frame.canvas===1,
+            id+'floating 3D badges clip at canvas edges (safe margin '+frame.margin+')');
         }
       }
       if(mode==='hero'||mode==='all'){
