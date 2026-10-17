@@ -665,3 +665,19 @@ body.agency-v2{
   .agency-v2 .agency-hero-metric small{font-size:.61rem}
   .agency-v2 .agency-skill span{font-size:.66rem}
 }
+
+/* About section — streamlined layout after removing the four capability cards. */
+.agency-v2 .agency-about-grid{align-items:center}
+.agency-v2 .agency-about-copy{max-width:610px}
+.agency-v2 .agency-about-copy .agency-muted:last-of-type{margin-bottom:30px}
+.agency-v2 .agency-about-art{min-height:470px}
+.agency-v2 .agency-about-photo{max-height:485px}
+@media(max-width:900px){
+  .agency-v2 .agency-about-grid{gap:24px}
+  .agency-v2 .agency-about-art{min-height:385px}
+  .agency-v2 .agency-about-photo{max-height:400px}
+}
+@media(max-width:640px){
+  .agency-v2 .agency-about-art{min-height:335px}
+  .agency-v2 .agency-about-photo{max-height:345px}
+}
