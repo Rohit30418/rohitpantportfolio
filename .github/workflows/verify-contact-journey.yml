@@ -5,6 +5,8 @@ on:
   push:
     paths:
       - "index.html"
+      - "assets/agency-v2.css"
+      - "scripts/verify-agency-layout.mjs"
       - "assets/contact-journey.css"
       - "scripts/verify-contact-journey.mjs"
       - ".github/workflows/verify-contact-journey.yml"
@@ -29,5 +31,5 @@ jobs:
         run: |
           python3 -m http.server 8777 --bind 127.0.0.1 > /tmp/contact-server.log 2>&1 &
           sleep 2
-      - name: Verify responsive contact section
+      - name: Check agency contact layout
         run: node scripts/verify-contact-journey.mjs
