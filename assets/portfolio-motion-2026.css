@@ -1,0 +1,109 @@
+/* Portfolio motion pass — progressive, compositor-friendly, no GSAP or WebGL.
+   All effects respect reduced-motion and data-saver preferences. */
+
+/* Lines stay natural HTML; only the ink moves inside compact text masks. */
+.agency-v2 .agency-hero h1 .motion-word {
+  display:inline-block;
+  position:relative;
+  overflow:clip;
+  vertical-align:baseline;
+  font:inherit;
+  letter-spacing:inherit;
+  white-space:nowrap;
+  padding-block:.07em;
+  margin-block:-.07em;
+}
+.agency-v2 .agency-hero h1 .motion-word-ink {
+  display:inline-block;
+  font:inherit;
+  letter-spacing:inherit;
+  will-change:auto;
+}
+.agency-v2 .agency-hero h1 em .motion-word {font-family:inherit; font-style:inherit;}
+
+/* One-time chapter/layer entrance: small depth shift, not pinning or
+   scroll-scrubbing, which previously made this page feel heavy. */
+@media (prefers-reduced-motion: no-preference) {
+  body.agency-v2.motion-enhanced .agency-section.motion-layer > .shell {
+    transition:transform .9s cubic-bezier(.22,1,.36,1), opacity .75s ease;
+  }
+  body.agency-v2.motion-enhanced .agency-section.motion-layer.motion-layer--pending > .shell {
+    opacity:.62;
+    transform:translate3d(0,48px,0) scale(.99);
+  }
+  body.agency-v2.motion-enhanced .agency-section.motion-layer.motion-layer--visible > .shell {
+    opacity:1;
+    transform:translate3d(0,0,0) scale(1);
+  }
+  body.agency-v2.motion-enhanced .agency-section.motion-layer .motion-chapter-rule {
+    position:absolute;
+    inset:0 0 auto;
+    height:1px;
+    z-index:2;
+    pointer-events:none;
+    background:linear-gradient(90deg,transparent,rgba(235,212,185,.66) 34%,rgba(199,220,239,.55) 68%,transparent);
+    opacity:0;
+    transform:scaleX(.12);
+    transform-origin:50% 50%;
+    transition:transform 1.2s cubic-bezier(.22,1,.36,1), opacity .8s ease;
+  }
+  body.agency-v2.motion-enhanced .agency-section.motion-layer--visible .motion-chapter-rule {
+    opacity:.85;
+    transform:scaleX(1);
+  }
+}
+
+/* Cursor tilt is enabled ONLY on fine-hover pointers via a JS media check.
+   Screenshot zoom and action buttons continue to work normally. */
+@media (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference) {
+  body.agency-v2.motion-enhanced .agency-project-card.motion-card {
+    --motion-rx:0deg;
+    --motion-ry:0deg;
+    --motion-lift:0px;
+    transform:perspective(1150px) translate3d(0,var(--motion-lift),0) rotateX(var(--motion-rx)) rotateY(var(--motion-ry));
+    transition:transform .23s ease-out,opacity .65s ease,border-color .25s ease,box-shadow .3s ease;
+    transform-style:preserve-3d;
+  }
+  body.agency-v2.motion-enhanced .agency-project-card.motion-card:hover {
+    --motion-lift:-6px;
+    border-color:rgba(235,212,185,.34);
+    box-shadow:0 22px 50px rgba(0,0,0,.19);
+  }
+  body.agency-v2.motion-enhanced .agency-project-card.motion-card:focus-within {
+    --motion-lift:-3px;
+    border-color:rgba(235,212,185,.35);
+  }
+}
+body.agency-v2.motion-enhanced .agency-project-card.motion-card {
+  position:relative;
+}
+body.agency-v2.motion-enhanced .agency-project-card.motion-card::before {
+  content:"";
+  position:absolute;
+  inset:0 0 auto;
+  height:2px;
+  z-index:4;
+  pointer-events:none;
+  background:linear-gradient(90deg,transparent,#ebd4b9 48%,transparent);
+  opacity:0;
+  transform:scaleX(.35);
+  transition:opacity .25s ease,transform .45s cubic-bezier(.22,1,.36,1);
+}
+body.agency-v2.motion-enhanced .agency-project-card.motion-card:hover::before,
+body.agency-v2.motion-enhanced .agency-project-card.motion-card:focus-within::before {
+  opacity:.9;
+  transform:scaleX(1);
+}
+@media(max-width:700px) {
+  body.agency-v2.motion-enhanced .agency-section.motion-layer.motion-layer--pending > .shell {
+    transform:translate3d(0,22px,0);
+    opacity:.88;
+  }
+}
+@media(prefers-reduced-motion:reduce) {
+  body.agency-v2.motion-enhanced .agency-section.motion-layer > .shell,
+  body.agency-v2.motion-enhanced .agency-project-card.motion-card,
+  body.agency-v2.motion-enhanced .agency-project-card.motion-card::before {
+    transition:none!important;animation:none!important;transform:none!important;opacity:1!important;
+  }
+}
