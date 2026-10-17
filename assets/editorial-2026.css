@@ -281,12 +281,12 @@ body.agency-v2 {
 .agency-v2 .agency-about-signature {font-family: var(--p26-serif);font-size: 1.65rem;letter-spacing: -.04em;color: var(--p26-warm)}
 .agency-v2 .agency-about-art-note {color: #a0a7b2}
 
-/* Two-column editorial project grid. */
+/* Three-column editorial project grid for the three featured projects. */
 .agency-v2 #work.agency-work {background: var(--p26-bg)}
 .agency-v2 .agency-work .agency-project-grid {
   display: grid;
-  grid-template-columns: repeat(2,minmax(0,1fr));
-  gap: 24px;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  gap: 20px;
 }
 .agency-v2 .agency-project-card,
 .agency-v2 .agency-project-card:nth-child(2),
@@ -571,4 +571,9 @@ body.agency-v2 {
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
   }
+}
+
+/* Responsive three-project curation: single desktop row, then two, then one. */
+@media (min-width:701px) and (max-width:1150px){
+  .agency-v2 .agency-work .agency-project-grid {grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
 }
