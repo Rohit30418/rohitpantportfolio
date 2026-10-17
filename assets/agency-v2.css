@@ -425,3 +425,243 @@ html{scroll-padding-top:77px}
   .agency-v2 .agency-process-webgl{z-index:2}
   .agency-v2 .agency-process-step{z-index:3}
 }
+/* =====================================================================
+   Phase 3 / Typography & rhythm polish
+   Readable editorial hierarchy, consistent vertical rhythm and mobile
+   type scales. Visuals, transitions, layout components and 3D untouched.
+   ===================================================================== */
+:root{
+  --av-font-display:"Space Grotesk","Manrope",system-ui,sans-serif;
+  --av-font-body:"Manrope",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --av-reading:#b7c6d0;
+}
+body.agency-v2{
+  font-family:var(--av-font-body);
+  font-weight:400;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+.agency-v2 .agency-hero h1,
+.agency-v2 .agency-title,
+.agency-v2 .agency-project-head h3,
+.agency-v2 .agency-process-step h3,
+.agency-v2 .agency-job h3{
+  font-family:var(--av-font-display);
+  font-weight:600;
+}
+.agency-v2 .agency-title{
+  font-size:clamp(2.8rem,4.7vw,5rem);
+  line-height:1.09;
+  letter-spacing:-.052em;
+  text-wrap:balance;
+}
+.agency-v2 .agency-eyebrow{
+  gap:10px;
+  margin-bottom:17px;
+  font-size:.73rem;
+  font-weight:600;
+  letter-spacing:.14em;
+  line-height:1.55;
+}
+.agency-v2 .agency-muted{
+  max-width:64ch;
+  color:var(--av-reading);
+  font-size:1rem;
+  line-height:1.78;
+  letter-spacing:-.005em;
+}
+.agency-v2 .agency-section{padding-block:clamp(84px,8.3vw,116px)}
+.agency-v2 .agency-section-head{gap:clamp(24px,4vw,56px);margin-bottom:43px}
+.agency-v2 .agency-section-head .agency-muted,
+.agency-v2 .agency-skills-head .agency-muted{
+  max-width:400px;
+  font-size:.98rem;
+  line-height:1.72;
+}
+.agency-v2 .lux-brand{
+  font-family:var(--av-font-display);
+  font-size:1rem;
+  font-weight:600;
+  letter-spacing:-.035em;
+}
+.agency-v2 .nav.lux-nav{
+  font-size:.82rem;
+  font-weight:600;
+  letter-spacing:-.005em;
+}
+.agency-v2 .lux-top-cta{
+  font-size:.8rem;
+  font-weight:700;
+  letter-spacing:-.01em;
+}
+.agency-v2 .mobile-nav a{font-size:.94rem;font-weight:500}
+.agency-v2 .agency-btn{
+  min-height:48px;
+  padding:12px 22px;
+  font-size:.875rem;
+  font-weight:600;
+  letter-spacing:-.012em;
+}
+.agency-v2 .agency-hero h1{
+  max-width:790px;
+  margin-bottom:25px;
+  font-size:clamp(3.3rem,5.15vw,5.85rem);
+  line-height:1.075;
+  letter-spacing:-.065em;
+}
+.agency-v2 .agency-hero h1 span:nth-child(2){
+  font-size:.88em;
+  letter-spacing:-.055em;
+  white-space:normal;
+}
+.agency-v2 .agency-hero-lede{
+  max-width:520px;
+  margin-bottom:30px;
+  color:#bccbd5;
+  font-size:1.045rem;
+  line-height:1.78;
+  letter-spacing:-.008em;
+}
+.agency-v2 .agency-hero-metrics{margin-top:52px}
+.agency-v2 .agency-hero-metric strong{
+  font-family:var(--av-font-display);
+  font-size:1.72rem;
+  font-weight:600;
+  letter-spacing:-.045em;
+}
+.agency-v2 .agency-hero-metric small{
+  color:#a8b8c2;
+  font-size:.74rem;
+  font-weight:500;
+  line-height:1.5;
+}
+.agency-v2 .agency-about-copy .agency-muted{margin:18px 0}
+.agency-v2 .agency-about-copy .agency-muted:last-of-type{margin-bottom:27px}
+.agency-v2 .agency-about-points{gap:13px;margin-top:31px}
+.agency-v2 .agency-point h3{
+  font-family:var(--av-font-body);
+  font-size:.96rem;
+  font-weight:700;
+  letter-spacing:-.025em;
+  line-height:1.4;
+}
+.agency-v2 .agency-point p{
+  font-size:.82rem;
+  color:#b4c1cc;
+  line-height:1.65;
+}
+.agency-v2 .agency-project-head h3{
+  font-size:1.65rem;
+  line-height:1.25;
+  letter-spacing:-.04em;
+}
+.agency-v2 .agency-project-body>p{
+  max-width:56ch;
+  margin:15px 0 22px;
+  color:#b5c3ce;
+  font-size:.95rem;
+  line-height:1.72;
+}
+.agency-v2 .agency-project-tech{
+  font-size:.8rem;
+  line-height:1.5;
+}
+.agency-v2 .agency-project-label{
+  font-size:.67rem;
+  font-weight:600;
+  letter-spacing:.09em;
+}
+.agency-v2 .agency-project-actions a,
+.agency-v2 .agency-project-actions button{
+  min-height:44px;
+  font-size:.8rem;
+  font-weight:600;
+  letter-spacing:-.005em;
+}
+.agency-v2 .agency-process-number{
+  font-size:.75rem;
+  font-weight:600;
+  letter-spacing:.08em;
+}
+.agency-v2 .agency-process-step h3{
+  margin-bottom:10px;
+  font-size:1.34rem;
+  line-height:1.25;
+  letter-spacing:-.035em;
+}
+.agency-v2 .agency-process-step p{
+  color:#b1bfca;
+  font-size:.91rem;
+  line-height:1.68;
+}
+.agency-v2 .agency-skills-head{margin-bottom:34px}
+.agency-v2 .agency-skills-head .agency-title{font-size:clamp(2.65rem,4.2vw,4.35rem)}
+.agency-v2 .agency-skill span{
+  color:#d0dce5;
+  font-size:.76rem;
+  font-weight:600;
+  line-height:1.35;
+  overflow-wrap:anywhere;
+}
+.agency-v2 .agency-experience-intro .agency-muted{margin-top:22px}
+.agency-v2 .agency-job time{font-size:.79rem;font-weight:600}
+.agency-v2 .agency-job h3{
+  font-size:1.42rem;
+  line-height:1.3;
+  letter-spacing:-.035em;
+}
+.agency-v2 .agency-job-label{font-size:.88rem;font-weight:600}
+.agency-v2 .agency-job p:not(.agency-job-label){
+  max-width:65ch;
+  color:#b1c1cc;
+  font-size:.96rem;
+  line-height:1.75;
+}
+.agency-v2 .agency-contact .agency-muted{margin:22px 0 28px}
+.agency-v2 .agency-contact-info a,
+.agency-v2 .agency-contact-info span{
+  font-size:.91rem;
+  line-height:1.6;
+}
+.agency-v2 .footer{font-size:.8rem;line-height:1.6}
+@media(max-width:1024px){
+  .agency-v2 .agency-hero h1{font-size:clamp(3.25rem,6.25vw,5rem)}
+  .agency-v2 .agency-section-head{align-items:start}
+  .agency-v2 .agency-title{font-size:clamp(2.7rem,5.7vw,4.6rem)}
+}
+@media(max-width:700px){
+  .agency-v2 .agency-section{padding-block:clamp(68px,10vw,84px)}
+  .agency-v2 #work.agency-work{padding:74px 0 84px}
+  .agency-v2 .agency-title{font-size:clamp(2.6rem,9.5vw,4rem);line-height:1.1;letter-spacing:-.047em}
+  .agency-v2 .agency-eyebrow{margin-bottom:14px;font-size:.69rem;letter-spacing:.11em}
+  .agency-v2 .agency-muted,
+  .agency-v2 .agency-section-head .agency-muted,
+  .agency-v2 .agency-skills-head .agency-muted{font-size:.95rem;line-height:1.7}
+  .agency-v2 .agency-section-head,
+  .agency-v2 .agency-skills-head{margin-bottom:27px}
+  .agency-v2 .agency-hero h1{font-size:clamp(3rem,10vw,4.4rem);line-height:1.085;letter-spacing:-.061em}
+  .agency-v2 .agency-hero h1 span:nth-child(2){font-size:.86em;letter-spacing:-.049em}
+  .agency-v2 .agency-hero-lede{max-width:100%;font-size:.97rem;line-height:1.73}
+  .agency-v2 .agency-hero-metrics{margin-top:37px}
+  .agency-v2 .agency-hero-metric strong{font-size:1.45rem}
+  .agency-v2 .agency-hero-metric small{font-size:.65rem}
+  .agency-v2 .agency-btn{min-height:44px;padding:10px 16px;font-size:.82rem}
+  .agency-v2 .agency-project-head h3{font-size:1.48rem}
+  .agency-v2 .agency-project-body>p{font-size:.91rem;line-height:1.7}
+  .agency-v2 .agency-project-tech{font-size:.75rem}
+  .agency-v2 .agency-process-step h3{font-size:1.17rem}
+  .agency-v2 .agency-process-step p{font-size:.84rem;line-height:1.6}
+  .agency-v2 .agency-skills-head .agency-title{font-size:clamp(2.55rem,9vw,3.85rem)}
+  .agency-v2 .agency-skill span{font-size:.69rem}
+  .agency-v2 .agency-job h3{font-size:1.28rem}
+  .agency-v2 .agency-job p:not(.agency-job-label){font-size:.92rem}
+  .agency-v2 .agency-contact-info a,.agency-v2 .agency-contact-info span{font-size:.86rem}
+  .agency-v2 .footer{font-size:.76rem}
+}
+@media(max-width:375px){
+  .agency-v2 .agency-hero h1{font-size:clamp(2.66rem,11.4vw,2.92rem)}
+  .agency-v2 .agency-title{font-size:clamp(2.43rem,10vw,2.8rem)}
+  .agency-v2 .agency-hero-metric small{font-size:.61rem}
+  .agency-v2 .agency-skill span{font-size:.66rem}
+}
