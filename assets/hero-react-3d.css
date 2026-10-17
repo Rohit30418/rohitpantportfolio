@@ -119,3 +119,33 @@
 @media(prefers-reduced-motion:reduce){
   .agency-v2 .react-hero-fallback-icons{transition:none}
 }
+
+/* Ensure labels never cover the floating 3D technology cards. */
+.agency-v2 .react-hero-stage .react-hero-tag{
+  top:1%;left:3%;max-width:62%;
+  padding:7px 11px;font-size:.56rem;
+  background:rgba(10,20,30,.67);
+  z-index:3;
+}
+.agency-v2 .react-hero-stage .react-hero-caption{
+  right:2%;bottom:1%;z-index:3;font-size:.53rem;
+  color:#9cb7c8;
+}
+.agency-v2 .react-hero-canvas-slot{
+  overflow:hidden;
+  border-radius:22px;
+}
+.agency-v2 .react-hero-stage .react-hero-fallback-icons{
+  inset:5% 5% 5% 5%;
+}
+.agency-v2 .tech-badge-fallback{
+  width:clamp(34px,3.7vw,52px);
+}
+@media(max-width:700px){
+  .agency-v2 .react-hero-stage .react-hero-tag{
+    top:0;left:2%;font-size:.51rem;
+  }
+  .agency-v2 .react-hero-stage .react-hero-caption{
+    bottom:0;right:2%;font-size:.46rem;
+  }
+}
