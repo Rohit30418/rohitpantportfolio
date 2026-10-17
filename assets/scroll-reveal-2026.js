@@ -13,7 +13,8 @@
     ['.agency-section-head', 0],
     ['.agency-project-card', 85],
     ['.agency-process-top', 0],
-    ['.agency-process-step', 75],
+    // Keep 3D object anchors stationary; animating these cards caused a
+    // visible offset against the shared WebGL overlay during scroll.
     ['.agency-skills-head', 0],
     ['.agency-skill', 35],
     ['.agency-experience-intro', 0],
