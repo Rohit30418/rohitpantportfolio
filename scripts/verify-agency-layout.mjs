@@ -47,7 +47,18 @@ export async function verifyAgency(mode='all'){
           contactEmail:!!document.querySelector('#contact a[href^="mailto:"]')
         };
       });
+      // Every featured visual must resolve to a real, decoded image, not an empty mockup.
+      await page.waitForFunction(()=>{
+        const images=[...document.querySelectorAll('.agency-project-thumb img')];
+        return images.length===4 && images.every(img=>img.complete);
+      },null,{timeout:6000}).catch(()=>{});
+      const imageStats=await page.evaluate(()=>[...document.querySelectorAll('.agency-project-thumb img')].map(img=>({
+        source:img.getAttribute('src'),naturalWidth:img.naturalWidth,naturalHeight:img.naturalHeight
+      })));
       const id=view.name+': ';
+      requireCheck(imageStats.length===4 && imageStats.every(img=>img.naturalWidth>0 && img.naturalHeight>0),
+        id+'one or more featured project screenshots failed to load: '+JSON.stringify(imageStats));
+
       requireCheck(report.newTheme,id+'V2 body class absent');
       requireCheck(report.sectionsExist,id+'expected section missing');
       requireCheck(report.noOverflow,id+'horizontal document overflow');
