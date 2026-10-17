@@ -544,3 +544,31 @@ body.agency-v2 {
   .agency-v2 .agency-project-actions button {transition:none!important;transform:none!important}
   body.agency-v2.reveal-ready [data-reveal] {opacity:1!important;transform:none!important;transition:none!important}
 }
+
+/* Scroll / 3D paint optimization — keep depth without large blur layers.
+   Big CSS filters cause expensive offscreen compositing during scroll. */
+.agency-v2 .agency-sculpture {
+  filter: none;
+}
+.agency-v2 .agency-sculpture-halo {
+  /* Radial gradient already has soft edges; blurring the whole layer is costly. */
+  filter: none;
+}
+.agency-v2 .agency-portal-stage::before,
+.agency-v2 .agency-portal::before,
+.agency-v2 .agency-portal::after {
+  filter: none;
+}
+.agency-v2 .agency-primitive {
+  filter: none;
+}
+.agency-v2 .agency-process-art::before {
+  filter: none;
+}
+@media (max-width: 700px) {
+  .agency-v2 .header.lux-header {
+    /* Keep the requested frosted header, with a cheaper blur on mobile. */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+}
