@@ -80,3 +80,42 @@
 @media(prefers-reduced-motion:reduce){
   .agency-v2 .react-hero-fallback{transition:none}
 }
+
+/* Six small depth-treated technology tiles sit around—not over—the React atom. */
+.agency-v2 .react-hero-fallback-icons{
+  position:absolute;inset:0;z-index:0;pointer-events:none;
+  opacity:1;transition:opacity .32s ease;
+}
+.agency-v2 .tech-badge-fallback{
+  position:absolute;display:grid;place-items:center;
+  left:var(--badge-x);top:var(--badge-y);
+  transform:translate(-50%,-50%) rotate(var(--badge-tilt,0deg));
+  width:clamp(35px,4vw,56px);aspect-ratio:1;border-radius:13px;
+  background:linear-gradient(135deg,rgba(43,75,109,.95),rgba(11,24,43,.98));
+  border:1px solid rgba(148,211,246,.40);
+  box-shadow:inset 1px 1px 2px rgba(218,241,255,.17),0 10px 16px rgba(0,0,0,.30),5px 5px 0 rgba(4,13,27,.9);
+  color:var(--badge-ink,#c5e8fa);
+  font-size:clamp(.84rem,1.8vw,1.30rem);
+  line-height:1;font-weight:900;letter-spacing:-.055em;
+  font-family:Inter,Arial,sans-serif;
+}
+.agency-v2 .tech-badge-js{--badge-x:12%;--badge-y:22%;--badge-tilt:-10deg;--badge-ink:#f7df1e}
+.agency-v2 .tech-badge-ts{--badge-x:48%;--badge-y:9%;--badge-tilt:9deg;--badge-ink:#70acff}
+.agency-v2 .tech-badge-css{--badge-x:86%;--badge-y:26%;--badge-tilt:10deg;--badge-ink:#62c0ff}
+.agency-v2 .tech-badge-html{--badge-x:8%;--badge-y:61%;--badge-tilt:-11deg;--badge-ink:#f28a55}
+.agency-v2 .tech-badge-firebase{--badge-x:89%;--badge-y:61%;--badge-tilt:12deg;--badge-ink:#ffce63}
+.agency-v2 .tech-badge-git{--badge-x:73%;--badge-y:87%;--badge-tilt:-9deg;--badge-ink:#ee826c}
+.agency-v2 .react-hero-stage.has-webgl .react-hero-fallback-icons{opacity:0}
+.agency-v2 .react-hero-tag{top:6%;left:3%}
+.agency-v2 .react-hero-caption{right:3%;bottom:3%}
+@media(max-width:700px){
+  .agency-v2 .tech-badge-fallback{width:clamp(33px,10vw,47px);border-radius:11px}
+  .agency-v2 .react-hero-tag{top:1%;left:2%;font-size:.54rem}
+  .agency-v2 .react-hero-caption{right:2%;bottom:1%;font-size:.49rem}
+}
+@media(max-width:360px){
+  .agency-v2 .tech-badge-html,.agency-v2 .tech-badge-git{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+  .agency-v2 .react-hero-fallback-icons{transition:none}
+}
