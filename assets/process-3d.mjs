@@ -15,7 +15,7 @@ if(section && flow && anchors.length===4 && window.WebGLRenderingContext){
   const lowPower=!!(connection?.saveData || (navigator.deviceMemory && navigator.deviceMemory<3));
   const figures=[];
   let scene,camera,renderer,canvas,observer,resizeObserver;
-  let idleHandle=0,delayHandle=0;
+  let idleHandle=0,delayHandle=0,lastScrollAt=0;
   let initialized=false,finished=false,ready=false,contextLost=false;
   let lastWidth=0,lastHeight=0,lastDpr=0;
 
@@ -150,6 +150,7 @@ if(section && flow && anchors.length===4 && window.WebGLRenderingContext){
     finished=true;
     observer?.disconnect();resizeObserver?.disconnect();
     window.removeEventListener('resize',layout);
+    window.removeEventListener('scroll',markScroll);
     if(idleHandle && 'cancelIdleCallback' in window)cancelIdleCallback(idleHandle);
     if(delayHandle)clearTimeout(delayHandle);
     window.removeEventListener('pagehide',cleanup);
@@ -203,6 +204,7 @@ if(section && flow && anchors.length===4 && window.WebGLRenderingContext){
       canvas?.remove();
     }
   }
+  function markScroll(){lastScrollAt=performance.now()}
   // Mobile, reduced-motion and low-power visitors see CSS 3D art and never
   // pay the WebGL cost. On desktop, GPU shaders compile at an idle moment
   // and render a single still frame; there is no continuous animation loop.
@@ -210,7 +212,19 @@ if(section && flow && anchors.length===4 && window.WebGLRenderingContext){
     let scheduled=false;
     const idleInit=()=>{
       idleHandle=0;
-      if(!finished && !initialized && !document.hidden)init();
+      if(finished||initialized)return;
+      // Even the initial shader compile must not interrupt a wheel/touch scroll.
+      // Wait until the user has stopped scrolling before doing one-time GPU work.
+      if(document.hidden || performance.now()-lastScrollAt<320){
+        if('requestIdleCallback' in window){
+          idleHandle=requestIdleCallback(idleInit);
+        }else{
+          delayHandle=setTimeout(idleInit,420);
+        }
+        return;
+      }
+      window.removeEventListener('scroll',markScroll);
+      init();
     };
     observer=new IntersectionObserver(entries=>{
       if(!entries[0]?.isIntersecting || initialized || scheduled)return;
@@ -223,6 +237,7 @@ if(section && flow && anchors.length===4 && window.WebGLRenderingContext){
       observer.disconnect();
     },{rootMargin:'600px 0px',threshold:0});
     observer.observe(section);
+    window.addEventListener('scroll',markScroll,{passive:true});
     window.addEventListener('pagehide',cleanup,{once:true});
   }
 }
