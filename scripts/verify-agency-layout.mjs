@@ -46,6 +46,8 @@ export async function verifyAgency(mode='all'){
           caseBridge:typeof window.openPortfolioCaseStudy==='function',
           reactStage:box('#reactHeroStage'),
           reactFallback:!!document.querySelector('#reactHeroStage .react-hero-fallback svg'),
+          heroTechFallbacks:document.querySelectorAll('#reactHeroStage .tech-badge-fallback').length,
+          heroTechNames:[...document.querySelectorAll('#reactHeroStage .tech-badge-fallback')].map(el=>el.className.split(' ').pop()),
           reactModule:!!document.querySelector('script[src="assets/hero-react-3d.mjs"]'),
           oldHeroGone:!document.querySelector('#home .agency-sculpture'),
           processRemoved:!document.getElementById('process') &&
@@ -74,6 +76,7 @@ export async function verifyAgency(mode='all'){
       requireCheck(report.reactStage && report.reactStage.width>=175 && report.reactStage.left>=-5 &&
         report.reactStage.right<=view.width+5,id+'React 3D stage clipped');
       requireCheck(report.reactFallback && report.reactModule && report.oldHeroGone,id+'React hero missing or old sculpture retained');
+      requireCheck(report.heroTechFallbacks===6,id+'floating technology badges missing');
       requireCheck(report.processRemoved,id+'removed process section still referenced');
       requireCheck(report.projects===3,id+'featured projects count incorrect');
       requireCheck(report.projectNames.join('|')==='EventHive|Vaani|Argus',id+'unexpected featured project names');
@@ -100,6 +103,16 @@ export async function verifyAgency(mode='all'){
         ).then(()=>true).catch(()=>false);
         console.log('React 3D hero actual WebGL render:',painted);
         requireCheck(painted,id+'3D React atom did not render; SVG fallback remained');
+        if(painted){
+          const tech=await page.locator('#reactHeroStage').evaluate(el=>({
+            count:Number(el.dataset.iconCount),
+            names:el.dataset.technologies||'',
+            canvases:el.querySelectorAll('canvas').length
+          }));
+          console.log('Floating 3D tech icons:',JSON.stringify(tech));
+          requireCheck(tech.count===6 && tech.canvases===1 && tech.names.includes('JAVASCRIPT') &&
+            tech.names.includes('FIREBASE'),id+'3D badge meshes or texture creation missing');
+        }
       }
       if(mode==='hero'||mode==='all'){
         if(view.width<=900){
