@@ -1,7 +1,7 @@
 /**
  * Agency Process — real 3D sculpture timeline, not CSS faux depth.
  * One shared WebGL context, four physically lit objects, zero 3D model downloads.
- * Lazy scene creation, visibility-paused rendering, capped DPR/FPS, CSS fallback.
+ * Idle-time single-frame WebGL rendering, with CSS fallback for touch / low-power devices.
  */
 import * as THREE from 'https://esm.sh/three@0.171.0?bundle';
 
@@ -15,10 +15,9 @@ if(section && flow && anchors.length===4 && window.WebGLRenderingContext){
   const lowPower=!!(connection?.saveData || (navigator.deviceMemory && navigator.deviceMemory<3));
   const figures=[];
   let scene,camera,renderer,canvas,observer,resizeObserver;
-  let raf=0,active=false,initialized=false,finished=false,ready=false,contextLost=false;
-  let lastFrame=0,startTime=0;
-  const maxFps=coarse?28:42;
-  const frameMs=1000/maxFps;
+  let idleHandle=0,delayHandle=0;
+  let initialized=false,finished=false,ready=false,contextLost=false;
+  let lastWidth=0,lastHeight=0,lastDpr=0;
 
   function createStudioEnvironment(){
     // A few luminous rectangular studio panels reflected in metal and glass.
@@ -128,10 +127,13 @@ if(section && flow && anchors.length===4 && window.WebGLRenderingContext){
       // Never let the 3D geometry collide with adjacent columns.
       figures[i].scale.setScalar(Math.min(1.08,Math.max(.76,(box.width-10)/190)));
     });
-    const maxDpr=coarse?1.15:1.5;
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,maxDpr));
-    renderer.setSize(w,h,false);
-    if(reduced)renderOnce();
+    const dpr=Math.min(window.devicePixelRatio||1,1.15);
+    if(w!==lastWidth||h!==lastHeight||dpr!==lastDpr){
+      renderer.setPixelRatio(dpr);
+      renderer.setSize(w,h,false);
+      lastWidth=w;lastHeight=h;lastDpr=dpr;
+    }
+    renderOnce();
   }
 
   function renderOnce(){
@@ -143,44 +145,13 @@ if(section && flow && anchors.length===4 && window.WebGLRenderingContext){
     }
   }
 
-  function frame(now){
-    raf=0;
-    if(!active||finished||contextLost||document.hidden)return;
-    if(lastFrame && now-lastFrame<frameMs){
-      raf=requestAnimationFrame(frame);
-      return;
-    }
-    lastFrame=now;
-    if(!startTime)startTime=now;
-    const t=(now-startTime)*.001;
-    figures.forEach((g,i)=>{
-      const base=g.userData.initialRotation;
-      const speed=i===0?.24:i===1?.16:i===2?.19:.11;
-      g.rotation.y=base.y+Math.sin(t*speed)*.22+t*.035*(i%2?-1:1);
-      g.rotation.x=base.x+Math.cos(t*speed*.8+i)*.075;
-      g.position.z=Math.sin(t*.8+i*1.4)*.095;
-    });
-    renderOnce();
-    if(!reduced)raf=requestAnimationFrame(frame);
-  }
-
-  function pause(){
-    active=false;
-    if(raf){cancelAnimationFrame(raf);raf=0}
-    lastFrame=0;
-  }
-  function resume(){
-    if(!initialized||finished||contextLost||document.hidden||active)return;
-    active=true;
-    if(reduced){renderOnce();return}
-    raf=requestAnimationFrame(frame);
-  }
-
   function cleanup(){
     if(finished)return;
-    finished=true;pause();
+    finished=true;
     observer?.disconnect();resizeObserver?.disconnect();
-    document.removeEventListener('visibilitychange',onVisibility);
+    window.removeEventListener('resize',layout);
+    if(idleHandle && 'cancelIdleCallback' in window)cancelIdleCallback(idleHandle);
+    if(delayHandle)clearTimeout(delayHandle);
     window.removeEventListener('pagehide',cleanup);
     if(renderer){
       scene?.traverse(o=>{
@@ -189,10 +160,6 @@ if(section && flow && anchors.length===4 && window.WebGLRenderingContext){
       scene?.environment?.dispose();
       renderer.dispose();
     }
-  }
-  function onVisibility(){
-    if(document.hidden)pause();
-    else if(observer?.isVisible)resume();
   }
   function init(){
     if(initialized||finished)return;
@@ -219,13 +186,16 @@ if(section && flow && anchors.length===4 && window.WebGLRenderingContext){
       makeFigures();
       initialized=true;
       canvas.addEventListener('webglcontextlost',event=>{
-        event.preventDefault();contextLost=true;pause();section.classList.remove('process-has-webgl')
+        event.preventDefault();contextLost=true;section.classList.remove('process-has-webgl')
       },false);
-      // The device can recover by a page refresh; keep the CSS art as fallback.
-      resizeObserver=new ResizeObserver(()=>layout());
-      resizeObserver.observe(flow);
+      // Re-render only if the layout changes, never for scrolling.
+      if('ResizeObserver' in window){
+        resizeObserver=new ResizeObserver(()=>layout());
+        resizeObserver.observe(flow);
+      }else{
+        window.addEventListener('resize',layout,{passive:true});
+      }
       layout();
-      renderOnce();
     }catch(error){
       console.warn('3D process unavailable; keeping CSS fallback:',error);
       section.classList.remove('process-has-webgl');
@@ -233,17 +203,26 @@ if(section && flow && anchors.length===4 && window.WebGLRenderingContext){
       canvas?.remove();
     }
   }
-  if(!lowPower){
+  // Mobile, reduced-motion and low-power visitors see CSS 3D art and never
+  // pay the WebGL cost. On desktop, GPU shaders compile at an idle moment
+  // and render a single still frame; there is no continuous animation loop.
+  if(!lowPower && !coarse && !reduced && 'IntersectionObserver' in window){
+    let scheduled=false;
+    const idleInit=()=>{
+      idleHandle=0;
+      if(!finished && !initialized && !document.hidden)init();
+    };
     observer=new IntersectionObserver(entries=>{
-      const visible=entries[0]?.isIntersecting||false;
-      observer.isVisible=visible;
-      if(visible){
-        if(!initialized)init();
-        resume();
-      }else pause();
-    },{rootMargin:'160px 0px',threshold:0});
+      if(!entries[0]?.isIntersecting || initialized || scheduled)return;
+      scheduled=true;
+      if('requestIdleCallback' in window){
+        idleHandle=requestIdleCallback(idleInit,{timeout:3500});
+      }else{
+        delayHandle=setTimeout(idleInit,350);
+      }
+      observer.disconnect();
+    },{rootMargin:'600px 0px',threshold:0});
     observer.observe(section);
-    document.addEventListener('visibilitychange',onVisibility,{passive:true});
     window.addEventListener('pagehide',cleanup,{once:true});
   }
 }
