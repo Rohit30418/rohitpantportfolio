@@ -398,3 +398,30 @@ html{scroll-padding-top:77px}
   .agency-v2 .agency-project-thumb{aspect-ratio:1.55}
   .agency-v2 .agency-project-actions a,.agency-v2 .agency-project-actions button{padding:9px 12px;font-size:.69rem}
 }
+
+/* Phase 2 / Four real 3D sculptures.
+   One absolute, transparent WebGL canvas shares the existing step dimensions.
+   Keep original CSS geometry visible if WebGL, CDN or GPU is unavailable. */
+.agency-v2 .agency-process-flow{isolation:isolate}
+.agency-v2 .agency-process-webgl{
+  position:absolute;inset:0;display:block;width:100%;height:100%;
+  z-index:2;pointer-events:none;touch-action:pan-y;
+  background:transparent;
+}
+.agency-v2 .agency-process-step{position:relative;z-index:3;pointer-events:none}
+.agency-v2 .agency-process-number,.agency-v2 .agency-process-step h3,.agency-v2 .agency-process-step p{position:relative;z-index:3}
+.agency-v2 .agency-process-step .agency-process-art{background:transparent}
+.agency-v2 .agency-process.process-has-webgl .agency-primitive{visibility:hidden!important}
+.agency-v2 .agency-process-flow::before{z-index:0}
+/* A low-cost light wash helps dark blue reflective models read clearly. */
+.agency-v2 .agency-process-art::before{
+  content:"";position:absolute;inset:22% 12%;z-index:-1;pointer-events:none;
+  border-radius:50%;background:radial-gradient(ellipse,rgba(43,113,188,.085),transparent 73%);
+}
+.agency-v2 .agency-process-step:nth-child(3) .agency-process-art::before{
+  background:radial-gradient(ellipse,rgba(221,133,112,.075),transparent 70%);
+}
+@media(max-width:700px){
+  .agency-v2 .agency-process-webgl{z-index:2}
+  .agency-v2 .agency-process-step{z-index:3}
+}
