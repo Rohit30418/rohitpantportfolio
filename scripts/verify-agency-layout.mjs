@@ -42,7 +42,9 @@ export async function verifyAgency(mode='all'){
           skills:document.querySelectorAll('.agency-skill').length,
           caseDialog:!!document.getElementById('holoCaseDialog'),
           caseBridge:typeof window.openPortfolioCaseStudy==='function',
-          heroWebGL:!!document.querySelector('#heroReact3D, canvas'),
+          heroWebGL:!!document.querySelector('#home canvas, #heroReact3D'),
+          processFallbacks:document.querySelectorAll('#process .agency-primitive').length,
+          processThreeJS:!!document.querySelector('script[src="assets/process-3d.mjs"]'),
           mobileButton:box('#menuButton'),
           contactEmail:!!document.querySelector('#contact a[href^="mailto:"]')
         };
@@ -64,7 +66,8 @@ export async function verifyAgency(mode='all'){
       requireCheck(report.noOverflow,id+'horizontal document overflow');
       requireCheck(report.hero && report.hero.width>100 && report.hero.left>=-4 && report.hero.right<=view.width+4,id+'hero headline clipped');
       requireCheck(report.header && report.header.width>160,id+'header unavailable');
-      requireCheck(!report.heroWebGL,id+'unexpected video/canvas/WebGL island');
+      requireCheck(!report.heroWebGL,id+'unexpected hero WebGL scene');
+      requireCheck(report.processFallbacks===4 && report.processThreeJS,id+'3D process or fallback missing');
       requireCheck(report.projects===4,id+'featured projects count incorrect');
       requireCheck(report.skills===10,id+'skills count incorrect');
       requireCheck(report.contactEmail,id+'contact method missing');
