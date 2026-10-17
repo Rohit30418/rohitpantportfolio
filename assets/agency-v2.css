@@ -681,3 +681,18 @@ body.agency-v2{
   .agency-v2 .agency-about-art{min-height:335px}
   .agency-v2 .agency-about-photo{max-height:345px}
 }
+
+/* Featured work: three curated projects, single desktop row. */
+@media(min-width:1151px){
+  .agency-v2 .agency-work .agency-project-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+  .agency-v2 .agency-project-thumb{min-height:0;aspect-ratio:1.58}
+  .agency-v2 .agency-project-body{padding:23px}
+  .agency-v2 .agency-project-head h3{font-size:1.5rem}
+  .agency-v2 .agency-project-body>p{font-size:.87rem}
+}
+@media(min-width:701px) and (max-width:1150px){
+  .agency-v2 .agency-work .agency-project-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+}
+@media(max-width:700px){
+  .agency-v2 .agency-work .agency-project-grid{grid-template-columns:minmax(0,1fr);gap:15px}
+}
