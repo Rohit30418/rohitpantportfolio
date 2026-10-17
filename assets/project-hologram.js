@@ -214,6 +214,18 @@
     dialog.addEventListener('close',()=>returnFocus?.focus());
   }
 
+  // Public case-study bridge for the agency-style project gallery.
+  // Uses the same verified screenshots and detailed project data as the original showcase.
+  window.openPortfolioCaseStudy=(key,trigger)=>{
+    if(!projects[key] || !caseButton || !dialog)return;
+    clearTimeout(switchTimer);
+    browser.classList.remove('is-switching');
+    setProject(key);
+    caseButton.click();
+    // The original selector is visually retired; return focus to the actual clicked card.
+    if(trigger && typeof trigger.focus==='function')returnFocus=trigger;
+  };
+
   const observer=new IntersectionObserver(([entry])=>{
     stage.classList.toggle('is-visible',entry.isIntersecting && !document.hidden);
   },{threshold:.04});
