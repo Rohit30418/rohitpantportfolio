@@ -44,7 +44,10 @@ export async function verifyAgency(mode='all'){
           skills:document.querySelectorAll('.agency-skill').length,
           caseDialog:!!document.getElementById('holoCaseDialog'),
           caseBridge:typeof window.openPortfolioCaseStudy==='function',
-          heroWebGL:!!document.querySelector('#home canvas, #heroReact3D'),
+          reactStage:box('#reactHeroStage'),
+          reactFallback:!!document.querySelector('#reactHeroStage .react-hero-fallback svg'),
+          reactModule:!!document.querySelector('script[src="assets/hero-react-3d.mjs"]'),
+          oldHeroGone:!document.querySelector('#home .agency-sculpture'),
           processRemoved:!document.getElementById('process') &&
             !document.querySelector('a[href="#process"], script[src="assets/process-3d.mjs"]'),
           mobileButton:box('#menuButton'),
@@ -68,7 +71,9 @@ export async function verifyAgency(mode='all'){
       requireCheck(report.noOverflow,id+'horizontal document overflow');
       requireCheck(report.hero && report.hero.width>100 && report.hero.left>=-4 && report.hero.right<=view.width+4,id+'hero headline clipped');
       requireCheck(report.header && report.header.width>160,id+'header unavailable');
-      requireCheck(!report.heroWebGL,id+'unexpected hero WebGL scene');
+      requireCheck(report.reactStage && report.reactStage.width>=175 && report.reactStage.left>=-5 &&
+        report.reactStage.right<=view.width+5,id+'React 3D stage clipped');
+      requireCheck(report.reactFallback && report.reactModule && report.oldHeroGone,id+'React hero missing or old sculpture retained');
       requireCheck(report.processRemoved,id+'removed process section still referenced');
       requireCheck(report.projects===3,id+'featured projects count incorrect');
       requireCheck(report.projectNames.join('|')==='EventHive|Vaani|Argus',id+'unexpected featured project names');
@@ -85,6 +90,16 @@ export async function verifyAgency(mode='all'){
           await page.locator('#holoCaseClose').click();
           requireCheck(!(await page.locator('#holoCaseDialog').evaluate(el=>el.open)),id+'dialog did not close');
         }
+      }
+      if(mode==='hero' && view.width===1440){
+        // The React icon is a real mesh, not an SVG masquerading as 3D.
+        // Reduced motion requests one stable WebGL render without any RAF loop.
+        const painted=await page.waitForFunction(
+          ()=>document.getElementById('reactHeroStage')?.classList.contains('has-webgl'),
+          null,{timeout:12000}
+        ).then(()=>true).catch(()=>false);
+        console.log('React 3D hero actual WebGL render:',painted);
+        requireCheck(painted,id+'3D React atom did not render; SVG fallback remained');
       }
       if(mode==='hero'||mode==='all'){
         if(view.width<=900){
