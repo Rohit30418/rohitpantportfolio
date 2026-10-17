@@ -272,3 +272,11 @@ html{scroll-padding-top:77px}
 @media(prefers-reduced-motion:reduce){
 .agency-v2 *, .agency-v2 *::before,.agency-v2 *::after{animation:none!important;scroll-behavior:auto!important;transition:none!important}
 }
+
+/* Override stronger legacy #work showcase selectors, including mobile paddings. */
+.agency-v2 #work.agency-work{height:auto;min-height:0;padding:112px 0;scroll-margin-top:90px;background:#070b0f}
+.agency-v2 #work.agency-work > .shell{width:min(1330px,calc(100% - 76px));max-width:none;height:auto;position:relative;margin-inline:auto}
+@media(max-width:640px){
+  .agency-v2 #work.agency-work{padding:73px 0;scroll-margin-top:77px}
+  .agency-v2 #work.agency-work > .shell{width:calc(100% - 36px)}
+}
