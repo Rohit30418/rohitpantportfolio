@@ -90,6 +90,25 @@ export async function verifyAgency(mode='all'){
           requireCheck(!(await page.locator('#mobileNav').isVisible()),id+'mobile navigation failed to close');
         }
       }
+      if(mode==='projects' && view.width===1440){
+        // Scroll into the process once to exercise the lazy 3D initialization.
+        await page.locator('#process').scrollIntoViewIfNeeded();
+        await page.waitForTimeout(2300);
+        const processScene=await page.evaluate(()=>{
+          const section=document.querySelector('#process');
+          const canvas=section?.querySelector('.agency-process-webgl');
+          return {
+            rendered:section?.classList.contains('process-has-webgl')||false,
+            canvas:!!canvas,
+            cssFallbackVisible:!!section?.querySelector('.agency-primitive'),
+            hasWebGLAPI:!!window.WebGLRenderingContext,
+            contextAvailable:!!canvas?.getContext('webgl2')
+          };
+        });
+        console.log('Lazy Three.js process scene:',JSON.stringify(processScene));
+        requireCheck(processScene.rendered || processScene.cssFallbackVisible,
+          id+'neither 3D process scene nor fallback is available');
+      }
       if(mode==='skills'||mode==='all'){
         const first=page.locator('.agency-skill').first();
         requireCheck(await first.isVisible(),id+'skill tile not visible');
