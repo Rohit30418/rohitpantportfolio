@@ -237,13 +237,9 @@ body.agency-v2 {
   letter-spacing: -.05em;
 }
 .agency-v2 .agency-hero-metric small {color: var(--p26-muted);font-size: .72rem;font-weight: 500}
-.agency-v2 .agency-sculpture {
-  width: min(100%, 510px);
-  filter: drop-shadow(0 22px 38px rgba(6,17,32,.24));
-  opacity: .85;
-}
-.agency-v2 .agency-sculpture-halo {opacity: .55}
-.agency-v2 .agency-sculpture-tag {color: #929caa}
+
+
+
 .agency-v2 .agency-hero-scroll {
   bottom: 33px;
   right: max(40px,calc((100vw - 1200px)/2));
@@ -441,7 +437,7 @@ body.agency-v2 {
   .agency-v2 .agency-hero-inner {grid-template-columns: 1fr}
   .agency-v2 .agency-hero-copy {max-width: 690px}
   .agency-v2 .agency-hero h1 {font-size:clamp(4.05rem,8vw,6.2rem)}
-  .agency-v2 .agency-sculpture {position: absolute;top:10%;right:-12%;width:min(55%,390px);opacity:.22;z-index:-1}
+
   .agency-v2 .agency-about-grid,.agency-v2 .agency-experience-grid {grid-template-columns: 1fr}
   .agency-v2 .agency-about-art {width:100%;max-width:580px;min-height:450px;margin-inline:auto}
   .agency-v2 .agency-about-photo {max-height:460px}
@@ -487,7 +483,7 @@ body.agency-v2 {
   .agency-v2 .agency-hero-metric {padding:0 12px}
   .agency-v2 .agency-hero-metric strong {font-size:1.35rem}
   .agency-v2 .agency-hero-metric small {font-size:.65rem;line-height:1.5}
-  .agency-v2 .agency-sculpture {position:relative;top:auto;right:auto;z-index:0;width:min(100%,360px);margin:16px auto -25px;opacity:.65}
+
   .agency-v2 .agency-hero-scroll {display:none}
   .agency-v2 .agency-title {font-size:clamp(2.65rem,9.7vw,4.35rem);line-height:1.1;letter-spacing:-.055em}
   .agency-v2 .agency-eyebrow {font-size:.68rem;letter-spacing:.105em;margin-bottom:19px}
@@ -547,13 +543,8 @@ body.agency-v2 {
 
 /* Scroll / 3D paint optimization — keep depth without large blur layers.
    Big CSS filters cause expensive offscreen compositing during scroll. */
-.agency-v2 .agency-sculpture {
-  filter: none;
-}
-.agency-v2 .agency-sculpture-halo {
-  /* Radial gradient already has soft edges; blurring the whole layer is costly. */
-  filter: none;
-}
+
+
 .agency-v2 .agency-portal-stage::before,
 .agency-v2 .agency-portal::before,
 .agency-v2 .agency-portal::after {
