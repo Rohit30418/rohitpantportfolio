@@ -15,7 +15,7 @@
   const constrained=!!(connection?.saveData||(navigator.deviceMemory&&navigator.deviceMemory<3));
   if(constrained||!window.WebGLRenderingContext)return;
 
-  let renderer,scene,camera,atom,observer,resizeObserver,canvas;
+  let renderer,scene,camera,atom,techBadges=[],observer,resizeObserver,canvas;
   let running=false,initialized=false,loading=false,disposed=false,rendered=false,contextLost=false;
   let raf=0,lastDraw=0,epoch=0;
   const pointer={x:0,y:0};
@@ -31,6 +31,9 @@
     renderer.setSize(width,height,false);
     camera.aspect=width/height;
     camera.updateProjectionMatrix();
+    techBadges.forEach(badge=>{
+      badge.visible=!(width<345 && badge.userData.hideOnCompact);
+    });
     draw();
   }
 
@@ -59,6 +62,14 @@
     atom.rotation.x=-.12+Math.sin(time*.34)*.085+eased.y*.14;
     atom.rotation.y=.27+Math.sin(time*.26)*.33+eased.x*.24;
     atom.rotation.z=.045+Math.sin(time*.18)*.065;
+    // Independently bob and tilt each 3D technology plaque around the atom.
+    techBadges.forEach((badge,i)=>{
+      const origin=badge.userData.origin;
+      badge.position.y=origin.y+Math.sin(time*(.50+i*.035)+i*1.4)*(.075+(i%3)*.014);
+      badge.rotation.y=badge.userData.yaw+Math.sin(time*.38+i)*.12;
+      badge.rotation.x=badge.userData.pitch+Math.cos(time*.44+i*1.2)*.075;
+      badge.rotation.z=badge.userData.roll+Math.sin(time*.33+i)*.045;
+    });
     draw();
     if(!reduced)raf=requestAnimationFrame(animate);
   }
@@ -99,6 +110,7 @@
     if(scene){
       const geometries=new Set();
       const materials=new Set();
+      const textures=new Set();
       scene.traverse(object=>{
         if(object.isMesh){
           if(object.geometry)geometries.add(object.geometry);
@@ -107,9 +119,134 @@
         }
       });
       geometries.forEach(g=>g.dispose());
-      materials.forEach(m=>m.dispose());
+      materials.forEach(m=>{if(m.map)textures.add(m.map);m.dispose()});
+      textures.forEach(texture=>texture.dispose());
     }
     if(renderer)renderer.dispose();
+  }
+
+
+  function createBadgeTexture(brand){
+    // Branding is painted into a small local canvas: no external icon libraries
+    // or model downloads and no additional rendering contexts.
+    const surface=document.createElement('canvas');
+    surface.width=256;surface.height=256;
+    const ctx=surface.getContext('2d');
+    if(!ctx)throw Error('2D icon texture unavailable');
+
+    function roundRect(x,y,w,h,r){
+      ctx.beginPath();
+      ctx.roundRect(x,y,w,h,r);
+    }
+    // Semi-transparent gloss along the upper edge of each metal/glass tile.
+    const wash=ctx.createLinearGradient(0,0,256,256);
+    wash.addColorStop(0,'rgba(110,205,253,.20)');
+    wash.addColorStop(.50,'rgba(22,60,92,.09)');
+    wash.addColorStop(1,'rgba(7,25,39,.15)');
+    roundRect(8,8,240,240,35);ctx.fillStyle=wash;ctx.fill();
+    roundRect(15,15,226,226,30);
+    ctx.strokeStyle='rgba(154,220,255,.44)';ctx.lineWidth=2;ctx.stroke();
+
+    const accent=brand.color;
+    if(brand.key==='JS'||brand.key==='TS'){
+      roundRect(55,37,146,143,26);
+      ctx.fillStyle=accent;ctx.fill();
+      ctx.fillStyle=brand.key==='JS'?'#132027':'#ffffff';
+      ctx.font='800 93px system-ui, Arial';ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText(brand.key,128,109);
+    }else if(brand.key==='HTML'||brand.key==='CSS'){
+      // Shield shape makes the familiar HTML/CSS identity recognizable.
+      ctx.beginPath();
+      ctx.moveTo(59,39);ctx.lineTo(197,39);ctx.lineTo(184,175);
+      ctx.lineTo(128,198);ctx.lineTo(72,175);ctx.closePath();
+      ctx.fillStyle=accent;ctx.fill();
+      ctx.fillStyle='#ffffff';ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.font='850 114px system-ui, Arial';
+      ctx.fillText(brand.key==='HTML'?'5':'3',128,114);
+    }else if(brand.key==='FIRE'){
+      // Distinctive warm flame made entirely of simple vector paths.
+      ctx.beginPath();ctx.moveTo(78,167);ctx.lineTo(111,42);
+      ctx.lineTo(148,111);ctx.lineTo(176,77);
+      ctx.lineTo(190,163);ctx.lineTo(131,199);ctx.closePath();
+      ctx.fillStyle='#ffa928';ctx.fill();
+      ctx.beginPath();ctx.moveTo(97,170);ctx.lineTo(148,111);
+      ctx.lineTo(176,78);ctx.lineTo(170,167);ctx.lineTo(131,197);ctx.closePath();
+      ctx.fillStyle='#ffdc73';ctx.fill();
+    }else if(brand.key==='GIT'){
+      ctx.save();ctx.translate(128,111);ctx.rotate(Math.PI/4);
+      roundRect(-61,-61,122,122,23);ctx.fillStyle=accent;ctx.fill();
+      ctx.restore();
+      ctx.strokeStyle='#ffffff';ctx.lineWidth=9;ctx.lineCap='round';
+      ctx.beginPath();ctx.moveTo(102,78);ctx.lineTo(102,155);ctx.lineTo(149,155);ctx.stroke();
+      for(const [x,y] of [[102,78],[102,155],[149,155]]){
+        ctx.beginPath();ctx.arc(x,y,10,0,Math.PI*2);ctx.fillStyle='#ffffff';ctx.fill();
+      }
+    }
+    ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.font='700 22px system-ui, Arial';
+    ctx.fillStyle='#d1e9fa';ctx.letterSpacing='1px';
+    ctx.fillText(brand.label,128,222);
+
+    const texture=new THREE.CanvasTexture(surface);
+    texture.colorSpace=THREE.SRGBColorSpace;
+    texture.anisotropy=Math.min(renderer.capabilities.getMaxAnisotropy(),4);
+    return texture;
+  }
+
+  function addTechBadges(){
+    const specs=[
+      {key:'JS',label:'JAVASCRIPT',color:'#f7df1e',x:-1.90,y:1.64,z:1.07,yaw:.17,roll:-.10},
+      {key:'TS',label:'TYPESCRIPT',color:'#3178c6',x:-.23,y:2.26,z:.60,yaw:-.17,roll:.13},
+      {key:'CSS',label:'CSS3',color:'#2196f3',x:1.98,y:1.36,z:.84,yaw:-.26,roll:.10},
+      {key:'HTML',label:'HTML5',color:'#ed642e',x:-2.19,y:-.53,z:1.0,yaw:.22,roll:-.12},
+      {key:'FIRE',label:'FIREBASE',color:'#ffb32d',x:2.14,y:-.63,z:1.05,yaw:-.17,roll:.13},
+      {key:'GIT',label:'GIT',color:'#e86f52',x:1.16,y:-1.95,z:.82,yaw:-.10,roll:-.11}
+    ];
+    // Share one beveled extrusion and one matte-metal chassis material.
+    const shape=new THREE.Shape();
+    const width=.69,height=.78,radius=.105;
+    const left=-width/2,bottom=-height/2,right=width/2,top=height/2;
+    shape.moveTo(left+radius,bottom);
+    shape.lineTo(right-radius,bottom);shape.quadraticCurveTo(right,bottom,right,bottom+radius);
+    shape.lineTo(right,top-radius);shape.quadraticCurveTo(right,top,right-radius,top);
+    shape.lineTo(left+radius,top);shape.quadraticCurveTo(left,top,left,top-radius);
+    shape.lineTo(left,bottom+radius);shape.quadraticCurveTo(left,bottom,left+radius,bottom);
+    const chassisGeometry=new THREE.ExtrudeGeometry(shape,{
+      depth:.09,bevelEnabled:true,bevelSegments:2,steps:1,bevelSize:.028,
+      bevelThickness:.03,curveSegments:5
+    });
+    const chassisMaterial=new THREE.MeshPhysicalMaterial({
+      color:0x13263b,metalness:.69,roughness:.22,clearcoat:1,
+      clearcoatRoughness:.11
+    });
+    const imageGeometry=new THREE.PlaneGeometry(.65,.73);
+    specs.forEach((spec,i)=>{
+      const badge=new THREE.Group();
+      badge.name='tech-badge-'+spec.key;
+      const panel=new THREE.Mesh(chassisGeometry,chassisMaterial);
+      badge.add(panel);
+      const imageMaterial=new THREE.MeshBasicMaterial({
+        map:createBadgeTexture(spec),transparent:true,side:THREE.FrontSide,
+        depthWrite:false,toneMapped:false
+      });
+      const face=new THREE.Mesh(imageGeometry,imageMaterial);
+      face.position.z=.125;
+      badge.add(face);
+      badge.position.set(spec.x,spec.y,spec.z);
+      badge.rotation.set((i%2?-.13:.11),spec.yaw,spec.roll);
+      badge.scale.setScalar(coarse?.87:1);
+      badge.userData.origin=badge.position.clone();
+      badge.userData.yaw=spec.yaw;
+      badge.userData.pitch=badge.rotation.x;
+      badge.userData.roll=spec.roll;
+      // Fewer icons on extra-narrow viewports to keep React visually dominant.
+      badge.userData.hideOnCompact=spec.key==='HTML'||spec.key==='GIT';
+      atom?.updateMatrixWorld();
+      scene.add(badge);
+      techBadges.push(badge);
+    });
+    stage.dataset.iconCount=String(techBadges.length);
+    stage.dataset.technologies=specs.map(s=>s.label).join(', ');
   }
 
   async function initialize(){
@@ -180,6 +317,7 @@
       );
       lightCore.position.z=.23;
       atom.add(lightCore);
+      addTechBadges();
 
       canvas.addEventListener('webglcontextlost',event=>{
         event.preventDefault();
