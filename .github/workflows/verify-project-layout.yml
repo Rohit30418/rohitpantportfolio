@@ -6,6 +6,7 @@ on:
     paths:
       - "index.html"
       - "assets/agency-v2.css"
+      - "assets/editorial-2026.css"
       - "scripts/verify-agency-layout.mjs"
       - "assets/project-hologram-one-screen.css"
       - "assets/project-hologram.js"
@@ -32,5 +33,5 @@ jobs:
         run: |
           python3 -m http.server 8777 --bind 127.0.0.1 > /tmp/portfolio-server.log 2>&1 &
           sleep 2
-      - name: Check four project cards and case studies across viewports
+      - name: Check three project cards and case studies across viewports
         run: node scripts/verify-project-layout.mjs
