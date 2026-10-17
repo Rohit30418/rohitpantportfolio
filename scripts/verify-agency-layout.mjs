@@ -31,7 +31,7 @@ export async function verifyAgency(mode='all'){
           const cs=getComputedStyle(node);
           return {left:r.left,right:r.right,top:r.top,bottom:r.bottom,width:r.width,height:r.height,display:cs.display};
         };
-        const sections=['home','about','work','process','skills','experience','contact'];
+        const sections=['home','about','work','skills','experience','contact'];
         return {
           newTheme:document.body.classList.contains('agency-v2'),
           noOverflow:document.documentElement.scrollWidth<=innerWidth+3,
@@ -45,8 +45,8 @@ export async function verifyAgency(mode='all'){
           caseDialog:!!document.getElementById('holoCaseDialog'),
           caseBridge:typeof window.openPortfolioCaseStudy==='function',
           heroWebGL:!!document.querySelector('#home canvas, #heroReact3D'),
-          processFallbacks:document.querySelectorAll('#process .agency-primitive').length,
-          processThreeJS:!!document.querySelector('script[src="assets/process-3d.mjs"]'),
+          processRemoved:!document.getElementById('process') &&
+            !document.querySelector('a[href="#process"], script[src="assets/process-3d.mjs"]'),
           mobileButton:box('#menuButton'),
           contactEmail:!!document.querySelector('#contact a[href^="mailto:"]')
         };
@@ -69,7 +69,7 @@ export async function verifyAgency(mode='all'){
       requireCheck(report.hero && report.hero.width>100 && report.hero.left>=-4 && report.hero.right<=view.width+4,id+'hero headline clipped');
       requireCheck(report.header && report.header.width>160,id+'header unavailable');
       requireCheck(!report.heroWebGL,id+'unexpected hero WebGL scene');
-      requireCheck(report.processFallbacks===4 && report.processThreeJS,id+'3D process or fallback missing');
+      requireCheck(report.processRemoved,id+'removed process section still referenced');
       requireCheck(report.projects===3,id+'featured projects count incorrect');
       requireCheck(report.projectNames.join('|')==='EventHive|Vaani|Argus',id+'unexpected featured project names');
       const expectedColumns=view.width>1150?3:view.width>700?2:1;
@@ -94,25 +94,6 @@ export async function verifyAgency(mode='all'){
           await page.locator('#mobileNav a[href="#about"]').click();
           requireCheck(!(await page.locator('#mobileNav').isVisible()),id+'mobile navigation failed to close');
         }
-      }
-      if(mode==='projects' && view.width===1440){
-        // Scroll into the process once to exercise the lazy 3D initialization.
-        await page.locator('#process').scrollIntoViewIfNeeded();
-        await page.waitForTimeout(2300);
-        const processScene=await page.evaluate(()=>{
-          const section=document.querySelector('#process');
-          const canvas=section?.querySelector('.agency-process-webgl');
-          return {
-            rendered:section?.classList.contains('process-has-webgl')||false,
-            canvas:!!canvas,
-            cssFallbackVisible:!!section?.querySelector('.agency-primitive'),
-            hasWebGLAPI:!!window.WebGLRenderingContext,
-            contextAvailable:!!canvas?.getContext('webgl2')
-          };
-        });
-        console.log('Lazy Three.js process scene:',JSON.stringify(processScene));
-        requireCheck(processScene.rendered || processScene.cssFallbackVisible,
-          id+'neither 3D process scene nor fallback is available');
       }
       if(mode==='skills'||mode==='all'){
         const first=page.locator('.agency-skill').first();
