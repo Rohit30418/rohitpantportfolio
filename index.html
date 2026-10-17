@@ -2074,6 +2074,7 @@
   <link rel="stylesheet" href="assets/experience-refresh.css" />
   <link rel="stylesheet" href="assets/agency-v2.css" />
   <link rel="stylesheet" href="assets/editorial-2026.css" />
+  <link rel="stylesheet" href="assets/hero-react-3d.css" />
   <link rel="stylesheet" href="assets/portfolio-motion-2026.css" />
 </head>
 <body class="agency-v2">
@@ -2119,14 +2120,33 @@
             <div class="agency-hero-metric"><strong>60+</strong><small>Pages on large builds</small></div>
           </div>
         </div>
-        <div class="agency-sculpture" aria-hidden="true">
-          <span class="agency-sculpture-halo"></span>
-          <span class="agency-sculpture-core"></span>
-          <span class="agency-sculpture-ring"></span>
-          <span class="agency-sculpture-ring agency-sculpture-ring--two"></span>
-          <span class="agency-sculpture-ring agency-sculpture-ring--three"></span>
-          <span class="agency-sculpture-spec"></span>
-          <span class="agency-sculpture-tag"><span>CODE</span><span>DESIGN</span><span>BUILD</span><span>REFINE</span></span>
+        <div class="react-hero-stage" id="reactHeroStage" role="img" aria-label="Floating three-dimensional React atom with glowing blue orbital rings">
+          <span class="react-hero-grid" aria-hidden="true"></span>
+          <span class="react-hero-tag" aria-hidden="true">React / Frontend</span>
+          <div class="react-hero-fallback" aria-hidden="true">
+            <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="reactAtomOrbit" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#b9f2ff"/>
+                  <stop offset="48%" stop-color="#51c9ef"/>
+                  <stop offset="100%" stop-color="#2476b5"/>
+                </linearGradient>
+                <radialGradient id="reactAtomNucleus">
+                  <stop offset="0%" stop-color="#e6fcff"/>
+                  <stop offset="38%" stop-color="#92e4ff"/>
+                  <stop offset="100%" stop-color="#148cc6"/>
+                </radialGradient>
+              </defs>
+              <g fill="none" stroke="url(#reactAtomOrbit)" stroke-width="17">
+                <ellipse cx="250" cy="250" rx="189" ry="79"/>
+                <ellipse cx="250" cy="250" rx="189" ry="79" transform="rotate(60 250 250)"/>
+                <ellipse cx="250" cy="250" rx="189" ry="79" transform="rotate(120 250 250)"/>
+              </g>
+              <circle cx="250" cy="250" r="39" fill="url(#reactAtomNucleus)"/>
+            </svg>
+          </div>
+          <div class="react-hero-canvas-slot" id="reactHeroCanvasSlot" aria-hidden="true"></div>
+          <span class="react-hero-caption" aria-hidden="true"><span>Built with code</span><span>Three.js / WebGL</span></span>
         </div>
       </div>
       <a class="agency-hero-scroll" href="#about">Scroll to explore</a>
@@ -2448,5 +2468,6 @@
   <script src="assets/project-hologram.js" defer></script>
   <script src="assets/scroll-reveal-2026.js" defer></script>
   <script src="assets/portfolio-motion-2026.js" defer></script>
+  <script type="module" src="assets/hero-react-3d.mjs"></script>
 </body>
 </html>
