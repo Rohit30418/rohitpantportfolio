@@ -221,22 +221,11 @@ body.agency-v2 {
   color: var(--p26-secondary);
 }
 .agency-v2 .agency-hero-ctas {gap: 12px}
-.agency-v2 .agency-hero-metrics {
-  max-width: 630px;
-  margin-top: 74px;
-  padding-top: 25px;
-  border-top: 1px solid var(--p26-edge);
-}
-.agency-v2 .agency-hero-metric {padding-inline: 20px}
-.agency-v2 .agency-hero-metric:first-child {padding-left: 0}
-.agency-v2 .agency-hero-metric strong {
-  color: #f2f2ee;
-  font-family: var(--p26-inter);
-  font-size: 1.6rem;
-  font-weight: 650;
-  letter-spacing: -.05em;
-}
-.agency-v2 .agency-hero-metric small {color: var(--p26-muted);font-size: .72rem;font-weight: 500}
+
+
+
+
+
 
 
 
@@ -479,10 +468,10 @@ body.agency-v2 {
   }
   .agency-v2 .agency-hero h1 span:nth-child(2) {font-size:.82em;letter-spacing:-.055em}
   .agency-v2 .agency-hero-lede {max-width: 560px;font-size:.98rem;line-height:1.76;margin-bottom:29px}
-  .agency-v2 .agency-hero-metrics {margin-top:45px;padding-top:22px;gap:0}
-  .agency-v2 .agency-hero-metric {padding:0 12px}
-  .agency-v2 .agency-hero-metric strong {font-size:1.35rem}
-  .agency-v2 .agency-hero-metric small {font-size:.65rem;line-height:1.5}
+
+
+
+
 
   .agency-v2 .agency-hero-scroll {display:none}
   .agency-v2 .agency-title {font-size:clamp(2.65rem,9.7vw,4.35rem);line-height:1.1;letter-spacing:-.055em}
@@ -527,7 +516,7 @@ body.agency-v2 {
   .agency-v2 .agency-about-points {grid-template-columns:1fr}
   .agency-v2 .agency-point {min-height:0}
   .agency-v2 .agency-skill-grid {grid-template-columns:repeat(3,minmax(0,1fr))}
-  .agency-v2 .agency-hero-metric small {font-size:.61rem}
+
   .agency-v2 .agency-project-actions a,.agency-v2 .agency-project-actions button {font-size:.74rem}
 }
 @media (prefers-reduced-motion: reduce) {
