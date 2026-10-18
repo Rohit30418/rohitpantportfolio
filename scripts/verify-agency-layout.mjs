@@ -31,11 +31,12 @@ export async function verifyAgency(mode='all'){
           const cs=getComputedStyle(node);
           return {left:r.left,right:r.right,top:r.top,bottom:r.bottom,width:r.width,height:r.height,display:cs.display};
         };
-        const sections=['home','about','work','skills','experience','contact'];
+        const sections=['home','about','work','skills','contact'];
         return {
           newTheme:document.body.classList.contains('agency-v2'),
           noOverflow:document.documentElement.scrollWidth<=innerWidth+3,
           sectionsExist:sections.every(id=>document.getElementById(id)),
+          experienceRemoved:!document.getElementById('experience') && !document.querySelector('a[href="#experience"]'),
           hero:box('#agencyHeroTitle'),
           header:box('.lux-header'),
           projects:document.querySelectorAll('.agency-project-card').length,
@@ -71,6 +72,7 @@ export async function verifyAgency(mode='all'){
 
       requireCheck(report.newTheme,id+'V2 body class absent');
       requireCheck(report.sectionsExist,id+'expected section missing');
+      requireCheck(report.experienceRemoved,id+'retired Experience section or navigation remains');
       requireCheck(report.noOverflow,id+'horizontal document overflow');
       requireCheck(report.hero && report.hero.width>100 && report.hero.left>=-4 && report.hero.right<=view.width+4,id+'hero headline clipped');
       requireCheck(report.header && report.header.width>160,id+'header unavailable');
