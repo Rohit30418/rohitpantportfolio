@@ -46,6 +46,7 @@ export async function verifyAgency(mode='all'){
           caseBridge:typeof window.openPortfolioCaseStudy==='function',
           reactStage:box('#reactHeroStage'),
           reactFallback:!!document.querySelector('#reactHeroStage .react-hero-fallback svg'),
+          removedExtras:!document.querySelector('#home .react-hero-tag, #home .react-hero-caption, #home .agency-hero-metrics, #home .agency-hero-metric'),
           heroTechFallbacks:document.querySelectorAll('#reactHeroStage .tech-badge-fallback').length,
           heroTechNames:[...document.querySelectorAll('#reactHeroStage .tech-badge-fallback')].map(el=>el.className.split(' ').pop()),
           reactModule:!!document.querySelector('script[src="assets/hero-react-3d.mjs"]'),
@@ -76,6 +77,7 @@ export async function verifyAgency(mode='all'){
       requireCheck(report.reactStage && report.reactStage.width>=175 && report.reactStage.left>=-5 &&
         report.reactStage.right<=view.width+5,id+'React 3D stage clipped');
       requireCheck(report.reactFallback && report.reactModule && report.oldHeroGone,id+'React hero missing or old sculpture retained');
+      requireCheck(report.removedExtras,id+'retired hero badge/caption/stats still exist');
       requireCheck(report.heroTechFallbacks===0,id+'old floating technology badges remain');
       requireCheck(report.processRemoved,id+'removed process section still referenced');
       requireCheck(report.projects===3,id+'featured projects count incorrect');
