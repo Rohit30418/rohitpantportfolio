@@ -6,7 +6,6 @@
 (() => {
   const stage = document.getElementById('reactHeroStage');
   const slot = document.getElementById('reactHeroCanvasSlot');
-  const title = stage?.querySelector('.react-hero-tag');
   if (!stage || !slot) return;
 
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -215,7 +214,6 @@
     if (index === labelIndex) return;
     labelIndex = index;
     const spec = specs[index];
-    if (title) title.textContent = spec.name + ' / 3D';
     stage.style.setProperty('--hero-tech-accent', spec.color);
     stage.dataset.currentTechnology = spec.name;
   }
