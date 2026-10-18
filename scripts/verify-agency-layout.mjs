@@ -76,7 +76,7 @@ export async function verifyAgency(mode='all'){
       requireCheck(report.reactStage && report.reactStage.width>=175 && report.reactStage.left>=-5 &&
         report.reactStage.right<=view.width+5,id+'React 3D stage clipped');
       requireCheck(report.reactFallback && report.reactModule && report.oldHeroGone,id+'React hero missing or old sculpture retained');
-      requireCheck(report.heroTechFallbacks===6,id+'floating technology badges missing');
+      requireCheck(report.heroTechFallbacks===0,id+'old floating technology badges remain');
       requireCheck(report.processRemoved,id+'removed process section still referenced');
       requireCheck(report.projects===3,id+'featured projects count incorrect');
       requireCheck(report.projectNames.join('|')==='EventHive|Vaani|Argus',id+'unexpected featured project names');
@@ -95,31 +95,32 @@ export async function verifyAgency(mode='all'){
         }
       }
       if(mode==='hero' && view.width===1440){
-        // The React icon is a real mesh, not an SVG masquerading as 3D.
+        // The technology sculpture uses real meshes, with SVG only as a fallback.
         // Reduced motion requests one stable WebGL render without any RAF loop.
         const painted=await page.waitForFunction(
           ()=>document.getElementById('reactHeroStage')?.classList.contains('has-webgl'),
           null,{timeout:12000}
         ).then(()=>true).catch(()=>false);
         console.log('React 3D hero actual WebGL render:',painted);
-        requireCheck(painted,id+'3D React atom did not render; SVG fallback remained');
+        requireCheck(painted,id+'3D technology sculpture did not render; SVG fallback remained');
         if(painted){
           const tech=await page.locator('#reactHeroStage').evaluate(el=>({
             count:Number(el.dataset.iconCount),
+            morphCount:Number(el.dataset.morphCount),
             names:el.dataset.technologies||'',
             canvases:el.querySelectorAll('canvas').length
           }));
-          console.log('Floating 3D tech icons:',JSON.stringify(tech));
-          requireCheck(tech.count===6 && tech.canvases===1 && tech.names.includes('JAVASCRIPT') &&
-            tech.names.includes('FIREBASE'),id+'3D badge meshes or texture creation missing');
+          console.log('3D shape-changing technology sculpture:',JSON.stringify(tech));
+          requireCheck(tech.count===0 && tech.morphCount===8 && tech.canvases===1 && tech.names.includes('Tailwind CSS') &&
+            tech.names.includes('Git'),id+'tech morph sculpture missing or old icon badges present');
         }
       }
       if(mode==='hero'){
         // On short phone screens the hero visual starts below the fold.
         // Scroll to it before expecting the intersection-triggered WebGL scene.
         await page.locator('#reactHeroStage').scrollIntoViewIfNeeded();
-        // Camera-framing regression: ensure the complete 3D sculpture + badges
-        // stay within a 10% safe area of the visible WebGL stage at every size.
+        // Camera-framing regression: ensure the complete 3D sculpture
+        // stays within a 10% safe area of the WebGL stage at every size.
         const fitted=await page.waitForFunction(()=>{
           const el=document.getElementById('reactHeroStage');
           return el?.classList.contains('has-webgl') &&
@@ -135,7 +136,7 @@ export async function verifyAgency(mode='all'){
           }));
           console.log('React 3D camera fit',view.name,JSON.stringify(frame));
           requireCheck(frame.margin>=.105 && frame.canvas===1,
-            id+'floating 3D badges clip at canvas edges (safe margin '+frame.margin+')');
+            id+'3D technology sculpture clips at canvas edges (safe margin '+frame.margin+')');
         }
       }
       if(mode==='hero'||mode==='all'){
