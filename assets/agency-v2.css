@@ -54,11 +54,11 @@ body.agency-v2{margin:0;background:var(--av-bg);color:var(--av-text);font-family
 .agency-v2 .agency-hero h1 em{font-style:normal;color:#96bbd4}
 .agency-v2 .agency-hero-lede{max-width:465px;color:#afbdc8;line-height:1.86;font-size:.99rem;margin:0 0 30px}
 .agency-v2 .agency-hero-ctas{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-.agency-v2 .agency-hero-metrics{display:flex;align-items:center;margin-top:66px;max-width:650px}
-.agency-v2 .agency-hero-metric{flex:1;min-width:0;padding:0 20px;border-left:1px solid rgba(230,240,250,.13)}
-.agency-v2 .agency-hero-metric:first-child{border-left:0;padding-left:0}
-.agency-v2 .agency-hero-metric strong{display:block;margin-bottom:7px;font-size:clamp(1.25rem,2vw,1.9rem);letter-spacing:-.05em;color:#91d5ff;line-height:1}
-.agency-v2 .agency-hero-metric small{display:block;color:#8395a2;font-size:.66rem;font-weight:650;line-height:1.5}
+
+
+
+
+
 
 
 
@@ -227,10 +227,10 @@ html{scroll-padding-top:77px}
 .agency-v2 .agency-hero-lede{max-width:94%;font-size:.89rem}
 .agency-v2 .agency-hero-ctas{gap:10px}
 .agency-v2 .agency-btn{min-height:44px;padding:10px 16px;font-size:.73rem}
-.agency-v2 .agency-hero-metrics{margin-top:43px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0}
-.agency-v2 .agency-hero-metric{padding:0 9px}
-.agency-v2 .agency-hero-metric strong{font-size:1.33rem}
-.agency-v2 .agency-hero-metric small{font-size:.57rem}
+
+
+
+
 
 
 .agency-v2 .agency-hero-scroll{right:22px;bottom:18px;font-size:.56rem}
@@ -298,9 +298,9 @@ html{scroll-padding-top:77px}
 .agency-v2 .agency-hero h1 span:nth-child(2){font-size:.85em;letter-spacing:-.078em;white-space:nowrap}
 .agency-v2 .agency-hero h1 em{background:linear-gradient(100deg,#f4f3ed 0,#a7d5ea 36%,#9cb7d7 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
 .agency-v2 .agency-hero-lede{max-width:490px;line-height:1.76;font-size:.97rem;color:#b0c1ce}
-.agency-v2 .agency-hero-metrics{margin-top:54px;max-width:615px}
-.agency-v2 .agency-hero-metric strong{color:#a7ddff;font-size:1.62rem}
-.agency-v2 .agency-hero-metric small{font-size:.68rem;color:#9eafba}
+
+
+
 
 
 
@@ -374,7 +374,7 @@ html{scroll-padding-top:77px}
   .agency-v2 .agency-hero h1{font-size:clamp(3.05rem,10vw,4.45rem);line-height:1.08;margin-bottom:21px}
   .agency-v2 .agency-hero h1 span:nth-child(2){font-size:.87em;white-space:normal}
   .agency-v2 .agency-hero-lede{font-size:.87rem;line-height:1.73}
-  .agency-v2 .agency-hero-metrics{margin-top:35px}
+
 
   .agency-v2 .agency-about-art{min-height:360px}
   .agency-v2 .agency-about-photo{max-height:390px}
@@ -523,19 +523,9 @@ body.agency-v2{
   line-height:1.78;
   letter-spacing:-.008em;
 }
-.agency-v2 .agency-hero-metrics{margin-top:52px}
-.agency-v2 .agency-hero-metric strong{
-  font-family:var(--av-font-display);
-  font-size:1.72rem;
-  font-weight:600;
-  letter-spacing:-.045em;
-}
-.agency-v2 .agency-hero-metric small{
-  color:#a8b8c2;
-  font-size:.74rem;
-  font-weight:500;
-  line-height:1.5;
-}
+
+
+
 .agency-v2 .agency-about-copy .agency-muted{margin:18px 0}
 .agency-v2 .agency-about-copy .agency-muted:last-of-type{margin-bottom:27px}
 .agency-v2 .agency-about-points{gap:13px;margin-top:31px}
@@ -643,9 +633,9 @@ body.agency-v2{
   .agency-v2 .agency-hero h1{font-size:clamp(3rem,10vw,4.4rem);line-height:1.085;letter-spacing:-.061em}
   .agency-v2 .agency-hero h1 span:nth-child(2){font-size:.86em;letter-spacing:-.049em}
   .agency-v2 .agency-hero-lede{max-width:100%;font-size:.97rem;line-height:1.73}
-  .agency-v2 .agency-hero-metrics{margin-top:37px}
-  .agency-v2 .agency-hero-metric strong{font-size:1.45rem}
-  .agency-v2 .agency-hero-metric small{font-size:.65rem}
+
+
+
   .agency-v2 .agency-btn{min-height:44px;padding:10px 16px;font-size:.82rem}
   .agency-v2 .agency-project-head h3{font-size:1.48rem}
   .agency-v2 .agency-project-body>p{font-size:.91rem;line-height:1.7}
@@ -662,7 +652,7 @@ body.agency-v2{
 @media(max-width:375px){
   .agency-v2 .agency-hero h1{font-size:clamp(2.66rem,11.4vw,2.92rem)}
   .agency-v2 .agency-title{font-size:clamp(2.43rem,10vw,2.8rem)}
-  .agency-v2 .agency-hero-metric small{font-size:.61rem}
+
   .agency-v2 .agency-skill span{font-size:.66rem}
 }
 
