@@ -1,6 +1,6 @@
-/* Interactive portfolio contact envelope + EmailJS v5.
-   Works on GitHub Pages; no credential or secret is stored client-side.
-   With missing configuration or blocked SDK, offers mailto (never fakes delivery). */
+/* Interactive portfolio contact envelope + EmailJS.
+   Works on GitHub Pages without a server or private credentials.
+   Uses the official SDK when loaded and the official EmailJS REST API when CDN delivery fails. */
 (() => {
   const stage = document.getElementById('contactEnvelopeStage');
   const toggle = document.getElementById('contactEnvelopeToggle');
@@ -18,8 +18,30 @@
   const configured = [config.serviceId, config.templateId, config.publicKey]
     .every(value => typeof value === 'string' && value.trim() && !value.startsWith('YOUR_'));
   const emailSDK = () => window.emailjs && typeof window.emailjs.sendForm === 'function';
-  const isEmailJSReady = () => configured && emailSDK();
-  const directEmail = 'rohitpant090@gmail.com';
+  // The official EmailJS REST endpoint remains usable if the CDN SDK is blocked.
+  // Public browser identifiers are sufficient; never send a private key.
+  const isEmailJSReady = () => configured;
+  const sendViaEmailJS = async () => {
+    if (emailSDK()) {
+      return window.emailjs.sendForm(config.serviceId, config.templateId, form, {
+        publicKey: config.publicKey
+      });
+    }
+    const data = new FormData(form);
+    data.append('service_id', config.serviceId);
+    data.append('template_id', config.templateId);
+    data.append('user_id', config.publicKey);
+    const response = await fetch('https://api.emailjs.com/api/v1.0/email/send-form', {
+      method: 'POST',
+      body: data,
+      mode: 'cors'
+    });
+    if (!response.ok) {
+      const details = await response.text();
+      throw new Error('EmailJS API ' + response.status + ': ' + details.slice(0, 250));
+    }
+    return {status: response.status, text: await response.text()};
+  };
   let sending = false;
   let lastSent = 0;
 
@@ -29,11 +51,15 @@
   };
   const configureAction = () => {
     const ready = isEmailJSReady();
-    submit.textContent = ready ? 'Send message ↗' : 'Continue in email app ↗';
-    if (!ready) updateStatus('Your email app will prepare the message. Press Send there to finish.', 'hint');
+    submit.textContent = ready ? 'Send message ↗' : 'Email setup unavailable';
+    submit.disabled = !ready;
+    if (!ready) updateStatus('Email sending is temporarily unavailable. Please use the direct email link below.', 'error');
   };
   configureAction();
 
+  const ensureFormVisible = () => {
+    stage.scrollIntoView({block:'start', behavior:reducedMotion?'auto':'smooth'});
+  };
   const setOpen = (open) => {
     if (!open && sending) return;
     if (!open && letter.contains(document.activeElement)) toggle.focus({preventScroll:true});
@@ -43,6 +69,7 @@
     letter.setAttribute('aria-hidden', String(!open));
     letter.inert = !open;
     if (instruction) instruction.textContent = open ? 'Tap the envelope to close' : 'Tap the envelope to open';
+    if (open) ensureFormVisible();
   };
   setOpen(false);
   toggle.addEventListener('click', () => setOpen(!stage.classList.contains('is-open')));
@@ -51,7 +78,6 @@
     cta.addEventListener('click', event => {
       event.preventDefault(); // Original mailto href remains a no-JS fallback.
       setOpen(true);
-      stage.scrollIntoView({block:'nearest', behavior:reducedMotion?'auto':'smooth'});
       toggle.focus({preventScroll:true});
     });
   }
@@ -82,10 +108,7 @@
       return;
     }
     if (!isEmailJSReady()) {
-      const subject = encodeURIComponent('Portfolio enquiry from ' + name);
-      const body = encodeURIComponent('Name: ' + name + '\nEmail: ' + email + '\n\n' + message);
-      updateStatus('Your email app should open. Send the prepared email there to finish.', 'hint');
-      window.location.href = 'mailto:' + directEmail + '?subject=' + subject + '&body=' + body;
+      updateStatus('Email sending is temporarily unavailable. Please use the direct email link below.', 'error');
       return;
     }
     if (Date.now() - lastSent < 12000) {
@@ -98,9 +121,7 @@
     submit.textContent = 'Sending…';
     updateStatus('Sending your message…', 'hint');
     try {
-      const result = await window.emailjs.sendForm(config.serviceId, config.templateId, form, {
-        publicKey: config.publicKey
-      });
+      const result = await sendViaEmailJS();
       if (!result || result.status < 200 || result.status >= 300) {
         throw new Error('Email service did not confirm delivery');
       }
@@ -113,7 +134,8 @@
     } finally {
       sending = false;
       submit.disabled = false;
-      submit.textContent = 'Send message ↗';
+      submit.textContent = isEmailJSReady() ? 'Send message ↗' : 'Email setup unavailable';
+      submit.disabled = !isEmailJSReady();
     }
   });
 
