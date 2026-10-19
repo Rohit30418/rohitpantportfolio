@@ -3,7 +3,7 @@
    Do not put your Gmail password, EmailJS private key, or SMTP credentials here.
    These values are public in client-side websites by design. */
 window.PORTFOLIO_EMAILJS = {
-  serviceId: "",
-  templateId: "",
-  publicKey: ""
+  serviceId: "service_1nisiur",
+  templateId: "template_ddhm6lq",
+  publicKey: "HQRCeGYyQAtAFoiEv"
 };
