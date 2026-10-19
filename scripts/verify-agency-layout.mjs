@@ -158,12 +158,27 @@ export async function verifyAgency(mode='all'){
       }
       if(mode==='contact'||mode==='all'){
         requireCheck(await page.locator('#contactEnvelopeStage').count()===1,id+'contact envelope missing');
+        requireCheck(await page.locator('script[src*="@emailjs/browser@5"]').count()===1,id+'EmailJS SDK not loaded');
+        requireCheck(await page.locator('script[src="assets/emailjs-config.js"]').count()===1,id+'public configuration not linked');
         await page.locator('#contactEnvelopeToggle').click();
         requireCheck(await page.locator('#contactEnvelopeStage').evaluate(el=>el.classList.contains('is-open')),id+'envelope did not open');
         requireCheck(await page.locator('#contactEnvelopeLetter').getAttribute('aria-hidden')==='false',id+'envelope letter unavailable');
-        requireCheck(await page.locator('#contactEnvelopeLetter a[href^="mailto:"]').count()===1,id+'message link missing');
+        requireCheck(await page.locator('#contactEnvelopeForm input[name="user_name"]').count()===1,id+'name input missing');
+        requireCheck(await page.locator('#contactEnvelopeForm input[name="user_email"]').count()===1,id+'email input missing');
+        requireCheck(await page.locator('#contactEnvelopeForm textarea[name="message"]').count()===1,id+'message field missing');
+        requireCheck(await page.locator('#contactEnvelopeLetter a[href^="mailto:"]').count()===1,id+'direct email fallback missing');
+        await page.locator('#contactEnvelopeForm input[name="user_name"]').fill('Test Sender');
+        await page.locator('#contactEnvelopeForm input[name="user_email"]').fill('test@example.com');
+        await page.locator('#contactEnvelopeForm textarea[name="message"]').fill('Checking contact form layout');
+        const contactReport=await page.locator('#contactEnvelopeForm').evaluate(form=>{
+          const rect=form.getBoundingClientRect();
+          const stage=document.getElementById('contactEnvelopeStage').getBoundingClientRect();
+          return {width:rect.width, visible:rect.width>180 && rect.height>140, stageWidth:stage.width, overflow:document.documentElement.scrollWidth>innerWidth+3};
+        });
+        requireCheck(contactReport.visible && !contactReport.overflow,id+'envelope form clipped or horizontal overflow: '+JSON.stringify(contactReport));
         await page.locator('#contactEnvelopeToggle').click();
         requireCheck(await page.locator('#contactEnvelopeToggle').getAttribute('aria-expanded')==='false',id+'envelope did not close');
+        requireCheck(await page.locator('#contactEnvelopeLetter').getAttribute('aria-hidden')==='true',id+'closed form is accessible');
       }
       thrown.forEach(error=>errors.push(id+'uncaught browser error: '+error));
       console.log('Checked',mode,view.name,view.width+'x'+view.height);
