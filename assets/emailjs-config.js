@@ -4,6 +4,6 @@
    These values are public in client-side websites by design. */
 window.PORTFOLIO_EMAILJS = {
   serviceId: "service_1nislur",
-  templateId: "template_ddhm6lq",
+  templateId: "template_89okyoj",
   publicKey: "HQRCeGYyQAtAFoiEv"
 };
