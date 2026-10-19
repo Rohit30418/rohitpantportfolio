@@ -2076,6 +2076,7 @@
   <link rel="stylesheet" href="assets/editorial-2026.css" />
   <link rel="stylesheet" href="assets/hero-react-3d.css" />
   <link rel="stylesheet" href="assets/portfolio-motion-2026.css" />
+  <link rel="stylesheet" href="assets/contact-envelope.css" />
 </head>
 <body class="agency-v2">
   <div class="intro-loader" id="introLoader" role="status" aria-live="polite" aria-label="Loading portfolio">
@@ -2344,9 +2345,30 @@
             <a href="https://www.linkedin.com/in/rohitpantdev/" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-linkedin" aria-hidden="true"></i>LinkedIn</a>
             <a href="https://github.com/Rohit30418" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-github" aria-hidden="true"></i>GitHub</a>
           </div>
-          <a class="agency-btn agency-btn-light" href="mailto:rohitpant090@gmail.com?subject=Let's%20work%20together">Let's Talk <span aria-hidden="true">↗</span></a>
+          <a class="agency-btn agency-btn-light" id="openContactEnvelope" href="mailto:rohitpant090@gmail.com?subject=Let's%20work%20together">Let's Talk <span aria-hidden="true">↗</span></a>
         </div>
-        <div class="agency-portal-stage" aria-hidden="true"><span class="agency-portal-horizon"></span><span class="agency-portal"></span><span class="agency-portal-caption">GOOD IDEAS<br>BUILD BETTER<br>EXPERIENCES.</span></div>
+        <div class="agency-envelope-stage" id="contactEnvelopeStage" aria-label="Interactive message envelope">
+          <span class="agency-envelope-ground" aria-hidden="true"></span>
+          <div class="agency-envelope-scene">
+            <div class="agency-envelope-float">
+              <div class="agency-envelope-model">
+                <span class="agency-envelope-back" aria-hidden="true"></span>
+                <div class="agency-envelope-letter" id="contactEnvelopeLetter" inert aria-hidden="true">
+                  <span class="agency-envelope-note-label">A note for you / 01</span>
+                  <strong class="agency-envelope-note-title">Let's build<br>something great.</strong>
+                  <a class="agency-envelope-note-link" href="mailto:rohitpant090@gmail.com?subject=Let's%20build%20something%20great">Send me a message <span aria-hidden="true">↗</span></a>
+                </div>
+                <span class="agency-envelope-flap" aria-hidden="true"></span>
+                <span class="agency-envelope-left" aria-hidden="true"></span>
+                <span class="agency-envelope-right" aria-hidden="true"></span>
+                <span class="agency-envelope-bottom" aria-hidden="true"></span>
+                <span class="agency-envelope-seal" aria-hidden="true">✦</span>
+                <button class="agency-envelope-toggle" type="button" id="contactEnvelopeToggle" aria-expanded="false" aria-controls="contactEnvelopeLetter" aria-label="Open the message envelope"></button>
+              </div>
+            </div>
+          </div>
+          <p class="agency-envelope-instruction" id="contactEnvelopeInstruction">Tap the envelope to open</p>
+        </div>
       </div>
     </section>
   </main>
@@ -2451,6 +2473,7 @@
   <script src="assets/project-hologram.js" defer></script>
   <script src="assets/scroll-reveal-2026.js" defer></script>
   <script src="assets/portfolio-motion-2026.js" defer></script>
+  <script src="assets/contact-envelope.js" defer></script>
   <script type="module" src="assets/hero-react-3d.mjs"></script>
 </body>
 </html>
