@@ -2354,9 +2354,29 @@
               <div class="agency-envelope-model">
                 <span class="agency-envelope-back" aria-hidden="true"></span>
                 <div class="agency-envelope-letter" id="contactEnvelopeLetter" inert aria-hidden="true">
-                  <span class="agency-envelope-note-label">A note for you / 01</span>
-                  <strong class="agency-envelope-note-title">Let's build<br>something great.</strong>
-                  <a class="agency-envelope-note-link" href="mailto:rohitpant090@gmail.com?subject=Let's%20build%20something%20great">Send me a message <span aria-hidden="true">↗</span></a>
+                  <span class="agency-envelope-note-label">A LITTLE NOTE FOR YOU / 01</span>
+                  <strong class="agency-envelope-note-title">Good things start with a <em>hello.</em></strong>
+                  <form class="agency-envelope-form" id="contactEnvelopeForm" autocomplete="on">
+                    <div class="agency-envelope-field">
+                      <label for="contactUserName">Your name</label>
+                      <input type="text" id="contactUserName" name="user_name" placeholder="What should I call you?" autocomplete="name" maxlength="100" required />
+                    </div>
+                    <div class="agency-envelope-field">
+                      <label for="contactUserEmail">Email address</label>
+                      <input type="email" id="contactUserEmail" name="user_email" placeholder="you@example.com" autocomplete="email" maxlength="254" required />
+                    </div>
+                    <div class="agency-envelope-field">
+                      <label for="contactUserMessage">Your message</label>
+                      <textarea id="contactUserMessage" name="message" placeholder="Tell me about your idea…" maxlength="3000" rows="3" required></textarea>
+                    </div>
+                    <div class="agency-envelope-honeypot" aria-hidden="true">
+                      <label for="contactCompanyWebsite">Leave this field empty</label>
+                      <input type="text" id="contactCompanyWebsite" name="company_website" tabindex="-1" autocomplete="off" />
+                    </div>
+                    <button class="agency-envelope-submit" id="contactEnvelopeSubmit" type="submit">Continue in email app ↗</button>
+                    <p class="agency-envelope-status" id="contactEnvelopeStatus" aria-live="polite" role="status"></p>
+                  </form>
+                  <a class="agency-envelope-note-link" href="mailto:rohitpant090@gmail.com?subject=Portfolio%20enquiry">Or email me directly ↗</a>
                 </div>
                 <span class="agency-envelope-flap" aria-hidden="true"></span>
                 <span class="agency-envelope-left" aria-hidden="true"></span>
@@ -2473,6 +2493,8 @@
   <script src="assets/project-hologram.js" defer></script>
   <script src="assets/scroll-reveal-2026.js" defer></script>
   <script src="assets/portfolio-motion-2026.js" defer></script>
+  <script src="assets/emailjs-config.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@5/dist/email.min.js" defer></script>
   <script src="assets/contact-envelope.js" defer></script>
   <script type="module" src="assets/hero-react-3d.mjs"></script>
 </body>
