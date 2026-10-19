@@ -28,7 +28,7 @@
       // Without JavaScript the link remains a working mailto: link.
       event.preventDefault();
       setOpen(true);
-      stage.scrollIntoView({block: 'nearest', behavior: reducedMotion ? 'instant' : 'smooth'});
+      stage.scrollIntoView({block: 'nearest', behavior: reducedMotion ? 'auto' : 'smooth'});
       toggle.focus({preventScroll: true});
     });
   }
