@@ -223,7 +223,19 @@ short repeat-send cooldown, and a reliable direct-email fallback.
    and verify the notification arrives. Delivery remains unverified until this
    account setup and test are completed.
 
-Until the configuration is filled in, submitting the form opens the visitor's
-email application with a composed draft. The UI never pretends that a message
-was sent. Without JavaScript, the original "Let's Talk" button is a `mailto:`
-link. EmailJS SDK reference: https://www.emailjs.com/docs/sdk/send-form/.
+EmailJS is currently configured in `assets/emailjs-config.js` with the public IDs
+copied from the account dashboard. The official browser SDK is used when it
+loads; if a CDN script is blocked, the form sends to the official EmailJS
+`/api/v1.0/email/send-form` endpoint instead. Missing configuration disables
+the send button and presents a direct email link without pretending delivery.
+Without JavaScript, the original "Let's Talk" button remains a `mailto:` link.
+
+The contact section scrolls the open note under the fixed mobile navigation.
+The config, contact script, and CSS use versioned references in `index.html`
+to prevent browsers from showing older, unconfigured JavaScript. A browser
+hard refresh may still be required until GitHub Pages publishes the new HTML.
+
+Check the service ID character after `nis` carefully: it is the lowercase
+letter **l**, not **i**. The configured value is `service_1nislur`.
+SDK docs: https://www.emailjs.com/docs/sdk/send-form/
+REST docs: https://www.emailjs.com/docs/rest-api/send-form/
