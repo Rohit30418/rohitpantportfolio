@@ -157,7 +157,13 @@ export async function verifyAgency(mode='all'){
         requireCheck(await first.isVisible(),id+'skill tile not visible');
       }
       if(mode==='contact'||mode==='all'){
-        requireCheck(await page.locator('.agency-portal').count()===1,id+'contact art missing');
+        requireCheck(await page.locator('#contactEnvelopeStage').count()===1,id+'contact envelope missing');
+        await page.locator('#contactEnvelopeToggle').click();
+        requireCheck(await page.locator('#contactEnvelopeStage').evaluate(el=>el.classList.contains('is-open')),id+'envelope did not open');
+        requireCheck(await page.locator('#contactEnvelopeLetter').getAttribute('aria-hidden')==='false',id+'envelope letter unavailable');
+        requireCheck(await page.locator('#contactEnvelopeLetter a[href^="mailto:"]').count()===1,id+'message link missing');
+        await page.locator('#contactEnvelopeToggle').click();
+        requireCheck(await page.locator('#contactEnvelopeToggle').getAttribute('aria-expanded')==='false',id+'envelope did not close');
       }
       thrown.forEach(error=>errors.push(id+'uncaught browser error: '+error));
       console.log('Checked',mode,view.name,view.width+'x'+view.height);
