@@ -286,17 +286,17 @@
 
 /* Contact letter expands into a form-sized note when the envelope opens. */
 .agency-v2 .agency-envelope-stage { transition: min-height .48s cubic-bezier(.22,1,.36,1); }
-.agency-v2 .agency-envelope-stage.is-open { min-height: 720px; }
+.agency-v2 .agency-envelope-stage.is-open { min-height: 795px; }
 .agency-v2 .agency-envelope-stage.is-open .agency-envelope-scene {
-  margin-top: 310px;
+  margin-top: 380px;
   transform: rotateX(0deg) rotateY(0deg);
 }
 .agency-v2 .agency-envelope-stage.is-open .agency-envelope-float { animation-play-state: paused; }
 .agency-v2 .agency-envelope-letter {
-  height: 440px;
+  height: 468px;
   padding: 19px 23px 86px;
 }
-.agency-v2 .agency-envelope-stage.is-open .agency-envelope-letter {transform:translateY(-370px)}
+.agency-v2 .agency-envelope-stage.is-open .agency-envelope-letter {transform:translateY(-421px)}
 .agency-v2 .agency-envelope-stage.is-open .agency-envelope-toggle {cursor:pointer}
 .agency-v2 .agency-envelope-note-title {font-size: 1.9rem; margin: 5px 0 9px; line-height: 1}
 .agency-v2 .agency-envelope-form {display:flex;flex-direction:column;gap:6px}
@@ -336,16 +336,16 @@
 .agency-v2 .agency-envelope-note-link:is(:hover,:focus-visible) {background:none;color:#372921}
 .agency-v2 .agency-envelope-honeypot {position:absolute!important;left:-9999px!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important}
 @media(max-width:1024px){
-  .agency-v2 .agency-envelope-stage.is-open {min-height:685px}
-  .agency-v2 .agency-envelope-stage.is-open .agency-envelope-scene {margin-top:283px}
-  .agency-v2 .agency-envelope-letter {height:416px;padding:17px 20px 80px}
-  .agency-v2 .agency-envelope-stage.is-open .agency-envelope-letter {transform:translateY(-344px)}
+  .agency-v2 .agency-envelope-stage.is-open {min-height:765px}
+  .agency-v2 .agency-envelope-stage.is-open .agency-envelope-scene {margin-top:345px}
+  .agency-v2 .agency-envelope-letter {height:455px;padding:17px 20px 80px}
+  .agency-v2 .agency-envelope-stage.is-open .agency-envelope-letter {transform:translateY(-395px)}
 }
 @media(max-width:640px){
-  .agency-v2 .agency-envelope-stage.is-open {min-height:690px}
-  .agency-v2 .agency-envelope-stage.is-open .agency-envelope-scene {margin-top:270px}
-  .agency-v2 .agency-envelope-letter {height:398px;padding:15px 16px 72px}
-  .agency-v2 .agency-envelope-stage.is-open .agency-envelope-letter {transform:translateY(-348px)}
+  .agency-v2 .agency-envelope-stage.is-open {min-height:748px}
+  .agency-v2 .agency-envelope-stage.is-open .agency-envelope-scene {margin-top:332px}
+  .agency-v2 .agency-envelope-letter {height:448px;padding:15px 16px 72px}
+  .agency-v2 .agency-envelope-stage.is-open .agency-envelope-letter {transform:translateY(-392px)}
   .agency-v2 .agency-envelope-note-title {font-size:1.64rem;margin:4px 0 8px}
   .agency-v2 .agency-envelope-form {gap:5px}
   .agency-v2 .agency-envelope-field input {height:34px}
@@ -355,12 +355,20 @@
   .agency-v2 .agency-envelope-note-link {font-size:.59rem}
 }
 @media(max-width:365px){
-  .agency-v2 .agency-envelope-stage.is-open {min-height:670px}
-  .agency-v2 .agency-envelope-stage.is-open .agency-envelope-scene {margin-top:258px}
-  .agency-v2 .agency-envelope-letter {height:380px;padding:14px 15px 66px}
-  .agency-v2 .agency-envelope-stage.is-open .agency-envelope-letter {transform:translateY(-330px)}
+  .agency-v2 .agency-envelope-stage.is-open {min-height:730px}
+  .agency-v2 .agency-envelope-stage.is-open .agency-envelope-scene {margin-top:325px}
+  .agency-v2 .agency-envelope-letter {height:440px;padding:14px 15px 66px}
+  .agency-v2 .agency-envelope-stage.is-open .agency-envelope-letter {transform:translateY(-385px)}
   .agency-v2 .agency-envelope-note-title {font-size:1.5rem}
 }
 @media(prefers-reduced-motion:reduce){
   .agency-v2 .agency-envelope-stage {transition:none}
+}
+
+/* The closed envelope only peeks its flap on hover: never expose a hidden form. */
+@media(hover:hover) and (pointer:fine) {
+  .agency-v2 .agency-envelope-stage:not(.is-open):hover .agency-envelope-letter {
+    opacity:0;
+    transform:translateY(0);
+  }
 }
