@@ -159,9 +159,13 @@ export async function verifyAgency(mode='all'){
       if(mode==='contact'||mode==='all'){
         requireCheck(await page.locator('#contactEnvelopeStage').count()===1,id+'contact envelope missing');
         requireCheck(await page.locator('script[src*="@emailjs/browser@5"]').count()===1,id+'EmailJS SDK not loaded');
-        requireCheck(await page.locator('script[src="assets/emailjs-config.js"]').count()===1,id+'public configuration not linked');
+        requireCheck(await page.locator('script[src^="assets/emailjs-config.js"]').count()===1,id+'public configuration not linked');
         await page.locator('#contactEnvelopeToggle').click();
         requireCheck(await page.locator('#contactEnvelopeStage').evaluate(el=>el.classList.contains('is-open')),id+'envelope did not open');
+        const emailConfig=await page.evaluate(()=>window.PORTFOLIO_EMAILJS);
+        requireCheck(emailConfig?.serviceId==='service_1nislur' &&
+          emailConfig?.templateId==='template_ddhm6lq' &&
+          !!emailConfig?.publicKey,id+'EmailJS public configuration not loaded');
         requireCheck(await page.locator('#contactEnvelopeLetter').getAttribute('aria-hidden')==='false',id+'envelope letter unavailable');
         requireCheck(await page.locator('#contactEnvelopeForm input[name="user_name"]').count()===1,id+'name input missing');
         requireCheck(await page.locator('#contactEnvelopeForm input[name="user_email"]').count()===1,id+'email input missing');
