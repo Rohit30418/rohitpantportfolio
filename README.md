@@ -180,3 +180,50 @@ All passed checks for header clearance, overlapping text/images, visible
 buttons, horizontal overflow and viewport containment. Reduced-motion is
 enabled during the layout regression to avoid dependency on CDN-hosted WebGL.
 
+
+
+## EmailJS contact form — October 2026
+
+The **Contact** section contains a lightweight CSS 3D envelope that opens to reveal
+a name, email, and message form. It uses EmailJS v5 on GitHub Pages (no server).
+The form includes live sending/success/error status, a honeypot field, a
+short repeat-send cooldown, and a reliable direct-email fallback.
+
+### Connect EmailJS (required to actually send without opening a mail app)
+
+1. Create an account at https://dashboard.emailjs.com/.
+2. Under **Email Services**, connect the inbox that should send notifications
+   (e.g. your Gmail account using the provider's authorization flow). Copy its
+   **Service ID**.
+3. Under **Email Templates**, create a template and copy its **Template ID**.
+   Set the recipient to your own mailbox in the EmailJS dashboard. Suggested
+   template:
+
+   - **Subject:** `New portfolio enquiry — {{user_name}}`
+   - **Reply-To:** `{{user_email}}`
+   - **Body:**
+
+     ```text
+     Name: {{user_name}}
+     Email: {{user_email}}
+
+     Message:
+     {{message}}
+     ```
+
+4. In **Account**, copy the **Public Key**.
+5. Edit `assets/emailjs-config.js` and fill in `serviceId`, `templateId`, and
+   `publicKey`. These three values are *public browser identifiers*, NOT
+   private secrets. **Never commit your Gmail password, SMTP credentials,
+   or an EmailJS private key.**
+6. In EmailJS security settings, restrict allowed origins/domains to your live
+   website (`rohitpant.in` and any alternate hostname in use). Consider
+   enabling provider-side CAPTCHA if spam becomes a problem.
+7. After deployment, submit **one real test** from the live contact section
+   and verify the notification arrives. Delivery remains unverified until this
+   account setup and test are completed.
+
+Until the configuration is filled in, submitting the form opens the visitor's
+email application with a composed draft. The UI never pretends that a message
+was sent. Without JavaScript, the original "Let's Talk" button is a `mailto:`
+link. EmailJS SDK reference: https://www.emailjs.com/docs/sdk/send-form/.
