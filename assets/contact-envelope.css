@@ -282,3 +282,85 @@
   .agency-v2 .agency-envelope-flap,
   .agency-v2 .agency-envelope-seal {transition-duration: .01ms !important}
 }
+
+
+/* Contact letter expands into a form-sized note when the envelope opens. */
+.agency-v2 .agency-envelope-stage { transition: min-height .48s cubic-bezier(.22,1,.36,1); }
+.agency-v2 .agency-envelope-stage.is-open { min-height: 720px; }
+.agency-v2 .agency-envelope-stage.is-open .agency-envelope-scene {
+  margin-top: 310px;
+  transform: rotateX(0deg) rotateY(0deg);
+}
+.agency-v2 .agency-envelope-stage.is-open .agency-envelope-float { animation-play-state: paused; }
+.agency-v2 .agency-envelope-letter {
+  height: 440px;
+  padding: 19px 23px 86px;
+}
+.agency-v2 .agency-envelope-stage.is-open .agency-envelope-letter {transform:translateY(-370px)}
+.agency-v2 .agency-envelope-stage.is-open .agency-envelope-toggle {cursor:pointer}
+.agency-v2 .agency-envelope-note-title {font-size: 1.9rem; margin: 5px 0 9px; line-height: 1}
+.agency-v2 .agency-envelope-form {display:flex;flex-direction:column;gap:6px}
+.agency-v2 .agency-envelope-field {display:flex;flex-direction:column;gap:3px;min-width:0}
+.agency-v2 .agency-envelope-field label {
+  font-size:.64rem;font-weight:750;letter-spacing:.04em;color:#66574b;line-height:1.25
+}
+.agency-v2 .agency-envelope-field input,
+.agency-v2 .agency-envelope-field textarea {
+  display:block;width:100%;min-width:0;max-width:100%;box-sizing:border-box;
+  margin:0;border:1px solid #ddcbbb;border-radius:7px;background:#fffdf9;
+  color:#242220;padding:7px 10px;font:500 .76rem/1.35 Inter,system-ui,sans-serif;
+  outline:none;box-shadow:none;resize:vertical
+}
+.agency-v2 .agency-envelope-field input {height:37px}
+.agency-v2 .agency-envelope-field textarea {height:61px;min-height:52px;max-height:78px}
+.agency-v2 .agency-envelope-field :is(input,textarea):focus-visible {
+  border-color:#99765d;outline:2px solid #e2c6a4;outline-offset:1px
+}
+.agency-v2 .agency-envelope-field :is(input,textarea)::placeholder {color:#9a8d7f}
+.agency-v2 .agency-envelope-submit {
+  width:100%;min-height:37px;margin-top:4px;padding:7px 11px;border:0;
+  border-radius:8px;color:#fcf6ee;background:#2d2824;cursor:pointer;
+  font-size:.72rem;font-weight:750;letter-spacing:.01em;
+  transition: background .18s ease
+}
+.agency-v2 .agency-envelope-submit:not(:disabled):hover {background:#5b4030}
+.agency-v2 .agency-envelope-submit:focus-visible {outline:3px solid #b99570;outline-offset:2px}
+.agency-v2 .agency-envelope-submit:disabled {opacity:.66;cursor:wait}
+.agency-v2 .agency-envelope-status {
+  display:block;min-height:20px;margin:2px 0 0;font-size:.62rem;
+  line-height:1.3;color:#766658;overflow-wrap:anywhere
+}
+.agency-v2 .agency-envelope-status[data-state="success"] {color:#2d7251;font-weight:750}
+.agency-v2 .agency-envelope-status[data-state="error"] {color:#9c3e37;font-weight:700}
+.agency-v2 .agency-envelope-note-link {padding:0;min-height:18px;margin-top:0;background:none;border:0;border-radius:0;color:#715542;font-size:.62rem;text-decoration:underline;text-underline-offset:2px}
+.agency-v2 .agency-envelope-note-link:is(:hover,:focus-visible) {background:none;color:#372921}
+.agency-v2 .agency-envelope-honeypot {position:absolute!important;left:-9999px!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important}
+@media(max-width:1024px){
+  .agency-v2 .agency-envelope-stage.is-open {min-height:685px}
+  .agency-v2 .agency-envelope-stage.is-open .agency-envelope-scene {margin-top:283px}
+  .agency-v2 .agency-envelope-letter {height:416px;padding:17px 20px 80px}
+  .agency-v2 .agency-envelope-stage.is-open .agency-envelope-letter {transform:translateY(-344px)}
+}
+@media(max-width:640px){
+  .agency-v2 .agency-envelope-stage.is-open {min-height:690px}
+  .agency-v2 .agency-envelope-stage.is-open .agency-envelope-scene {margin-top:270px}
+  .agency-v2 .agency-envelope-letter {height:398px;padding:15px 16px 72px}
+  .agency-v2 .agency-envelope-stage.is-open .agency-envelope-letter {transform:translateY(-348px)}
+  .agency-v2 .agency-envelope-note-title {font-size:1.64rem;margin:4px 0 8px}
+  .agency-v2 .agency-envelope-form {gap:5px}
+  .agency-v2 .agency-envelope-field input {height:34px}
+  .agency-v2 .agency-envelope-field textarea {height:54px;min-height:47px}
+  .agency-v2 .agency-envelope-submit {min-height:35px;margin-top:2px}
+  .agency-v2 .agency-envelope-status {font-size:.59rem;min-height:17px}
+  .agency-v2 .agency-envelope-note-link {font-size:.59rem}
+}
+@media(max-width:365px){
+  .agency-v2 .agency-envelope-stage.is-open {min-height:670px}
+  .agency-v2 .agency-envelope-stage.is-open .agency-envelope-scene {margin-top:258px}
+  .agency-v2 .agency-envelope-letter {height:380px;padding:14px 15px 66px}
+  .agency-v2 .agency-envelope-stage.is-open .agency-envelope-letter {transform:translateY(-330px)}
+  .agency-v2 .agency-envelope-note-title {font-size:1.5rem}
+}
+@media(prefers-reduced-motion:reduce){
+  .agency-v2 .agency-envelope-stage {transition:none}
+}
