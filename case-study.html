@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#080d12">
+  <meta name="description" id="pageDescription" content="Technical case studies of real React, realtime communication, and Playwright web QA projects by Rohit Pant.">
+  <meta property="og:title" id="ogTitle" content="Project Case Study | Rohit Pant">
+  <meta property="og:description" id="ogDescription" content="A closer look at the challenges, architecture, implementation and engineering decisions behind a real project.">
+  <meta property="og:type" content="article">
+  <title>Project Case Study | Rohit Pant</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/case-study.css">
+  <script src="assets/case-study.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to project details</a>
+  <header class="site-nav">
+    <div class="container nav-inner">
+      <a class="wordmark" href="index.html#home" aria-label="Rohit Pant — homepage">Rohit <em>Pant</em><span class="mark-dot">.</span></a>
+      <nav aria-label="Case study navigation">
+        <a href="index.html#work">← All projects</a>
+        <a class="nav-contact" href="index.html#contact">Let's connect ↗</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <div class="container">
+      <div id="notFound" class="not-found" hidden>
+        <p class="eyebrow">CASE STUDY / NOT FOUND</p>
+        <h1>Project not found<span class="accent">.</span></h1>
+        <p>Choose a verified case study below, or return to the portfolio.</p>
+        <div class="not-found-links">
+          <a href="case-study.html?project=eventhive">EventHive ↗</a>
+          <a href="case-study.html?project=vaani">Vaani ↗</a>
+          <a href="case-study.html?project=argus">Argus ↗</a>
+        </div>
+      </div>
+      <div id="caseContent" hidden>
+        <div class="breadcrumbs"><a href="index.html#work">Selected work</a><span>/</span><span id="crumbName"></span></div>
+        <section class="case-hero" aria-labelledby="caseTitle">
+          <div class="hero-main">
+            <p class="eyebrow"><span class="eyebrow-line"></span> <span id="caseCategory"></span> <span class="eyebrow-slash">/</span> INDEPENDENT PROJECT</p>
+            <h1 id="caseTitle"></h1>
+            <p class="hero-tagline" id="caseTagline"></p>
+            <p class="hero-desc" id="caseIntro"></p>
+            <div id="heroLinks" class="hero-actions"></div>
+          </div>
+          <aside class="hero-facts" aria-label="Project summary">
+            <div><span>MY ROLE</span><strong id="factRole"></strong></div>
+            <div><span>MAIN FOCUS</span><strong id="factFocus"></strong></div>
+            <div><span>TECH STACK</span><div id="factStack" class="stack-list"></div></div>
+          </aside>
+        </section>
+        <figure class="hero-preview">
+          <div class="preview-top"><span class="preview-lights" aria-hidden="true"><i></i><i></i><i></i></span><span id="previewUrl"></span><span>ACTUAL PROJECT IMAGE</span></div>
+          <img id="caseImage" alt="" width="1400" height="780" decoding="async">
+          <div id="caseImageFallback" class="screenshot-fallback" hidden>Project image couldn't be loaded. The project details below are still available.</div>
+          <figcaption id="imageCaption"></figcaption>
+        </figure>
+        <div class="case-layout">
+          <aside class="section-index" aria-label="On this page">
+            <p>IN THIS CASE STUDY</p>
+            <a href="#overview">01 / Overview</a>
+            <a href="#responsibilities">02 / My contribution</a>
+            <a href="#architecture">03 / System architecture</a>
+            <a href="#userflow">04 / User flow</a>
+            <a href="#decisions">05 / Engineering decisions</a>
+            <a href="#quality">06 / Quality &amp; constraints</a>
+            <a href="#outcome">07 / Outcome</a>
+          </aside>
+          <div class="case-body">
+            <section class="case-section" id="overview">
+              <p class="section-label">01 / PROJECT OVERVIEW</p>
+              <h2>The problem <em>and purpose.</em></h2>
+              <div class="split-copy">
+                <div><h3>The challenge</h3><p id="caseChallenge"></p></div>
+                <div><h3>The goal</h3><p id="caseGoal"></p></div>
+              </div>
+            </section>
+            <section class="case-section" id="responsibilities">
+              <p class="section-label">02 / MY CONTRIBUTION</p>
+              <h2>What I <em>actually built.</em></h2>
+              <p class="section-intro" id="contribIntro"></p>
+              <div id="contribCards" class="feature-grid"></div>
+            </section>
+            <section class="case-section" id="architecture">
+              <p class="section-label">03 / ARCHITECTURE</p>
+              <h2>How the <em>pieces connect.</em></h2>
+              <p class="section-intro" id="architectureIntro"></p>
+              <figure class="diagram-panel" aria-labelledby="architectureHeading">
+                <div class="diagram-head"><span class="diagram-chip">SYSTEM MAP</span><strong id="architectureHeading"></strong></div>
+                <ol id="architectureFlow" class="diagram-flow"></ol>
+                <figcaption id="architectureNote"></figcaption>
+              </figure>
+            </section>
+            <section class="case-section" id="userflow">
+              <p class="section-label">04 / USER FLOW</p>
+              <h2>From action <em>to result.</em></h2>
+              <p class="section-intro" id="journeyIntro"></p>
+              <figure class="diagram-panel diagram-panel-alt" aria-labelledby="journeyHeading">
+                <div class="diagram-head"><span class="diagram-chip">INTERACTION FLOW</span><strong id="journeyHeading"></strong></div>
+                <ol id="journeyFlow" class="diagram-flow"></ol>
+                <figcaption id="journeyNote"></figcaption>
+              </figure>
+            </section>
+            <section class="case-section" id="decisions">
+              <p class="section-label">05 / ENGINEERING DECISIONS</p>
+              <h2>Why I chose <em>this approach.</em></h2>
+              <div id="decisionsList" class="decision-list"></div>
+            </section>
+            <section class="case-section" id="quality">
+              <p class="section-label">06 / QUALITY &amp; CONSTRAINTS</p>
+              <h2>Beyond the <em>happy path.</em></h2>
+              <div class="split-copy">
+                <div><h3>Reliability and testing</h3><ul id="qualityList" class="detail-list"></ul></div>
+                <div><h3>Scope and limitations</h3><ul id="limitsList" class="detail-list"></ul></div>
+              </div>
+            </section>
+            <section class="case-section" id="outcome">
+              <p class="section-label">07 / THE OUTCOME</p>
+              <h2>What this project <em>demonstrates.</em></h2>
+              <p class="section-intro" id="caseOutcome"></p>
+              <p class="evidence-note">These are implementation details and technical learnings, not invented business impact metrics. Production results and scale are not claimed without verified measurements.</p>
+            </section>
+          </div>
+        </div>
+        <section class="next-project" aria-label="Explore another project">
+          <p class="eyebrow">KEEP EXPLORING</p>
+          <p>More work, more context.</p>
+          <div id="moreProjects" class="more-projects"></div>
+        </section>
+      </div>
+      <noscript><div class="not-found"><h1>JavaScript required for this case study</h1><p>Visit the <a href="index.html#work">Projects section</a> to explore the live applications.</p></div></noscript>
+    </div>
+  </main>
+  <footer class="site-footer"><div class="container footer-inner"><span>© <span id="year"></span> Rohit Pant</span><a href="index.html#work">Back to projects ↑</a></div></footer>
+</body>
+</html>
