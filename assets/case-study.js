@@ -126,6 +126,73 @@
       ],
       outcome: 'Vaani demonstrates realtime frontend engineering beyond ordinary CRUD screens: device APIs, room signaling, peer connections, synchronized presence and testable interactive React components.'
     },
+    khareedo: {
+      title: 'Khareedo',
+      category: 'React / E-commerce',
+      tagline: 'From product discovery to checkout: an end-to-end shopping experience.',
+      intro: 'An independent React e-commerce demonstration built with Vite. It connects a product catalogue to browsing, combined filters, account authentication, guest and signed-in carts, order history and a simulated checkout.',
+      role: 'Frontend architecture, UI development and shopping flows',
+      focus: 'Product discovery, cart state and responsive UX',
+      stack: ['React', 'Vite', 'Redux Toolkit', 'React Router', 'Firebase Auth', 'Firestore', 'React Query', 'Axios', 'Tailwind CSS', 'Vitest'],
+      image: 'assets/project-shots/khareedo-preview.svg',
+      imageAlt: 'Conceptual illustration of the Khareedo product homepage layout, not a browser screenshot',
+      imageKind: 'INTERFACE ILLUSTRATION',
+      imageCaption: 'Illustration based on the implemented Khareedo interface, not an actual screenshot. A premium redesign is currently committed on a separate review branch; the live demo may show an earlier version.',
+      urlLabel: 'khareedo.rohitpant.in',
+      live: 'https://khareedo.rohitpant.in/',
+      source: null,
+      challenge: 'A shopping application has many connected states: visitors need discoverable categories, reliable filters, product details and a useful cart, while signed-in users also need protected order pages. Without consistent state handling and clear loading feedback, even a polished interface can feel broken.',
+      goal: 'Build a consistent React shopping journey with accessible product controls, catalogue filters and pagination, responsive layouts, persistent cart data and clear demo-payment boundaries.',
+      contribIntro: 'I built and iterated on this independent React project, including the shopping UI, Firebase-connected account flows, filters and a broader premium-storefront redesign. This is personal portfolio work, not a claim of commercial retail operations.',
+      contributions: [
+        ['Storefront and catalogue', 'Category navigation, a featured-product hero, product cards, detailed product views and mobile-first layouts.'],
+        ['Search and filtering', 'Category search, combined price/rating filters, sort options, responsive filter drawer and paginated product results.'],
+        ['Guest and account carts', 'Guest cart persistence in localStorage, account cart persistence in Firestore, quantity updates and item removal.'],
+        ['Authentication and orders', 'Firebase Authentication, protected routes, guest sign-in redirect and order history with loading, empty and error states.'],
+        ['UX and accessibility', 'Keyboard-visible focus, responsive navigation menus, click-to-open assistant with a floating portal, and reduced-motion support.'],
+        ['Checkout demonstration', 'Demo order recording and payment method UI, with simulated card transactions explicitly identified as non-production.']
+      ],
+      architectureIntro: 'Khareedo separates product discovery from user-owned data. Public catalogue queries feed React components, while authentication determines whether cart state is stored locally or in Firestore.',
+      architectureTitle: 'Frontend to service architecture',
+      architecture: [
+        ['Browser', 'React + Router', 'Pages, product components and UI state'],
+        ['Catalogue', 'React Query + Axios', 'Request product data from DummyJSON'],
+        ['Client state', 'Redux Toolkit', 'Share user, cart and order UI state'],
+        ['Persistence', 'LocalStorage / Firestore', 'Guest cart or account-linked cart'],
+        ['Identity', 'Firebase Auth', 'Sign-in and protected order routes']
+      ],
+      architectureNote: 'Simplified from the React repository. The catalogue is external demo data; cart and orders are account-linked Firestore data or guest browser storage. Frontend route checks do not replace database security rules.',
+      journeyIntro: 'The primary customer journey moves from product discovery to a cart and demo checkout while keeping guest browsing available.',
+      journeyTitle: 'Shopping journey and account handoff',
+      journey: [
+        ['Browse', 'Categories', 'Explore the product catalogue'],
+        ['Refine', 'Filters + pagination', 'Combine rating, budget and sorting'],
+        ['Choose', 'Product details', 'Review images and add an item'],
+        ['Cart', 'Guest / account', 'Store locally or in Firestore'],
+        ['Checkout', 'Demo order flow', 'Sign in when required; record a demo order']
+      ],
+      journeyNote: 'The current checkout is a demonstration only; card payments are simulated, and there is no real shipping or payment processing. Some UI refinements are in a review branch and may not yet be deployed.',
+      decisions: [
+        ['Storage by session', 'Anonymous visitors use localStorage for cart items; signed-in users use Firebase-backed documents for account-linked cart data.'],
+        ['Reusable filtering', 'Pure filter, price and pagination helpers keep catalogue behavior testable and support combined sorting and constraints.'],
+        ['Protected navigation', 'Firebase auth resolution distinguishes a pending session from a guest, then returns signed-in users to their intended protected route.'],
+        ['Layering and accessibility', 'The shopping chat is rendered in a document.body portal to avoid header overflow and stacking problems, opens on click, and supports Escape to close.'],
+        ['Performance', 'Route-level lazy loading and a deferred 3D product preview reduce the amount of optional UI work on initial browsing.']
+      ],
+      quality: [
+        'Vitest / React Testing Library checks cover the chat, authentication route states and navigation interactions in the redesign branch.',
+        'Automated source checks verify catalogue helpers, pricing rules and demo disclosures; GitHub Actions runs a production Vite build.',
+        'Loading, empty and error states are designed for products and account order history.',
+        'Responsive filters, mobile navigation and reduced-motion styling are part of the redesign.'
+      ],
+      limits: [
+        'This is a demo e-commerce application, not a real retailer. No real orders, shipping guarantees, live support or card payments are offered.',
+        'The header phone, email and support hours in the redesign are explicitly sample contact details.',
+        'The premium redesign currently exists on a separate GitHub review branch; the live site may be on an earlier build.',
+        'The private source repository is not linked as a public code sample. No revenue, conversion or performance claims are asserted without measurements.'
+      ],
+      outcome: 'Khareedo demonstrates an end-to-end React application workflow: browse and filter catalogue data, maintain guest and authenticated cart state, implement Firebase authentication and protected views, and refine responsive UI through testable components. Checkout is intentionally a simulation, not a production payment integration.'
+    },
     argus: {
       title: 'Argus',
       category: 'Developer tooling / QA',
@@ -230,6 +297,7 @@
   byId('heroLinks').replaceChildren(...actions);
   setText('previewUrl', project.urlLabel);
   setText('imageCaption', project.imageCaption);
+  setText('imageKind', project.imageKind || 'ACTUAL PROJECT IMAGE');
   const image = byId('caseImage');
   image.alt = project.imageAlt;
   image.addEventListener('error', () => {
