@@ -247,6 +247,7 @@ Project cards on `index.html` link directly to an accessible, standalone case-st
 
 - `case-study.html?project=eventhive`
 - `case-study.html?project=vaani`
+- `case-study.html?project=khareedo`
 - `case-study.html?project=argus`
 
 The same static HTML page renders each project using a strict query-parameter allowlist from `assets/case-study.js`, styled by `assets/case-study.css`. It includes real repository-backed implementation details, actual existing screenshots, system and user-flow diagrams, technical decisions, known limitations and a next-project section. Unknown project slugs show a not-found state rather than an invented project.
@@ -256,3 +257,12 @@ The same static HTML page renders each project using a strict query-parameter al
 The legacy project hologram/modal markup and its runtime imports were removed from the homepage. Retained historical asset files are not loaded. To change the case-study content, edit `assets/case-study.js` only; the homepage cards keep stable query-parameter links.
 
 Local check: serve the repository root with `python -m http.server 8000` and open each case-study URL. Verify image loading, anchor links, keyboard navigation and narrow viewport flow charts.
+
+
+### Khareedo case study — October 22, 2026
+
+Khareedo is an independent React/Vite e-commerce demonstration at `https://khareedo.rohitpant.in/`. Its case study documents catalogue browsing and filtering, guest `localStorage` and account Firestore carts, Firebase authentication, protected order history, pagination, accessible UI details and a *simulated* checkout. Project information was cross-checked against the connected `Rohit30418/ecommerceWeb-` repository, including its `feat/khareedo-modern-storefront` review branch.
+
+The Khareedo project image (`assets/project-shots/khareedo-preview.svg`) is a **hand-authored interface illustration based on the implementation, not a browser screenshot**. It is labeled as such on the card and case-study page. The live website may still show the earlier version until the redesign branch is reviewed, merged and deployed. The e-commerce source repository is private, so it is intentionally not linked publicly.
+
+Do not represent the app as a real retailer or claim real payment processing, shipping/delivery tracking, active support channels or fabricated revenue numbers. Dummy contact data is labeled as illustrative.
