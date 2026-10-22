@@ -239,3 +239,20 @@ Check the service ID character after `nis` carefully: it is the lowercase
 letter **l**, not **i**. The configured value is `service_1nislur`.
 SDK docs: https://www.emailjs.com/docs/sdk/send-form/
 REST docs: https://www.emailjs.com/docs/rest-api/send-form/
+
+
+## Recruiter-focused engineering case studies (October 2026)
+
+Project cards on `index.html` link directly to an accessible, standalone case-study page:
+
+- `case-study.html?project=eventhive`
+- `case-study.html?project=vaani`
+- `case-study.html?project=argus`
+
+The same static HTML page renders each project using a strict query-parameter allowlist from `assets/case-study.js`, styled by `assets/case-study.css`. It includes real repository-backed implementation details, actual existing screenshots, system and user-flow diagrams, technical decisions, known limitations and a next-project section. Unknown project slugs show a not-found state rather than an invented project.
+
+**Content policy:** Treat frontend employment experience and independent project work separately. Do not add fabricated client results, arbitrary KPIs, invented UI previews, fake testimonials, or public source links to private repositories. EventHive implementation details were checked against its repository README; Argus against its README and package; Vaani describes the realtime architecture represented by the existing showcase and backend. Verify new claims against actual source code before publication.
+
+The legacy project hologram/modal markup and its runtime imports were removed from the homepage. Retained historical asset files are not loaded. To change the case-study content, edit `assets/case-study.js` only; the homepage cards keep stable query-parameter links.
+
+Local check: serve the repository root with `python -m http.server 8000` and open each case-study URL. Verify image loading, anchor links, keyboard navigation and narrow viewport flow charts.
