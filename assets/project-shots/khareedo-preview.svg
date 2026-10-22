@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 690" role="img" aria-labelledby="title desc">
+  <title id="title">Khareedo interface illustration</title>
+  <desc id="desc">A conceptual representation of the implemented Khareedo storefront with category navigation, an editorial hero and product cards. Not a captured browser screenshot.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f9f8fb"/><stop offset="1" stop-color="#e7e5f0"/></linearGradient>
+    <linearGradient id="product" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ddd9ee"/><stop offset="1" stop-color="#c5c2dc"/></linearGradient>
+    <linearGradient id="headphone" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#454053"/><stop offset="1" stop-color="#171720"/></linearGradient>
+    <filter id="sh"><feDropShadow dx="0" dy="18" stdDeviation="19" flood-color="#39354c" flood-opacity=".12"/></filter>
+  </defs>
+  <rect width="1120" height="690" rx="25" fill="#14151d"/>
+  <rect x="15" y="15" width="1090" height="660" rx="17" fill="url(#bg)"/>
+  <rect x="15" y="15" width="1090" height="35" rx="17" fill="#1b1b22"/>
+  <rect x="15" y="39" width="1090" height="11" fill="#1b1b22"/>
+  <text x="45" y="37" fill="#d9d3fb" font-size="13" font-family="Arial,sans-serif" font-weight="700">DEMO CONTACT</text>
+  <text x="179" y="37" fill="#f0eff7" font-size="12" font-family="Arial,sans-serif">+91 00000 00000</text>
+  <text x="367" y="37" fill="#d3d0dd" font-size="12" font-family="Arial,sans-serif">support@khareedo.example</text>
+  <text x="896" y="37" fill="#c3c1cf" font-size="12" font-family="Arial,sans-serif">Mon–Sat 10–6</text>
+  <rect x="15" y="50" width="1090" height="70" fill="#ffffff"/>
+  <rect x="38" y="68" width="35" height="35" rx="10" fill="#24242c"/><text x="46" y="94" fill="#ffffff" font-family="Arial,sans-serif" font-size="24" font-weight="800">k.</text>
+  <text x="85" y="96" fill="#262530" font-family="Arial,sans-serif" font-size="28" font-weight="800" letter-spacing="-1">khareedo</text><circle cx="211" cy="93" r="3.4" fill="#6b62c2"/>
+  <rect x="374" y="66" width="464" height="40" rx="20" fill="#f5f5f8" stroke="#ededf3"/>
+  <circle cx="397" cy="85" r="6" fill="none" stroke="#9693aa" stroke-width="2"/><path d="M402 90l5 5" stroke="#9693aa" stroke-width="2"/>
+  <text x="418" y="91" fill="#9897a6" font-family="Arial,sans-serif" font-size="13">Search collections, accessories, tech...</text>
+  <circle cx="1034" cy="84" r="13" fill="#f0eff7"/><circle cx="1070" cy="84" r="13" fill="#f0eff7"/>
+  <rect x="15" y="120" width="1090" height="45" fill="#fff" stroke="#f0eff2"/>
+  <g font-family="Arial,sans-serif" font-size="15" fill="#55535f" font-weight="700">
+    <text x="265" y="148">Discover</text><text x="383" y="148">Beauty⌄</text><text x="495" y="148">Fashion⌄</text><text x="615" y="148">Electronics⌄</text><text x="769" y="148">Home⌄</text><text x="872" y="148">Sports⌄</text>
+  </g>
+  <rect x="35" y="184" width="1050" height="335" rx="24" fill="#efedea"/>
+  <text x="77" y="243" fill="#736f89" font-size="15" font-weight="700" font-family="Arial,sans-serif" letter-spacing="1">KHAREEDO / THE GOOD STUFF, IN ONE PLACE</text>
+  <g fill="#24242b" font-family="Arial,sans-serif" font-size="49" font-weight="800" letter-spacing="-2.5">
+    <text x="75" y="320">Everyday finds.</text>
+    <text x="75" y="374" fill="#6964b8">Extraordinary</text>
+    <text x="75" y="428">little details.</text>
+  </g>
+  <text x="77" y="458" fill="#7c7a87" font-family="Arial,sans-serif" font-size="14">A smoother way to explore tech, home and lifestyle.</text>
+  <rect x="75" y="472" width="205" height="37" rx="18.5" fill="#262630"/>
+  <text x="102" y="496" fill="#ffffff" font-family="Arial,sans-serif" font-size="13" font-weight="700">Explore collection ↗</text>
+  <rect x="644" y="201" width="414" height="302" rx="24" fill="url(#product)" filter="url(#sh)"/>
+  <circle cx="851" cy="344" r="116" fill="#e9e6f7" opacity=".8"/>
+  <path d="M763 360v-57c0-55 31-98 89-98s90 43 90 98v57" fill="none" stroke="#2a2934" stroke-width="28" stroke-linecap="round"/>
+  <path d="M775 326c-15-6-26 3-29 19v45c0 18 8 28 28 28h10c11 0 15-8 15-19v-47c0-13-9-23-24-26zm157 0c15-6 26 3 29 19v45c0 18-8 28-28 28h-10c-11 0-15-8-15-19v-47c0-13 9-23 24-26z" fill="url(#headphone)" stroke="#666279" stroke-width="3"/>
+  <rect x="662" y="447" width="377" height="43" rx="13" fill="#fff" opacity=".93"/>
+  <text x="683" y="464" fill="#9693a3" font-family="Arial,sans-serif" font-size="10" font-weight="700">IN THE SPOTLIGHT</text>
+  <text x="683" y="479" fill="#37323f" font-family="Arial,sans-serif" font-size="12" font-weight="800">Browse tech essentials</text>
+  <circle cx="1005" cy="468" r="15" fill="#26242f"/><text x="1001" y="472" fill="#fff" font-size="16">→</text>
+  <text x="54" y="566" fill="#25252e" font-family="Arial,sans-serif" font-weight="800" font-size="23">Discover collections</text>
+  <g font-family="Arial,sans-serif">
+    <rect x="51" y="580" width="244" height="72" rx="17" fill="#d9dcef"/><text x="70" y="605" fill="#525078" font-weight="700" font-size="12">01 / ACCESSORIES</text><text x="70" y="632" fill="#2b2839" font-weight="800" font-size="19">Tech essentials ↗</text>
+    <rect x="308" y="580" width="244" height="72" rx="17" fill="#dbece8"/><text x="327" y="605" fill="#4b7870" font-weight="700" font-size="12">02 / PHONES</text><text x="327" y="632" fill="#2b2839" font-weight="800" font-size="19">Stay connected ↗</text>
+    <rect x="565" y="580" width="244" height="72" rx="17" fill="#f0e3d8"/><text x="584" y="605" fill="#97735b" font-weight="700" font-size="12">03 / AT HOME</text><text x="584" y="632" fill="#2b2839" font-weight="800" font-size="19">Thoughtful living ↗</text>
+    <rect x="822" y="580" width="244" height="72" rx="17" fill="#e9dfec"/><text x="841" y="605" fill="#8b6c92" font-weight="700" font-size="12">04 / BEAUTY</text><text x="841" y="632" fill="#2b2839" font-weight="800" font-size="19">Daily ritual ↗</text>
+  </g>
+</svg>
