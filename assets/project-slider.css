@@ -113,3 +113,32 @@
   .agency-v2 #work .project-slider-dot::before{transition:none!important}
   .agency-v2 #work .project-slider-button:not(:disabled):hover{transform:none}
 }
+
+/* Optional autoplay control — visible only after the JS carousel initializes. */
+.agency-v2 #work .project-slider-page-controls {
+  display:flex;align-items:center;gap:12px;min-width:0;
+}
+.agency-v2 #work .project-slider-autoplay-toggle {
+  width:32px;height:32px;flex:0 0 32px;display:grid;place-items:center;
+  border:1px solid var(--p26-edge,rgba(255,255,255,.17));
+  border-radius:50%;background:rgba(235,212,185,.055);
+  color:var(--p26-warm,#ebd4b9);font-size:.68rem;cursor:pointer;
+  transition:color .2s ease,background .2s ease,border-color .2s ease;
+}
+.agency-v2 #work .project-slider-autoplay-toggle:hover {
+  color:#fff;background:rgba(235,212,185,.14);
+  border-color:rgba(235,212,185,.55);
+}
+.agency-v2 #work .project-slider-autoplay-toggle[aria-pressed="false"] {
+  color:var(--p26-muted,#a4a8af);border-color:rgba(255,255,255,.13);
+}
+.agency-v2 #work .project-slider-autoplay-toggle:focus-visible {
+  outline:2px solid #81d9ff;outline-offset:3px;
+}
+@media(max-width:700px){
+  .agency-v2 #work .project-slider-page-controls{gap:6px}
+  .agency-v2 #work .project-slider-autoplay-toggle{width:30px;height:30px;flex-basis:30px}
+}
+@media(prefers-reduced-motion:reduce){
+  .agency-v2 #work .project-slider-autoplay-toggle {transition:none!important}
+}

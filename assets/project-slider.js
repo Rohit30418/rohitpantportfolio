@@ -12,13 +12,70 @@
   const next = slider.querySelector('[data-project-next]');
   const dots = slider.querySelector('[data-project-dots]');
   const count = slider.querySelector('[data-project-count]');
-  if (!track || !previous || !next || !dots || !count || cards.length < 2) return;
+  const autoplayToggle = slider.querySelector('[data-project-autoplay]');
+  if (!track || !previous || !next || !dots || !count || !autoplayToggle || cards.length < 2) return;
 
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const pad = (value) => String(value).padStart(2, '0');
+  const AUTO_INTERVAL = 4600;
+  const INTERACTION_PAUSE = 8000;
   let points = [];
   let currentIndex = 0;
   let scheduled = false;
+  let autoplayEnabled = !reducedMotion;
+  let isHovered = false;
+  let inViewport = !('IntersectionObserver' in window);
+  let resumeAfter = 0;
+  let autoplayTimer = null;
+
+  function stopAutoplayTimer() {
+    if (autoplayTimer !== null) window.clearTimeout(autoplayTimer);
+    autoplayTimer = null;
+  }
+
+  function focusWithinCarousel() {
+    const active = document.activeElement;
+    // The play/pause button may keep focus after users explicitly press Play.
+    return !!(active && active !== autoplayToggle && slider.contains(active));
+  }
+
+  function canAutoplay() {
+    return autoplayEnabled && inViewport && !isHovered &&
+      !document.hidden && !focusWithinCarousel() && points.length > 1;
+  }
+
+  function scheduleAutoplay() {
+    stopAutoplayTimer();
+    if (!canAutoplay()) return;
+    const pauseLeft = Math.max(0, resumeAfter - Date.now());
+    autoplayTimer = window.setTimeout(() => {
+      autoplayTimer = null;
+      if (!canAutoplay()) return;
+      if (Date.now() < resumeAfter) {
+        scheduleAutoplay();
+        return;
+      }
+      // Once we reach the last page, return to the beginning and repeat.
+      moveTo((activePage() + 1) % points.length);
+      scheduleAutoplay();
+    }, Math.max(AUTO_INTERVAL, pauseLeft));
+  }
+
+  function pauseAfterInteraction() {
+    resumeAfter = Date.now() + INTERACTION_PAUSE;
+    scheduleAutoplay();
+  }
+
+  function syncAutoplayToggle() {
+    autoplayToggle.setAttribute('aria-pressed', String(autoplayEnabled));
+    autoplayToggle.setAttribute('aria-label', autoplayEnabled ?
+      'Pause automatic project scrolling' : 'Play automatic project scrolling');
+    autoplayToggle.title = autoplayEnabled ? 'Pause auto-scroll' : 'Play auto-scroll';
+    const icon = autoplayToggle.querySelector('i');
+    if (icon) icon.className = autoplayEnabled ? 'fa-solid fa-pause' : 'fa-solid fa-play';
+    // Avoid screen reader announcements every time autoplay advances a slide.
+    count.setAttribute('aria-live', autoplayEnabled ? 'off' : 'polite');
+  }
 
   function pagePositions() {
     const max = Math.max(0, track.scrollWidth - track.clientWidth);
@@ -75,7 +132,10 @@
       dot.className = 'project-slider-dot';
       dot.setAttribute('aria-label', 'Go to project slide ' + (index + 1) + ' of ' + points.length);
       dot.setAttribute('aria-controls', track.id);
-      dot.addEventListener('click', () => moveTo(index));
+      dot.addEventListener('click', () => {
+        pauseAfterInteraction();
+        moveTo(index);
+      });
       dots.appendChild(dot);
     });
   }
@@ -89,25 +149,73 @@
     // Resizing can change the number of cards shown; preserve approximate carousel progress.
     track.scrollTo({left: points[targetIndex] || 0, behavior: 'auto'});
     syncControls();
+    scheduleAutoplay();
   }
 
-  previous.addEventListener('click', () => moveTo(activePage() - 1));
-  next.addEventListener('click', () => moveTo(activePage() + 1));
+  previous.addEventListener('click', () => {
+    pauseAfterInteraction();
+    moveTo(activePage() - 1);
+  });
+  next.addEventListener('click', () => {
+    pauseAfterInteraction();
+    moveTo(activePage() + 1);
+  });
+
+  autoplayToggle.addEventListener('click', () => {
+    autoplayEnabled = !autoplayEnabled;
+    resumeAfter = 0;
+    syncAutoplayToggle();
+    scheduleAutoplay();
+  });
+
+  // Native swipe and manual scroll take priority over timed slides.
+  track.addEventListener('pointerdown', pauseAfterInteraction, {passive:true});
+  track.addEventListener('touchstart', pauseAfterInteraction, {passive:true});
+  track.addEventListener('wheel', pauseAfterInteraction, {passive:true});
+
+  slider.addEventListener('mouseenter', () => {
+    isHovered = true;
+    stopAutoplayTimer();
+  });
+  slider.addEventListener('mouseleave', () => {
+    isHovered = false;
+    scheduleAutoplay();
+  });
+  slider.addEventListener('focusin', stopAutoplayTimer);
+  slider.addEventListener('focusout', scheduleAutoplay);
+  document.addEventListener('visibilitychange', scheduleAutoplay);
+  window.addEventListener('pagehide', stopAutoplayTimer);
+  window.addEventListener('pageshow', scheduleAutoplay);
+
+  if ('IntersectionObserver' in window) {
+    const visibilityObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.target !== slider) return;
+        inViewport = entry.isIntersecting && entry.intersectionRatio >= 0.15;
+        scheduleAutoplay();
+      });
+    }, {threshold:[0,0.15,0.4]});
+    visibilityObserver.observe(slider);
+  }
 
   track.addEventListener('keydown', (event) => {
     // Don't hijack keyboard interaction within project links.
     if (event.target !== track) return;
     if (event.key === 'ArrowRight') {
       event.preventDefault();
+      pauseAfterInteraction();
       moveTo(activePage() + 1);
     } else if (event.key === 'ArrowLeft') {
       event.preventDefault();
+      pauseAfterInteraction();
       moveTo(activePage() - 1);
     } else if (event.key === 'Home') {
       event.preventDefault();
+      pauseAfterInteraction();
       moveTo(0);
     } else if (event.key === 'End') {
       event.preventDefault();
+      pauseAfterInteraction();
       moveTo(points.length - 1);
     }
   });
@@ -122,6 +230,7 @@
   }, {passive:true});
 
   slider.classList.add('is-ready');
+  syncAutoplayToggle();
   recalculate();
   if ('ResizeObserver' in window) {
     const resizeObserver = new ResizeObserver(() => {
