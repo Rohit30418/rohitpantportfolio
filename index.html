@@ -2094,6 +2094,7 @@
   <link rel="stylesheet" href="assets/contact-envelope.css?v=20261019-fix1" />
   <link rel="stylesheet" href="assets/portfolio-additions.css" />
   <link rel="stylesheet" href="assets/skill-tree.css?v=20261023-tree1" />
+  <link rel="stylesheet" href="assets/project-slider.css?v=20261023-1" />
 </head>
 <body class="agency-v2">
   <div class="intro-loader" id="introLoader" role="status" aria-live="polite" aria-label="Loading portfolio">
@@ -2191,8 +2192,19 @@
           <div><p class="agency-eyebrow">02 / Featured Projects</p><h2 class="agency-title" id="agencyWorkHeading">Projects Built<br><em>With Real Engineering.</em></h2></div>
           <p class="agency-muted">Explore independent applications and developer tooling through actual implementation details, architecture flowcharts, technical decisions and constraints.</p>
         </div>
-        <div class="agency-project-grid">
-          <article class="agency-project-card">
+        <div class="project-slider" data-project-slider>
+          <div class="project-slider-toolbar" aria-label="Project slider controls">
+            <p class="project-slider-intro"><i class="fa-solid fa-arrow-right-long" aria-hidden="true"></i> Explore the projects</p>
+            <div class="project-slider-toolbar-right">
+              <span class="project-slider-count" data-project-count aria-live="polite">01 <span class="project-slider-count-total">/ 04</span></span>
+              <div class="project-slider-arrows">
+                <button class="project-slider-button" type="button" data-project-prev aria-label="Previous projects" aria-controls="projectCarousel" disabled><i class="fa-solid fa-arrow-left" aria-hidden="true"></i></button>
+                <button class="project-slider-button" type="button" data-project-next aria-label="Next projects" aria-controls="projectCarousel"><i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
+              </div>
+            </div>
+          </div>
+          <div class="agency-project-grid project-slider-track" id="projectCarousel" role="region" aria-roledescription="carousel" aria-label="Featured projects" tabindex="0">
+          <article class="agency-project-card" role="group" aria-roledescription="slide" aria-label="1 of 4: EventHive">
             <a class="agency-project-thumb" href="https://eventhive.rohitpant.in/" target="_blank" rel="noopener noreferrer" aria-label="Open EventHive">
               <span class="agency-thumb-monogram" aria-hidden="true">EventHive</span><img src="assets/project-shots/eventhive.jpg" alt="Actual EventHive application screen" loading="eager" fetchpriority="low" decoding="async">
               <span class="agency-project-label">Event platform</span>
@@ -2203,7 +2215,7 @@
               <div class="agency-project-actions"><a href="https://eventhive.rohitpant.in/" target="_blank" rel="noopener noreferrer">Live Project ↗</a><a class="agency-case-trigger" href="case-study.html?project=eventhive" aria-label="Read EventHive engineering case study">Engineering Case Study →</a></div>
             </div>
           </article>
-          <article class="agency-project-card">
+          <article class="agency-project-card" role="group" aria-roledescription="slide" aria-label="2 of 4: Vaani">
             <a class="agency-project-thumb" href="https://vaani.rohitpant.in/" target="_blank" rel="noopener noreferrer" aria-label="Open Vaani">
               <span class="agency-thumb-monogram" aria-hidden="true">Vaani</span><img src="assets/project-shots/vaani.jpg" alt="Actual Vaani realtime calling application screen" loading="eager" fetchpriority="low" decoding="async">
               <span class="agency-project-label">Realtime app</span>
@@ -2214,7 +2226,7 @@
               <div class="agency-project-actions"><a href="https://vaani.rohitpant.in/" target="_blank" rel="noopener noreferrer">Live Project ↗</a><a class="agency-case-trigger" href="case-study.html?project=vaani" aria-label="Read Vaani engineering case study">Engineering Case Study →</a></div>
             </div>
           </article>
-          <article class="agency-project-card">
+          <article class="agency-project-card" role="group" aria-roledescription="slide" aria-label="3 of 4: Khareedo">
             <a class="agency-project-thumb" href="https://khareedo.rohitpant.in/" target="_blank" rel="noopener noreferrer" aria-label="Explore Khareedo e-commerce project">
               <span class="agency-thumb-monogram" aria-hidden="true">Khareedo</span><img src="assets/project-shots/khareedo-preview.svg" alt="Illustrated preview of Khareedo's implemented shopping interface, not a captured screenshot" loading="lazy" decoding="async">
               <span class="agency-project-label">E-commerce / React</span>
@@ -2225,7 +2237,7 @@
               <div class="agency-project-actions"><a href="https://khareedo.rohitpant.in/" target="_blank" rel="noopener noreferrer">Live Project ↗</a><a class="agency-case-trigger" href="case-study.html?project=khareedo" aria-label="Read Khareedo engineering case study">Engineering Case Study →</a></div>
             </div>
           </article>
-          <article class="agency-project-card">
+          <article class="agency-project-card" role="group" aria-roledescription="slide" aria-label="4 of 4: Argus">
             <a class="agency-project-thumb" href="https://argus-pro-a2px.onrender.com" target="_blank" rel="noopener noreferrer" aria-label="Open Argus">
               <span class="agency-thumb-monogram" aria-hidden="true">Argus</span><img src="assets/project-shots/argus.jpg" alt="Actual Argus QA auditor interface" loading="eager" fetchpriority="low" decoding="async">
               <span class="agency-project-label">Quality engineering</span>
@@ -2236,6 +2248,11 @@
               <div class="agency-project-actions"><a href="https://argus-pro-a2px.onrender.com" target="_blank" rel="noopener noreferrer">Live Project ↗</a><a class="agency-case-trigger" href="case-study.html?project=argus" aria-label="Read Argus engineering case study">Engineering Case Study →</a></div>
             </div>
           </article>
+        </div>
+          <div class="project-slider-footer">
+            <div class="project-slider-dots" data-project-dots role="group" aria-label="Project slider pages"></div>
+            <span class="project-slider-footnote"><i class="fa-solid fa-hand-pointer" aria-hidden="true"></i> Swipe or use the arrows</span>
+          </div>
         </div>
       </div>
     </section>
@@ -2485,6 +2502,7 @@
   </script>
   <script src="assets/scroll-reveal-2026.js" defer></script>
   <script src="assets/portfolio-motion-2026.js" defer></script>
+  <script src="assets/project-slider.js?v=20261023-1" defer></script>
   <script src="assets/emailjs-config.js?v=20261019-template2" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@5/dist/email.min.js" defer></script>
   <script src="assets/contact-envelope.js?v=20261019-fix1" defer></script>
