@@ -1,0 +1,182 @@
+/* Connected skill tree — intentionally scoped to the portfolio Skills section.
+   Pure CSS branches: no extra JS, animation libraries or layout dependencies. */
+.agency-v2 .agency-skills {position:relative;overflow:hidden}
+.agency-v2 .skill-tree {
+  --tree-line:rgba(114,199,219,.29);
+  position:relative;isolation:isolate;overflow:hidden;
+  padding:32px 34px 36px;border:1px solid rgba(171,205,219,.17);
+  border-radius:28px;
+  background:
+    radial-gradient(ellipse at 9% 2%,rgba(55,175,205,.13),transparent 40%),
+    radial-gradient(ellipse at 96% 90%,rgba(221,172,112,.07),transparent 41%),
+    linear-gradient(165deg,#0b1219 0%,#090f16 63%,#0d141b 100%);
+  box-shadow:0 24px 90px rgba(0,0,0,.16),inset 0 1px 0 rgba(255,255,255,.035);
+}
+.agency-v2 .skill-tree::before {
+  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background-image:linear-gradient(rgba(172,218,234,.032) 1px,transparent 1px),linear-gradient(90deg,rgba(172,218,234,.032) 1px,transparent 1px);
+  background-size:48px 48px;mask-image:linear-gradient(90deg,black,transparent 97%);
+}
+.agency-v2 .skill-tree::after {
+  content:"";position:absolute;left:68px;top:106px;bottom:64px;width:2px;pointer-events:none;
+  background:linear-gradient(180deg,rgba(113,221,242,.8),var(--tree-line) 28%,rgba(133,180,199,.36) 85%,transparent);
+  box-shadow:0 0 18px rgba(111,207,236,.25);
+}
+.agency-v2 .skill-tree-root {
+  position:relative;z-index:1;display:flex;align-items:center;gap:19px;
+  min-height:68px;color:#f5f5f2;
+}
+.agency-v2 .skill-tree-root-symbol {
+  display:grid;place-items:center;flex:0 0 68px;width:68px;height:68px;
+  border:1px solid rgba(126,224,248,.58);border-radius:19px;
+  background:linear-gradient(145deg,rgba(49,171,199,.23),rgba(28,74,94,.17));
+  box-shadow:0 0 0 6px rgba(101,191,226,.055),0 0 25px rgba(74,198,224,.11);
+  color:#8fe3f4;font-size:1.48rem;
+}
+.agency-v2 .skill-tree-root-copy {display:flex;flex-direction:column;gap:4px;min-width:0}
+.agency-v2 .skill-tree-root-copy .skill-tree-kicker {
+  font-family:ui-monospace,SFMono-Regular,Consolas,monospace;
+  color:#88bdc9;font-size:.64rem;font-weight:700;letter-spacing:.18em;
+}
+.agency-v2 .skill-tree-root-copy strong {color:#f4f6f8;font-size:clamp(1.1rem,2vw,1.55rem);font-weight:750;letter-spacing:-.045em}
+.agency-v2 .skill-tree-root-copy small {color:#90a6b5;font-size:.75rem;line-height:1.55}
+.agency-v2 .skill-tree-root-stats {display:flex;align-items:center;gap:10px;margin-left:auto;padding-left:10px;color:#7f9eac}
+.agency-v2 .skill-tree-root-stats b {font-size:1.55rem;font-weight:700;color:#d8e7eb;letter-spacing:-.07em}
+.agency-v2 .skill-tree-root-stats span {font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.58rem;letter-spacing:.1em}
+.agency-v2 .skill-tree-root-stats .skill-tree-stat-gap {height:27px;width:1px;background:rgba(184,213,225,.16);margin:0 8px}
+.agency-v2 .skill-tree-branches {display:grid;gap:18px;margin-top:23px}
+.agency-v2 .skill-tree-branch {position:relative;padding-left:109px;--branch-accent:#85d5e9;--branch-glow:85,213,233}
+.agency-v2 .skill-tree-branch::before {
+  content:"";position:absolute;top:48px;left:34px;width:75px;height:1px;
+  background:linear-gradient(90deg,rgba(var(--branch-glow),.8),rgba(var(--branch-glow),.3));
+}
+.agency-v2 .skill-tree-branch::after {
+  content:"";position:absolute;z-index:2;top:41px;left:62px;width:13px;height:13px;
+  border-radius:50%;border:2px solid var(--branch-accent);background:#10232b;
+  box-shadow:0 0 0 5px rgba(var(--branch-glow),.09),0 0 16px rgba(var(--branch-glow),.2);
+}
+.agency-v2 .skill-tree-branch--frontend {--branch-accent:#7bd9ef;--branch-glow:123,217,239}
+.agency-v2 .skill-tree-branch--backend {--branch-accent:#f7bd73;--branch-glow:247,189,115}
+.agency-v2 .skill-tree-branch--testing {--branch-accent:#bcabff;--branch-glow:188,171,255}
+.agency-v2 .skill-tree-branch-panel {
+  display:grid;grid-template-columns:minmax(170px,215px) minmax(0,1fr);gap:29px;align-items:center;
+  position:relative;min-width:0;padding:23px 24px;border:1px solid rgba(173,201,214,.14);
+  border-radius:19px;background:linear-gradient(115deg,rgba(var(--branch-glow),.055),rgba(255,255,255,.018) 43%,rgba(255,255,255,.022));
+  transition:border-color .28s ease,box-shadow .28s ease,background .28s ease;
+}
+.agency-v2 .skill-tree-branch-panel:hover {border-color:rgba(var(--branch-glow),.36);box-shadow:0 10px 32px rgba(0,0,0,.15)}
+.agency-v2 .skill-tree-branch-head {position:relative;min-width:0}
+.agency-v2 .skill-tree-branch-head::after {
+  content:"";position:absolute;left:calc(100% + 13px);top:50%;width:19px;height:1px;
+  background:linear-gradient(90deg,rgba(var(--branch-glow),.8),rgba(var(--branch-glow),.18));
+}
+.agency-v2 .skill-tree-branch-index {
+  display:inline-flex;align-items:center;gap:7px;margin-bottom:12px;
+  font:700 .62rem/1 ui-monospace,SFMono-Regular,Consolas,monospace;
+  letter-spacing:.13em;color:var(--branch-accent);
+}
+.agency-v2 .skill-tree-branch-index::before {content:"";width:6px;height:6px;border-radius:50%;background:currentColor;box-shadow:0 0 10px currentColor}
+.agency-v2 .skill-tree-branch-head h3 {
+  display:flex;flex-wrap:wrap;align-items:center;gap:9px;
+  margin:0;color:#f1f5f7;font-size:clamp(1rem,1.7vw,1.37rem);font-weight:710;letter-spacing:-.035em;
+}
+.agency-v2 .skill-tree-branch-head h3 > i {color:var(--branch-accent);font-size:.94rem}
+.agency-v2 .skill-tree-branch-head h3 > span {
+  padding:4px 7px;border:1px solid rgba(var(--branch-glow),.26);border-radius:5px;
+  color:var(--branch-accent);font:.65rem/1 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:0;
+}
+.agency-v2 .skill-tree-branch-head p {max-width:225px;margin:10px 0 0;color:#94a8b5;font-size:.74rem;line-height:1.72}
+.agency-v2 .skill-tree-leaves {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;min-width:0}
+.agency-v2 .skill-tree .agency-skill.skill-tree-leaf {
+  display:flex;flex-direction:row;align-items:center;justify-content:flex-start;gap:10px;
+  position:relative;min-width:0;min-height:73px;padding:11px 12px;
+  border:1px solid rgba(174,213,224,.12);border-radius:12px;
+  background:rgba(4,13,20,.51);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.025);
+  transition:transform .22s ease,border-color .22s ease,background .22s ease,box-shadow .22s ease;
+}
+.agency-v2 .skill-tree .agency-skill.skill-tree-leaf::before {
+  content:"";position:absolute;left:0;top:25%;bottom:25%;width:2px;
+  border-radius:3px;background:var(--skill-accent,#8fcbeb);opacity:.5;
+}
+.agency-v2 .skill-tree .agency-skill.skill-tree-leaf:hover {
+  transform:translateY(-3px);border-color:rgba(var(--branch-glow),.5);
+  background:rgba(var(--branch-glow),.07);
+  box-shadow:0 12px 20px rgba(0,0,0,.12),0 0 25px rgba(var(--branch-glow),.055);
+}
+.agency-v2 .skill-tree .agency-skill.skill-tree-leaf > i {
+  display:grid;place-items:center;flex:0 0 27px;
+  font-size:1.35rem;line-height:1.2;color:var(--skill-accent,#8fcbeb);
+}
+.agency-v2 .skill-tree .agency-skill.skill-tree-leaf .skill-tree-leaf-copy {
+  display:flex;flex-direction:column;align-items:flex-start;gap:3px;min-width:0;text-align:left;
+}
+.agency-v2 .skill-tree .skill-tree-leaf-copy strong {
+  display:block;color:#e4eef3;font-size:.78rem;line-height:1.25;font-weight:670;overflow-wrap:anywhere;
+}
+.agency-v2 .skill-tree .skill-tree-leaf-copy small {
+  display:block;color:#849bab;font-size:.62rem;line-height:1.35;overflow-wrap:anywhere;
+}
+.agency-v2 .skill-tree-footnote {
+  display:flex;align-items:center;gap:9px;margin:25px 0 0 109px;padding:0 0 0 2px;
+  color:#7c929e;font:500 .71rem/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.02em;
+}
+.agency-v2 .skill-tree-footnote::before {content:"";width:14px;height:1px;background:#7aaab9}
+@media(max-width:1100px){
+  .agency-v2 .skill-tree-branch-panel {grid-template-columns:minmax(150px,190px) minmax(0,1fr);gap:22px}
+  .agency-v2 .skill-tree-leaves {grid-template-columns:repeat(3,minmax(0,1fr))}
+  .agency-v2 .skill-tree-branch-head::after {width:13px;left:calc(100% + 8px)}
+}
+@media(max-width:850px){
+  .agency-v2 .skill-tree {padding:28px 24px 31px}
+  .agency-v2 .skill-tree::after {left:58px;top:96px}
+  .agency-v2 .skill-tree-branch {padding-left:92px}
+  .agency-v2 .skill-tree-branch::before {left:34px;width:58px}
+  .agency-v2 .skill-tree-branch::after {left:52px}
+  .agency-v2 .skill-tree-root-symbol {width:68px}
+  .agency-v2 .skill-tree-branch-panel {grid-template-columns:1fr;gap:18px}
+  .agency-v2 .skill-tree-branch-head {padding-bottom:15px;border-bottom:1px solid rgba(var(--branch-glow),.15)}
+  .agency-v2 .skill-tree-branch-head::after {display:none}
+  .agency-v2 .skill-tree-branch-head p {max-width:500px}
+  .agency-v2 .skill-tree-root-stats {display:none}
+  .agency-v2 .skill-tree-footnote {margin-left:92px}
+}
+@media(max-width:600px){
+  .agency-v2 .agency-skills-head {gap:14px}
+  .agency-v2 .skill-tree {padding:20px 12px 25px;border-radius:19px}
+  .agency-v2 .skill-tree::after {left:34px;top:67px;bottom:30px}
+  .agency-v2 .skill-tree-root {gap:12px;min-height:44px}
+  .agency-v2 .skill-tree-root-symbol {flex-basis:44px;width:44px;height:44px;border-radius:13px;font-size:1.05rem}
+  .agency-v2 .skill-tree-root-copy .skill-tree-kicker {font-size:.54rem}
+  .agency-v2 .skill-tree-root-copy strong {font-size:1.06rem}
+  .agency-v2 .skill-tree-root-copy small {font-size:.66rem}
+  .agency-v2 .skill-tree-branches {gap:13px;margin-top:22px}
+  .agency-v2 .skill-tree-branch {padding-left:43px}
+  .agency-v2 .skill-tree-branch::before {top:35px;left:22px;width:21px}
+  .agency-v2 .skill-tree-branch::after {top:29px;left:28px;width:10px;height:10px;box-shadow:0 0 0 3px rgba(var(--branch-glow),.1)}
+  .agency-v2 .skill-tree-branch-panel {padding:15px 12px;border-radius:14px;gap:15px}
+  .agency-v2 .skill-tree-branch-head {padding-bottom:13px}
+  .agency-v2 .skill-tree-branch-head h3 {font-size:1.02rem;gap:6px}
+  .agency-v2 .skill-tree-branch-head h3 > span {font-size:.55rem}
+  .agency-v2 .skill-tree-branch-head p {font-size:.7rem;line-height:1.65}
+  .agency-v2 .skill-tree-branch-index {font-size:.57rem;margin-bottom:8px}
+  .agency-v2 .skill-tree-leaves {grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .agency-v2 .skill-tree .agency-skill.skill-tree-leaf {
+    flex-direction:column;align-items:center;text-align:center;gap:7px;min-height:87px;padding:10px 5px
+  }
+  .agency-v2 .skill-tree .agency-skill.skill-tree-leaf > i {flex:0 0 auto;font-size:1.27rem}
+  .agency-v2 .skill-tree .agency-skill.skill-tree-leaf .skill-tree-leaf-copy {align-items:center;text-align:center}
+  .agency-v2 .skill-tree .skill-tree-leaf-copy strong {font-size:.73rem}
+  .agency-v2 .skill-tree .skill-tree-leaf-copy small {display:none}
+  .agency-v2 .skill-tree-footnote {margin:17px 0 0 43px;font-size:.6rem}
+}
+@media(max-width:380px){
+  .agency-v2 .skill-tree-branch-panel {padding:13px 9px}
+  .agency-v2 .skill-tree-root-copy strong {font-size:.97rem}
+  .agency-v2 .skill-tree-root-copy small {font-size:.61rem}
+  .agency-v2 .skill-tree .agency-skill.skill-tree-leaf {min-height:80px}
+}
+@media(prefers-reduced-motion:reduce){
+  .agency-v2 .skill-tree-branch-panel,.agency-v2 .skill-tree .agency-skill.skill-tree-leaf {transition:none!important}
+  .agency-v2 .skill-tree .agency-skill.skill-tree-leaf:hover {transform:none}
+}
