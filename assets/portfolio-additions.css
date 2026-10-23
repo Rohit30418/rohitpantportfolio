@@ -1,0 +1,49 @@
+/* Minimal additions; existing portfolio colors, typography, layout and animations remain authoritative. */
+.agency-v2 .header-actions-inline{display:flex;align-items:center;gap:14px;margin-left:auto;flex:0 0 auto}
+.agency-v2 .nav-resume{display:inline-flex;align-items:center;gap:6px;font-family:var(--p26-inter,Inter,sans-serif);font-size:.78rem;font-weight:600;color:#d3d6dd;white-space:nowrap;transition:color .2s ease}
+.agency-v2 .nav-resume:hover{color:var(--p26-ink,#fff)}
+.agency-v2 .nav-resume span{color:var(--p26-warm,#ebd4b9)}
+.agency-v2 .nav-resume:focus-visible{outline:2px solid #81d9ff;outline-offset:4px;border-radius:2px}
+.agency-v2 .agency-experience-grid{align-items:start}
+.agency-v2 .agency-job{padding-bottom:0}
+.agency-v2 .agency-job::before{top:31px;z-index:1}
+.agency-v2 .agency-job-card{min-width:0;padding:29px 31px;border:1px solid var(--p26-edge,rgba(234,236,243,.12));border-radius:var(--p26-radius,16px);background:var(--p26-surface,#101319);box-shadow:0 18px 60px rgba(0,0,0,.12)}
+.agency-v2 .agency-job-card h3{overflow-wrap:anywhere}
+.agency-v2 .agency-job-label{margin:0 0 18px}
+.agency-v2 .agency-job-points{list-style:none;margin:0;padding:0;display:grid;gap:13px}
+.agency-v2 .agency-job-points li{position:relative;padding-left:20px;color:var(--p26-secondary,#c0c4ce);font-family:var(--p26-inter,Inter,sans-serif);font-size:.92rem;line-height:1.74}
+.agency-v2 .agency-job-points li::before{content:"";position:absolute;top:.72em;left:0;width:6px;height:6px;border-radius:50%;background:var(--p26-warm,#ebd4b9)}
+.agency-v2 .agency-job-points strong{color:var(--p26-ink,#f5f5f2);font-weight:650}
+.agency-v2 .agency-skill-group + .agency-skill-group{margin-top:39px;padding-top:30px;border-top:1px solid var(--p26-edge,rgba(234,236,243,.12))}
+.agency-v2 .agency-skill-group h3{margin:0;color:var(--p26-ink,#f5f5f2);font-family:var(--p26-inter,Inter,sans-serif);font-size:1.22rem;letter-spacing:-.035em;font-weight:650}
+.agency-v2 .agency-skill-group-context{margin:9px 0 20px;color:var(--p26-muted,#939aa7);font-size:.86rem;line-height:1.7}
+.agency-v2 .agency-skill-group .agency-skill-grid{grid-template-columns:repeat(7,minmax(0,1fr))}
+.agency-v2 .agency-skill-group .agency-skill{min-width:0}
+/* The same existing loader with a much shorter, non-blocking exit. */
+.intro-loader{pointer-events:none;transition-duration:.18s}
+.intro-loading-track i{animation-duration:.58s}
+html.intro-playing,html.intro-playing body{overflow-y:auto!important;overscroll-behavior:auto}
+@media(max-width:1100px){
+  .agency-v2 .header-actions-inline{gap:10px}
+  .agency-v2 .nav.lux-nav{gap:11px}
+  .agency-v2 .agency-skill-group .agency-skill-grid{grid-template-columns:repeat(5,minmax(0,1fr))}
+}
+@media(max-width:900px){
+  .agency-v2 .agency-experience-grid{grid-template-columns:1fr}
+  .agency-v2 .agency-timeline{margin-left:9px}
+}
+@media(max-width:700px){
+  .agency-v2 .header-actions-inline{margin-left:auto}
+  .agency-v2 .nav-resume{display:none}
+  .agency-v2 .agency-skill-group .agency-skill-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .agency-v2 .agency-job-card{padding:23px 20px}
+  .agency-v2 .agency-job-points li{font-size:.86rem}
+  .agency-v2 .agency-skill-group + .agency-skill-group{margin-top:28px;padding-top:24px}
+}
+@media(max-width:380px){
+  .agency-v2 .agency-job-card{padding:19px 15px}
+  .agency-v2 .agency-timeline{padding-left:24px}
+  .agency-v2 .agency-job::before{left:-32px}
+  .agency-v2 .agency-skill-group .agency-skill-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(prefers-reduced-motion:reduce){.agency-v2 .nav-resume{transition:none}}
