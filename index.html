@@ -2093,6 +2093,7 @@
   <link rel="stylesheet" href="assets/portfolio-motion-2026.css" />
   <link rel="stylesheet" href="assets/contact-envelope.css?v=20261019-fix1" />
   <link rel="stylesheet" href="assets/portfolio-additions.css" />
+  <link rel="stylesheet" href="assets/skill-tree.css?v=20261023-tree1" />
 </head>
 <body class="agency-v2">
   <div class="intro-loader" id="introLoader" role="status" aria-live="polite" aria-label="Loading portfolio">
@@ -2266,38 +2267,67 @@
     <section class="agency-section agency-skills" id="skills" aria-labelledby="agencySkillsHeading">
       <div class="shell">
         <div class="agency-skills-head">
-          <div><p class="agency-eyebrow">04 / Skills & Tools</p><h2 class="agency-title" id="agencySkillsHeading">Tools I <em>Work With.</em></h2></div>
-          <p class="agency-muted">Modern frontend tooling combined with production web fundamentals.</p>
+          <div><p class="agency-eyebrow">04 / Skills &amp; Tools</p><h2 class="agency-title" id="agencySkillsHeading">Tools I <em>Work With.</em></h2></div>
+          <p class="agency-muted">A connected map of the technologies behind my interfaces, products and quality workflows.</p>
         </div>
-                <div class="agency-skill-groups">
-          <div class="agency-skill-group" aria-labelledby="skillsFrontend">
-            <h3 id="skillsFrontend">Frontend</h3>
-            <p class="agency-skill-group-context">Used across production client UI, EventHive, Vaani and Khareedo.</p>
-            <div class="agency-skill-grid" role="list" aria-label="Frontend technologies">
-              <div class="agency-skill" role="listitem" style="--skill-accent:#e95c37"><i class="fa-brands fa-html5" aria-hidden="true"></i><span>HTML5</span></div>
-              <div class="agency-skill" role="listitem" style="--skill-accent:#52a5f5"><i class="fa-brands fa-css3-alt" aria-hidden="true"></i><span>CSS3</span></div>
-              <div class="agency-skill" role="listitem" style="--skill-accent:#f7df1e"><i class="fa-brands fa-square-js" aria-hidden="true"></i><span>JavaScript</span></div>
-              <div class="agency-skill" role="listitem" style="--skill-accent:#4b9ef7"><i class="fa-solid fa-code" aria-hidden="true"></i><span>TypeScript</span></div>
-              <div class="agency-skill" role="listitem" style="--skill-accent:#61dafb"><i class="fa-brands fa-react" aria-hidden="true"></i><span>React</span></div>
-              <div class="agency-skill" role="listitem" style="--skill-accent:#ae88e6"><i class="fa-solid fa-layer-group" aria-hidden="true"></i><span>Redux</span></div>
-              <div class="agency-skill" role="listitem" style="--skill-accent:#55c5f0"><i class="fa-solid fa-wind" aria-hidden="true"></i><span>Tailwind</span></div>
+        <div class="skill-tree" aria-label="Skill tree showing three branches and ten technologies">
+          <div class="skill-tree-root">
+            <span class="skill-tree-root-symbol" aria-hidden="true"><i class="fa-solid fa-code-branch"></i></span>
+            <div class="skill-tree-root-copy">
+              <span class="skill-tree-kicker">ROOT NODE / ENGINEERING STACK</span>
+              <strong>Frontend Development</strong>
+              <small>Crafting interfaces · connecting data · testing experiences</small>
+            </div>
+            <div class="skill-tree-root-stats" aria-hidden="true">
+              <b>03</b><span>BRANCHES</span><i class="skill-tree-stat-gap"></i><b>10</b><span>SKILLS</span>
             </div>
           </div>
-          <div class="agency-skill-group" aria-labelledby="skillsBackend">
-            <h3 id="skillsBackend">Backend &amp; Data</h3>
-            <p class="agency-skill-group-context">Firebase powers auth, data and realtime features in my independent projects.</p>
-            <div class="agency-skill-grid" role="list" aria-label="Backend and data technologies">
-              <div class="agency-skill" role="listitem" style="--skill-accent:#ffbd43"><i class="fa-solid fa-fire-flame-curved" aria-hidden="true"></i><span>Firebase</span></div>
+          <div class="skill-tree-branches">
+          <section class="skill-tree-branch skill-tree-branch--frontend" aria-labelledby="skillsFrontend">
+            <div class="skill-tree-branch-panel">
+              <div class="skill-tree-branch-head">
+                <span class="skill-tree-branch-index">BRANCH / 01</span>
+                <h3 id="skillsFrontend"><i class="fa-solid fa-laptop-code" aria-hidden="true"></i> Frontend <span>07 SKILLS</span></h3>
+                <p>Used across production client UI, EventHive, Vaani and Khareedo.</p>
+              </div>
+              <div class="skill-tree-leaves" role="list" aria-label="Frontend technologies">
+                <div class="agency-skill skill-tree-leaf" role="listitem" style="--skill-accent:#e95c37"><i class="fa-brands fa-html5" aria-hidden="true"></i><span class="skill-tree-leaf-copy"><strong>HTML5</strong><small>Semantic markup</small></span></div>
+                <div class="agency-skill skill-tree-leaf" role="listitem" style="--skill-accent:#52a5f5"><i class="fa-brands fa-css3-alt" aria-hidden="true"></i><span class="skill-tree-leaf-copy"><strong>CSS3</strong><small>Responsive layouts</small></span></div>
+                <div class="agency-skill skill-tree-leaf" role="listitem" style="--skill-accent:#f7df1e"><i class="fa-brands fa-square-js" aria-hidden="true"></i><span class="skill-tree-leaf-copy"><strong>JavaScript</strong><small>Interactive UI</small></span></div>
+                <div class="agency-skill skill-tree-leaf" role="listitem" style="--skill-accent:#4b9ef7"><i class="fa-solid fa-code" aria-hidden="true"></i><span class="skill-tree-leaf-copy"><strong>TypeScript</strong><small>Type-safe apps</small></span></div>
+                <div class="agency-skill skill-tree-leaf" role="listitem" style="--skill-accent:#61dafb"><i class="fa-brands fa-react" aria-hidden="true"></i><span class="skill-tree-leaf-copy"><strong>React</strong><small>Component systems</small></span></div>
+                <div class="agency-skill skill-tree-leaf" role="listitem" style="--skill-accent:#ae88e6"><i class="fa-solid fa-layer-group" aria-hidden="true"></i><span class="skill-tree-leaf-copy"><strong>Redux</strong><small>State management</small></span></div>
+                <div class="agency-skill skill-tree-leaf" role="listitem" style="--skill-accent:#55c5f0"><i class="fa-solid fa-wind" aria-hidden="true"></i><span class="skill-tree-leaf-copy"><strong>Tailwind</strong><small>Utility-first styles</small></span></div>
+              </div>
             </div>
-          </div>
-          <div class="agency-skill-group" aria-labelledby="skillsTools">
-            <h3 id="skillsTools">Tools &amp; Testing</h3>
-            <p class="agency-skill-group-context">Git for version control; Playwright for browser-based QA in Argus.</p>
-            <div class="agency-skill-grid" role="list" aria-label="Tools and testing">
-              <div class="agency-skill" role="listitem" style="--skill-accent:#ff9979"><i class="fa-brands fa-git-alt" aria-hidden="true"></i><span>Git</span></div>
-              <div class="agency-skill" role="listitem" style="--skill-accent:#7db789"><i class="fa-solid fa-robot" aria-hidden="true"></i><span>Playwright</span></div>
+          </section>
+          <section class="skill-tree-branch skill-tree-branch--backend" aria-labelledby="skillsBackend">
+            <div class="skill-tree-branch-panel">
+              <div class="skill-tree-branch-head">
+                <span class="skill-tree-branch-index">BRANCH / 02</span>
+                <h3 id="skillsBackend"><i class="fa-solid fa-database" aria-hidden="true"></i> Backend &amp; Data <span>01 SKILLS</span></h3>
+                <p>Firebase powers auth, data and realtime features in my independent projects.</p>
+              </div>
+              <div class="skill-tree-leaves" role="list" aria-label="Backend and data technologies">
+                <div class="agency-skill skill-tree-leaf" role="listitem" style="--skill-accent:#ffbd43"><i class="fa-solid fa-fire-flame-curved" aria-hidden="true"></i><span class="skill-tree-leaf-copy"><strong>Firebase</strong><small>Cloud &amp; realtime</small></span></div>
+              </div>
             </div>
+          </section>
+          <section class="skill-tree-branch skill-tree-branch--testing" aria-labelledby="skillsTools">
+            <div class="skill-tree-branch-panel">
+              <div class="skill-tree-branch-head">
+                <span class="skill-tree-branch-index">BRANCH / 03</span>
+                <h3 id="skillsTools"><i class="fa-solid fa-vial-circle-check" aria-hidden="true"></i> Tools &amp; Testing <span>02 SKILLS</span></h3>
+                <p>Git for version control; Playwright for browser-based QA in Argus.</p>
+              </div>
+              <div class="skill-tree-leaves" role="list" aria-label="Tools and testing">
+                <div class="agency-skill skill-tree-leaf" role="listitem" style="--skill-accent:#ff9979"><i class="fa-brands fa-git-alt" aria-hidden="true"></i><span class="skill-tree-leaf-copy"><strong>Git</strong><small>Version control</small></span></div>
+                <div class="agency-skill skill-tree-leaf" role="listitem" style="--skill-accent:#7db789"><i class="fa-solid fa-robot" aria-hidden="true"></i><span class="skill-tree-leaf-copy"><strong>Playwright</strong><small>Browser automation</small></span></div>
+              </div>
+            </div>
+          </section>
           </div>
+          <p class="skill-tree-footnote">Always learning. Always shipping.</p>
         </div>
       </div>
     </section>
