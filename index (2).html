@@ -1,0 +1,3000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Progressive enhancement: add .js class only when JS runs and reduced-motion is off -->
+  <script>
+    (function () {
+      var rm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!rm) {
+        document.documentElement.classList.add('js');
+      }
+    })();
+  </script>
+
+  <!-- ==========================================================================
+       SEO & OPEN GRAPH META TAGS — Rohit Pant (rohitpant.in)
+       ========================================================================== -->
+  <title>Rohit Pant | Frontend Developer | UI Developer</title>
+  <meta name="description" content="Rohit Pant — Frontend Developer with 4 years of professional experience building responsive websites, interactive interfaces, client portals, and dashboards, alongside React and TypeScript projects." />
+  <meta name="author" content="Rohit Pant" />
+  <link rel="canonical" href="https://rohitpant.in/" />
+
+  <!-- Open Graph / Social Sharing -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Rohit Pant | Frontend Developer | UI Developer" />
+  <meta property="og:description" content="Building responsive interfaces. Making the web work better. Frontend Developer with 4 years of professional UI experience and modern React & TypeScript projects." />
+  <meta property="og:url" content="https://rohitpant.in/" />
+  <meta property="og:image" content="https://rohitpant.in/assets/og-image.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Rohit Pant | Frontend Developer | UI Developer" />
+  <meta name="twitter:description" content="Building responsive interfaces. Making the web work better. Frontend Developer with 4 years of professional UI experience and modern React & TypeScript projects." />
+  <meta name="twitter:image" content="https://rohitpant.in/assets/og-image.jpg" />
+
+  <!-- Inline SVG Favicon ("RP" Yellow Square Sticker) -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='6' y='6' width='52' height='52' rx='10' fill='%23FFD23F' stroke='%23000000' stroke-width='6'/%3E%3Ctext x='32' y='41' text-anchor='middle' font-family='sans-serif' font-weight='900' font-size='26' fill='%23111111'%3ERP%3C/text%3E%3C/svg%3E" />
+
+  <!-- Google Fonts: Space Grotesk (clean geometric descenders for 'g'), Inter (Body), Space Mono (Labels), Caveat (Handwritten Accent) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+
+  <style>
+    /* ==========================================================================
+       1. DESIGN TOKENS (FLAT COLOURS ONLY, ZERO BLUR HARD SHADOWS, 3PX BORDERS)
+       ========================================================================== */
+    :root {
+      --c-cream: #FFF4D6;
+      --c-offwhite: #FFFDF5;
+      --c-yellow: #FFD23F;
+      --c-lime: #D4FF3A;
+      --c-mint: #7CE6B4;
+      --c-lavender: #B8A9FA;
+      --c-orange: #FFA552;
+      --c-sky: #74B9FF;
+      --c-black: #111111;
+      --c-white: #FFFFFF;
+
+      --border-main: 3px solid #000000;
+      --border-tag: 2px solid #000000;
+
+      --radius-card: 14px;
+      --radius-btn: 10px;
+
+      --shadow-sm: 3px 3px 0 #000000;
+      --shadow-md: 5px 5px 0 #000000;
+      --shadow-lg: 8px 8px 0 #000000;
+      --shadow-hover: 8px 8px 0 #000000;
+      --shadow-press: 2px 2px 0 #000000;
+
+      /* Space Grotesk 800 prevents Syne's clipped lowercase 'g' glyph while keeping bold weight */
+      --font-head: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'Space Mono', monospace;
+      --font-hand: 'Caveat', cursive;
+
+      --nav-h: 4.2rem;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--c-cream);
+      color: var(--c-black);
+      font-size: 1.0625rem; /* 17px mobile/tablet base, never below 16px */
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    @media (min-width: 1024px) {
+      body {
+        font-size: 1.125rem; /* 18px desktop */
+      }
+    }
+
+    /* High-visibility keyboard focus outline */
+    :focus-visible {
+      outline: 3px solid var(--c-black);
+      outline-offset: 3px;
+      box-shadow: 0 0 0 6px var(--c-yellow);
+    }
+
+    /* Skip Link */
+    .skip-link {
+      position: absolute;
+      top: -100px;
+      left: 1rem;
+      z-index: 4000;
+      background-color: var(--c-yellow);
+      color: var(--c-black);
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      font-weight: 700;
+      padding: 0.75rem 1.25rem;
+      border: var(--border-main);
+      border-radius: var(--radius-btn);
+      box-shadow: var(--shadow-md);
+      text-decoration: none;
+    }
+
+    .skip-link:focus {
+      top: 1rem;
+    }
+
+    /* ==========================================================================
+       2. "STICKER SLAP" LOADER OVERLAY (Injected by JS only, <1s total)
+       ========================================================================== */
+    .sticker-loader-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 3500;
+      background-color: var(--c-cream);
+      border-bottom: var(--border-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 320ms cubic-bezier(0.7, 0, 0.3, 1);
+      cursor: pointer;
+    }
+
+    .sticker-loader-overlay.is-curtain-up {
+      transform: translateY(-102%);
+    }
+
+    .loader-stage {
+      display: inline-flex;
+      align-items: center;
+      gap: 1rem;
+      position: relative;
+    }
+
+    @keyframes loaderRpDrop {
+      0% {
+        opacity: 0;
+        transform: translateY(-55px) scale(1.35) rotate(-14deg);
+      }
+      65% {
+        opacity: 1;
+        transform: translateY(6px) scale(0.94) rotate(-2deg);
+      }
+      85% {
+        transform: translateY(-3px) scale(1.03) rotate(-5deg);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1) rotate(-4deg);
+      }
+    }
+
+    @keyframes loaderSmileyPeel {
+      0% {
+        opacity: 0;
+        transform: translateX(-18px) translateY(14px) scale(0.4) rotate(-35deg);
+      }
+      70% {
+        opacity: 1;
+        transform: translateX(4px) translateY(-3px) scale(1.08) rotate(12deg);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0) translateY(0) scale(1) rotate(8deg);
+      }
+    }
+
+    .loader-rp-box {
+      width: 86px;
+      height: 86px;
+      background-color: var(--c-yellow);
+      color: var(--c-black);
+      border: var(--border-main);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: 2.5rem;
+      animation: loaderRpDrop 360ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    .loader-smiley-box {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      background-color: var(--c-lime);
+      border: var(--border-main);
+      box-shadow: var(--shadow-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      animation: loaderSmileyPeel 300ms cubic-bezier(0.34, 1.56, 0.64, 1) 180ms forwards;
+    }
+
+    /* ==========================================================================
+       3. BANDS, HEADINGS & DESCENDER-SAFE SPACING (Fixes 'g' cut-off)
+       ========================================================================== */
+    .band {
+      width: 100%;
+      border-bottom: var(--border-main);
+      scroll-margin-top: var(--nav-h);
+      padding: clamp(3.5rem, 7vw, 5.75rem) 0;
+      overflow-x: clip;
+    }
+
+    .band--cream { background-color: var(--c-cream); color: var(--c-black); }
+    .band--offwhite { background-color: var(--c-offwhite); color: var(--c-black); }
+    .band--yellow { background-color: var(--c-yellow); color: var(--c-black); }
+    .band--lime { background-color: var(--c-lime); color: var(--c-black); }
+    .band--mint { background-color: var(--c-mint); color: var(--c-black); }
+    .band--lavender { background-color: var(--c-lavender); color: var(--c-black); }
+    .band--sky { background-color: var(--c-sky); color: var(--c-black); }
+    .band--black { background-color: var(--c-black); color: var(--c-offwhite); border-bottom: none; }
+
+    .wrap {
+      width: 100%;
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+    }
+
+    /* Generous line-height & padding so 'g', 'p', 'y' descenders never clip or collide */
+    h1, h2, h3, h4 {
+      font-family: var(--font-head);
+      font-weight: 800;
+      line-height: 1.18;
+      letter-spacing: -0.015em;
+      color: inherit;
+      overflow: visible;
+    }
+
+    .hero-headline {
+      font-size: clamp(1.9rem, 4.1vw, 4.85rem);
+      line-height: 1.12;
+      letter-spacing: -0.02em;
+      padding-bottom: 0.08em;
+      max-width: 25ch;
+    }
+
+    .section-heading {
+      font-size: clamp(2.15rem, 4.8vw, 3.6rem);
+      line-height: 1.18;
+      padding-bottom: 0.12em;
+    }
+
+    /* Handwritten Caveat word with extra bottom clearance so 'g' descender never hits squiggle */
+    .hand-word {
+      font-family: var(--font-hand);
+      font-weight: 700;
+      font-size: 1.16em;
+      display: inline-block;
+      position: relative;
+      padding: 0 0.2rem 0.18em;
+      line-height: 1.15;
+      vertical-align: baseline;
+    }
+
+    .hand-squiggle {
+      position: absolute;
+      left: 0;
+      bottom: -0.14em;
+      width: 100%;
+      height: 16px;
+      pointer-events: none;
+      overflow: visible;
+    }
+
+    /* Self-drawing lime marker highlighter behind key words */
+    .marker-lime {
+      background-image: linear-gradient(var(--c-lime), var(--c-lime));
+      background-repeat: no-repeat;
+      background-position: 0 50%;
+      background-size: 100% 100%;
+      color: var(--c-black);
+      padding: 0.08rem 0.42rem;
+      border-radius: 6px;
+      box-decoration-break: clone;
+      -webkit-box-decoration-break: clone;
+      font-weight: 700;
+    }
+
+    html.js .marker-lime {
+      background-size: 0% 100%;
+      transition: background-size 650ms cubic-bezier(0.22, 1, 0.36, 1) 120ms;
+    }
+
+    html.js .marker-lime.is-highlighted {
+      background-size: 100% 100%;
+    }
+
+    .mono-sm {
+      font-family: var(--font-mono);
+      font-size: 0.85rem; /* >=13.6px */
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      line-height: 1.5;
+    }
+
+    /* ==========================================================================
+       4. BUTTONS, FLAT TAGS, STICKERS & SETTLE-IN ANIMATIONS
+       ========================================================================== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: 1rem;
+      line-height: 1.25;
+      padding: 0.78rem 1.35rem;
+      border: var(--border-main);
+      border-radius: var(--radius-btn);
+      box-shadow: var(--shadow-md);
+      background-color: var(--c-white);
+      color: var(--c-black);
+      text-decoration: none;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: transform 150ms ease, box-shadow 150ms ease, background-color 150ms ease;
+      user-select: none;
+    }
+
+    .btn:hover {
+      transform: translate(-3px, -3px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .btn:active {
+      transform: translate(3px, 3px);
+      box-shadow: var(--shadow-press);
+    }
+
+    .btn--yellow { background-color: var(--c-yellow); color: var(--c-black); }
+    .btn--white { background-color: var(--c-white); color: var(--c-black); }
+    .btn--mint { background-color: var(--c-mint); color: var(--c-black); }
+    .btn--orange { background-color: var(--c-orange); color: var(--c-black); }
+    .btn--lavender { background-color: var(--c-lavender); color: var(--c-black); }
+
+    .btn--lg {
+      font-size: 0.96rem;
+      padding: 0.65rem 1.25rem;
+    }
+
+    .btn--sm {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 0.55rem 1.05rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* Flat tags: 2px border, NO shadow so buttons stand out */
+    .flat-tag {
+      display: inline-flex;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 0.84rem;
+      font-weight: 700;
+      line-height: 1.35;
+      padding: 0.28rem 0.72rem;
+      border: var(--border-tag);
+      border-radius: 8px;
+      background-color: var(--c-offwhite);
+      color: var(--c-black);
+      box-shadow: none;
+    }
+
+    @keyframes wiggleSticker {
+      0%, 100% { transform: translateY(var(--parallax-y, 0px)) rotate(var(--rot, -2deg)) scale(1); }
+      30% { transform: translateY(var(--parallax-y, 0px)) rotate(calc(var(--rot, -2deg) - 4deg)) scale(1.04); }
+      70% { transform: translateY(var(--parallax-y, 0px)) rotate(calc(var(--rot, -2deg) + 4deg)) scale(1.04); }
+    }
+
+    .sticker-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 0.45rem 0.9rem;
+      border: var(--border-main);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-sm);
+      background-color: var(--c-yellow);
+      color: var(--c-black);
+      transform: translateY(var(--parallax-y, 0px)) rotate(var(--rot, -3deg));
+    }
+
+    .sticker-badge:hover {
+      animation: wiggleSticker 360ms ease-in-out;
+      box-shadow: var(--shadow-md);
+    }
+
+    .round-sticker {
+      width: 132px;
+      height: 132px;
+      border-radius: 50%;
+      border: var(--border-main);
+      box-shadow: var(--shadow-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0.85rem;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      font-weight: 700;
+      line-height: 1.3;
+      color: var(--c-black);
+      transform: rotate(var(--rot, -4deg));
+    }
+
+    .round-sticker:hover {
+      animation: wiggleSticker 360ms ease-in-out;
+    }
+
+    /* Scroll Animation 2a: Stickers in Hero & About start higher + over-rotated, then settle with bounce */
+    html.js .settle-sticker {
+      opacity: 0;
+      transform: translateY(-28px) rotate(calc(var(--rot, -5deg) * 2.4)) scale(1.14);
+      transition:
+        transform 560ms cubic-bezier(0.34, 1.56, 0.64, 1) var(--settle-delay, 80ms),
+        opacity 260ms ease var(--settle-delay, 80ms);
+    }
+
+    html.js .settle-sticker.is-settled {
+      opacity: 1;
+      transform: translateY(var(--parallax-y, 0px)) rotate(var(--rot, -4deg)) scale(1);
+    }
+
+    /* Black Ribbon Label */
+    .black-ribbon {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background-color: var(--c-black);
+      color: var(--c-offwhite);
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 0.45rem 1.1rem;
+      border: var(--border-main);
+      border-radius: 8px;
+      box-shadow: 4px 4px 0 var(--c-yellow);
+    }
+
+    /* ==========================================================================
+       5. BAND 1: STICKY WHITE NAV BAR + 4PX LIME SCROLL PROGRESS BAR
+       ========================================================================== */
+    .site-nav-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background-color: var(--c-white);
+      border-bottom: var(--border-main);
+      box-shadow: 0 4px 0 #000000;
+    }
+
+    /* Scroll Animation 2c: Thick (4px) lime progress bar under sticky nav with black bottom border */
+    .scroll-progress-wrap {
+      width: 100%;
+      height: 7px;
+      background-color: var(--c-offwhite);
+      border-top: 2px solid #000000;
+      overflow: hidden;
+    }
+
+    .scroll-progress-bar {
+      width: 100%;
+      height: 100%;
+      background-color: var(--c-lime);
+      transform-origin: 0 50%;
+      transform: scaleX(0);
+      will-change: transform;
+    }
+
+    .nav-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0.5rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.85rem;
+      flex-wrap: wrap;
+    }
+
+    .nav-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      text-decoration: none;
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: 1.25rem;
+      color: var(--c-black);
+    }
+
+    .rp-square {
+      width: 38px;
+      height: 38px;
+      background-color: var(--c-yellow);
+      color: var(--c-black);
+      border: var(--border-main);
+      border-radius: 8px;
+      box-shadow: var(--shadow-sm);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .nav-list {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      list-style: none;
+      flex-wrap: wrap;
+    }
+
+    .nav-item-link {
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--c-black);
+      text-decoration: none;
+      padding: 0.45rem 0.8rem;
+      border: 2px solid transparent;
+      border-radius: 8px;
+      transition: background-color 140ms ease, border-color 140ms ease;
+    }
+
+    .nav-item-link:hover {
+      background-color: var(--c-cream);
+      border-color: #000000;
+    }
+
+    .mobile-menu-toggle {
+      display: none;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 0.5rem 0.85rem;
+      background-color: var(--c-yellow);
+      color: var(--c-black);
+      border: var(--border-main);
+      border-radius: var(--radius-btn);
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+    }
+
+    @media (max-width: 900px) {
+      .mobile-menu-toggle {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+      }
+
+      .nav-list {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        padding-top: 0.75rem;
+        margin-top: 0.5rem;
+        border-top: 2px dashed #000000;
+      }
+
+      .nav-list.is-open {
+        display: flex;
+      }
+
+      .nav-item-link {
+        display: block;
+        padding: 0.65rem 0.85rem;
+      }
+    }
+
+    /* ==========================================================================
+       6. BAND 2: HERO (CREAM #FFF4D6) — VIEWPORT-FITTED DESKTOP + RESPONSIVE MOBILE
+       ========================================================================== */
+    #hero.band {
+      padding: clamp(1rem, 2.2vh, 1.75rem) 0;
+    }
+
+    @media (min-width: 960px) {
+      #hero.band {
+        min-height: calc(100vh - var(--nav-h));
+        display: flex;
+        align-items: center;
+      }
+    }
+
+    .hero-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.75rem;
+      align-items: center;
+    }
+
+    @media (min-width: 960px) {
+      .hero-layout {
+        grid-template-columns: minmax(0, 7.5fr) minmax(0, 4.5fr);
+        gap: 2.25rem;
+        align-items: center;
+      }
+    }
+
+    .hero-eyebrow-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.55rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero-eyebrow-row .black-ribbon {
+      padding: 0.28rem 0.85rem;
+      font-size: 0.8rem;
+    }
+
+    .hero-desc {
+      font-size: clamp(0.95rem, 1.1vw, 1.04rem);
+      line-height: 1.46;
+      font-weight: 500;
+      max-width: 64ch;
+      margin-top: 0.55rem;
+    }
+
+    .hero-desc + .hero-desc {
+      margin-top: 0.4rem;
+    }
+
+    .hero-cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.65rem;
+      margin-top: 0.85rem;
+      position: relative;
+    }
+
+    @media (max-width: 540px) {
+      .hero-cta-row .btn--lg {
+        width: 100%;
+      }
+      .hero-arrow-doodle {
+        display: none;
+      }
+    }
+
+    .hero-meta-pills {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+    }
+
+    .hero-meta-pills .flat-tag {
+      font-size: 0.75rem;
+      padding: 0.2rem 0.58rem;
+    }
+
+    .hero-photo-stage {
+      position: relative;
+      width: 100%;
+      max-width: 300px;
+      margin: 0.25rem auto 0;
+      padding: 0.6rem 0.6rem 0.75rem;
+    }
+
+    @media (min-width: 960px) {
+      .hero-photo-stage {
+        max-width: clamp(340px, 35vh, 310px);
+        margin: 0 auto;
+        padding: 0.5rem 0.5rem 0.65rem;
+      }
+    }
+
+    .taped-photo-frame {
+      background-color: var(--c-white);
+      border: var(--border-main);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-lg);
+      padding: 0.7rem 0.7rem 1rem;
+      transform: rotate(-2deg);
+      position: relative;
+      transition: transform 200ms ease;
+    }
+
+    .taped-photo-frame:hover {
+      transform: rotate(0deg);
+    }
+
+    .photo-slot-box {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border: var(--border-main);
+      border-radius: 10px;
+      background-color: var(--c-sky);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .photo-slot-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+    }
+
+    .photo-slot-fallback {
+      display: none;
+      width: 100%;
+      height: 100%;
+      background-color: var(--c-sky);
+      color: var(--c-black);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    .photo-slot-box.is-fallback .photo-slot-img {
+      display: none;
+    }
+
+    .photo-slot-box.is-fallback .photo-slot-fallback {
+      display: flex;
+    }
+
+    /* Tape Strip SVG positioned cleanly with extra top padding on parent cards */
+    .tape-strip-svg {
+      position: absolute;
+      top: -16px;
+      left: 50%;
+      transform: translateX(-50%) rotate(-2.5deg);
+      width: 124px;
+      height: 32px;
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    .hero-sticker-open {
+      position: absolute;
+      bottom: -14px;
+      left: -8px;
+      z-index: 6;
+      --rot: -4deg;
+      --settle-delay: 140ms;
+      background-color: var(--c-lime);
+    }
+
+    .hero-sticker-smiley {
+      position: absolute;
+      top: -14px;
+      right: -10px;
+      z-index: 6;
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background-color: var(--c-yellow);
+      border: var(--border-main);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      --rot: 8deg;
+      --settle-delay: 240ms;
+      transform: translateY(var(--parallax-y, 0px)) rotate(var(--rot, 8deg));
+    }
+
+    /* ==========================================================================
+       7. BAND 3: MOVING TECHNOLOGY STRIP (MINT #7CE6B4)
+       ========================================================================== */
+    .word-strip-band {
+      background-color: var(--c-mint);
+      color: var(--c-black);
+      border-bottom: var(--border-main);
+      padding: 1.1rem 0;
+      overflow: hidden;
+      position: relative;
+    }
+
+    @keyframes slowStripScroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .word-strip-track {
+      display: flex;
+      width: max-content;
+      gap: 2.25rem;
+      animation: slowStripScroll 32s linear infinite;
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: 1.3rem;
+      line-height: 1.35;
+      white-space: nowrap;
+    }
+
+    .word-strip-band:hover .word-strip-track,
+    .word-strip-band:focus-within .word-strip-track {
+      animation-play-state: paused;
+    }
+
+    /* ==========================================================================
+       8. BAND 4: ABOUT (YELLOW #FFD23F)
+       ========================================================================== */
+    .about-split {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+      align-items: start;
+    }
+
+    @media (min-width: 920px) {
+      .about-split {
+        grid-template-columns: 6fr 6fr;
+      }
+    }
+
+    /* Extra top padding so the green tape strip never overlaps the heading text */
+    .sticky-note-card {
+      background-color: var(--c-offwhite);
+      border: var(--border-main);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-lg);
+      padding: 2.15rem 1.6rem 1.55rem;
+      position: relative;
+      transform: rotate(1.2deg);
+      margin-top: 0.75rem;
+    }
+
+    .round-stickers-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.1rem;
+      margin: 1.65rem 0;
+      justify-content: center;
+    }
+
+    .torn-paper-card {
+      background-color: var(--c-white);
+      border: var(--border-main);
+      border-bottom: none;
+      border-radius: var(--radius-card) var(--radius-card) 0 0;
+      box-shadow: 5px 0 0 #000000;
+      padding: 1.4rem 1.5rem 1.1rem;
+      position: relative;
+    }
+
+    .torn-edge-svg {
+      display: block;
+      width: 100%;
+      height: 20px;
+      filter: drop-shadow(5px 4px 0 #000000);
+    }
+
+    /* ==========================================================================
+       9. BAND 5: WHAT I DO (LAVENDER #B8A9FA) — STACKED CARDS THAT SPREAD ON SCROLL
+       ========================================================================== */
+    .what-cards-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.65rem;
+    }
+
+    @media (min-width: 680px) {
+      .what-cards-row {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 1060px) {
+      .what-cards-row {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .tilted-what-card {
+      border: var(--border-main);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-md);
+      padding: 1.6rem 1.35rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+      transform: rotate(var(--card-tilt, -1.5deg));
+      transition: transform 520ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 180ms ease, opacity 400ms ease;
+    }
+
+    /* Cards start overlapped/stacked and spread out as section enters view */
+    @media (min-width: 1060px) {
+      html.js .what-cards-row:not(.is-spread) .tilted-what-card:nth-child(1) {
+        transform: translateX(110px) translateY(14px) rotate(-8deg) scale(0.95);
+        z-index: 4;
+      }
+      html.js .what-cards-row:not(.is-spread) .tilted-what-card:nth-child(2) {
+        transform: translateX(36px) translateY(8px) rotate(5deg) scale(0.96);
+        z-index: 3;
+      }
+      html.js .what-cards-row:not(.is-spread) .tilted-what-card:nth-child(3) {
+        transform: translateX(-36px) translateY(12px) rotate(-5deg) scale(0.96);
+        z-index: 2;
+      }
+      html.js .what-cards-row:not(.is-spread) .tilted-what-card:nth-child(4) {
+        transform: translateX(-110px) translateY(18px) rotate(8deg) scale(0.95);
+        z-index: 1;
+      }
+    }
+
+    @media (max-width: 1059px) {
+      html.js .what-cards-row:not(.is-spread) .tilted-what-card {
+        transform: translateY(-22px) rotate(calc(var(--card-tilt, -1.5deg) * 2.2)) scale(0.96);
+        opacity: 0.25;
+      }
+    }
+
+    .tilted-what-card:hover {
+      transform: rotate(0deg) translate(-3px, -3px) !important;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .tilted-what-card-inner {
+      transform: rotate(calc(var(--card-tilt, -1.5deg) * -1));
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .tilted-what-card:hover .tilted-what-card-inner {
+      transform: rotate(0deg);
+    }
+
+    .what-icon-badge {
+      width: 48px;
+      height: 48px;
+      background-color: var(--c-white);
+      border: var(--border-main);
+      border-radius: 10px;
+      box-shadow: var(--shadow-sm);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ==========================================================================
+       10. BAND 6: SELECTED PROJECTS (CREAM #FFF4D6) — OPPOSITE-SIDE SLIDE-IN
+       ========================================================================== */
+    .work-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 2.25rem;
+    }
+
+    .work-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      align-items: center;
+      background-color: var(--c-offwhite);
+      border: var(--border-main);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-lg);
+      padding: clamp(1.35rem, 3vw, 2.25rem);
+      overflow: hidden;
+    }
+
+    @media (min-width: 900px) {
+      .work-row {
+        grid-template-columns: 6fr 6fr;
+      }
+
+      .work-row--reverse .work-shot-col {
+        order: 2;
+      }
+      .work-row--reverse .work-text-col {
+        order: 1;
+      }
+    }
+
+    /* Screenshot & text slide in from opposite sides (alternating per row) */
+    html.js .work-row .work-shot-col {
+      opacity: 0;
+      transform: translateX(-52px);
+      transition: transform 560ms cubic-bezier(0.22, 1, 0.36, 1), opacity 420ms ease;
+    }
+
+    html.js .work-row .work-text-col {
+      opacity: 0;
+      transform: translateX(52px);
+      transition: transform 560ms cubic-bezier(0.22, 1, 0.36, 1) 80ms, opacity 420ms ease 80ms;
+    }
+
+    html.js .work-row--reverse .work-text-col {
+      transform: translateX(-52px);
+    }
+
+    html.js .work-row--reverse .work-shot-col {
+      transform: translateX(52px);
+    }
+
+    html.js .work-row.is-inview .work-shot-col,
+    html.js .work-row.is-inview .work-text-col {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .browser-frame {
+      border: var(--border-main);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-md);
+      background-color: var(--c-white);
+      overflow: hidden;
+    }
+
+    .browser-bar {
+      background-color: var(--c-yellow);
+      border-bottom: var(--border-main);
+      padding: 0.5rem 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .browser-dots {
+      display: inline-flex;
+      gap: 0.4rem;
+    }
+
+    .b-dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      border: 2px solid #000000;
+      background-color: var(--c-white);
+    }
+
+    .b-dot:nth-child(1) { background-color: var(--c-orange); }
+    .b-dot:nth-child(2) { background-color: var(--c-lime); }
+    .b-dot:nth-child(3) { background-color: var(--c-mint); }
+
+    .browser-screen {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background-color: var(--c-cream);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+    }
+
+    .browser-screen img {
+      width: 100%;
+      height: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      display: block;
+    }
+
+    .shot-fallback {
+      display: none;
+      width: 100%;
+      height: 100%;
+      padding: 1.5rem;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 0.6rem;
+    }
+
+    .browser-screen.is-fallback img {
+      display: none;
+    }
+
+    .browser-screen.is-fallback .shot-fallback {
+      display: flex;
+    }
+
+    /* Self-drawing hand-drawn curly arrow between rows */
+    .curly-connector {
+      display: flex;
+      justify-content: center;
+      margin: -0.35rem 0;
+    }
+
+    .curly-draw-path {
+      stroke-dasharray: 180;
+      stroke-dashoffset: 0;
+    }
+
+    html.js .curly-connector .curly-draw-path {
+      stroke-dashoffset: 180;
+      transition: stroke-dashoffset 700ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    html.js .curly-connector.is-drawn .curly-draw-path {
+      stroke-dashoffset: 0;
+    }
+
+    /* ==========================================================================
+       11. BAND 7: EXPERIENCE (OFF-WHITE #FFFDF5, NOTEBOOK PAPER + FOCUS STICKER)
+       ========================================================================== */
+    .exp-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2.25rem;
+      align-items: start;
+    }
+
+    @media (min-width: 960px) {
+      .exp-layout {
+        grid-template-columns: 8.5fr 3.5fr;
+      }
+    }
+
+    .notebook-card {
+      background-color: var(--c-white);
+      background-image: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 31px,
+        rgba(17, 17, 17, 0.14) 31px,
+        rgba(17, 17, 17, 0.14) 32px
+      );
+      border: var(--border-main);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-lg);
+      padding: 2.25rem 1.75rem 2rem;
+      position: relative;
+    }
+
+    .spiral-rings-bar {
+      display: flex;
+      justify-content: space-around;
+      margin-top: -3.1rem;
+      margin-bottom: 1.25rem;
+      padding: 0 0.5rem;
+    }
+
+    .date-ribbon {
+      display: inline-block;
+      background-color: var(--c-yellow);
+      color: var(--c-black);
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 0.35rem 0.95rem;
+      border: var(--border-main);
+      border-radius: 8px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* Extra top padding (2.1rem) so the tape strip never overlaps the badge */
+    .seo-win-sticker {
+      background-color: var(--c-lime);
+      color: var(--c-black);
+      border: var(--border-main);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-lg);
+      padding: 2.15rem 1.5rem 1.5rem;
+      --rot: 2.5deg;
+      transform: rotate(var(--rot, 2.5deg));
+      position: relative;
+      margin-top: 0.85rem;
+    }
+
+    /* ==========================================================================
+       12. BAND 8: TECHNICAL SKILLS (SKY BLUE #74B9FF)
+       ========================================================================== */
+    .skills-columns {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (min-width: 680px) {
+      .skills-columns {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 1040px) {
+      .skills-columns {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .skill-group-box {
+      background-color: var(--c-offwhite);
+      border: var(--border-main);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-md);
+      padding: 1.55rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.15rem;
+    }
+
+    .skill-sticker-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      list-style: none;
+    }
+
+    .skill-sticker {
+      font-family: var(--font-mono);
+      font-size: 0.84rem;
+      font-weight: 700;
+      padding: 0.35rem 0.75rem;
+      border: var(--border-tag);
+      border-radius: 8px;
+      background-color: var(--c-white);
+      color: var(--c-black);
+      transition: transform 140ms ease;
+    }
+
+    .skill-sticker:nth-child(3n+1) { background-color: var(--c-cream); }
+    .skill-sticker:nth-child(3n+2) { background-color: var(--c-yellow); }
+    .skill-sticker:nth-child(4n) { background-color: var(--c-mint); }
+
+    .skill-sticker:hover {
+      transform: translateY(-2px) rotate(-1.5deg);
+    }
+
+    .skills-note-box {
+      margin-top: 1.85rem;
+      background-color: var(--c-offwhite);
+      border: var(--border-main);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-md);
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    /* ==========================================================================
+       13. BAND 9: CONTACT (LIME #D4FF3A) & STORY MODAL
+       ========================================================================== */
+    .contact-split {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2.25rem;
+      align-items: start;
+    }
+
+    @media (min-width: 900px) {
+      .contact-split {
+        grid-template-columns: 5fr 7fr;
+      }
+    }
+
+    .contact-form-box {
+      background-color: var(--c-offwhite);
+      border: var(--border-main);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-lg);
+      padding: clamp(1.5rem, 3.5vw, 2.35rem);
+    }
+
+    .field-group {
+      margin-bottom: 1.2rem;
+    }
+
+    .field-label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+      color: var(--c-black);
+    }
+
+    .field-input,
+    .field-textarea {
+      width: 100%;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      padding: 0.8rem 1rem;
+      background-color: var(--c-white);
+      color: var(--c-black);
+      border: var(--border-main);
+      border-radius: var(--radius-btn);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .field-textarea {
+      min-height: 130px;
+      resize: vertical;
+    }
+
+    .hp-trap {
+      position: absolute;
+      left: -9999px;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+
+    .status-msg-box {
+      display: none;
+      margin-top: 1.1rem;
+      padding: 0.95rem 1.15rem;
+      border: var(--border-main);
+      border-radius: var(--radius-btn);
+      background-color: var(--c-mint);
+      color: var(--c-black);
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      font-weight: 700;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .status-msg-box.is-error {
+      background-color: var(--c-orange);
+    }
+
+    .status-msg-box.is-visible {
+      display: block;
+    }
+
+    /* Case Study Story Modal */
+    .story-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 2500;
+      background-color: rgba(17, 17, 17, 0.78);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.25rem;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 160ms ease, visibility 160ms ease;
+    }
+
+    .story-backdrop.is-open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .story-dialog {
+      background-color: var(--c-offwhite);
+      color: var(--c-black);
+      border: var(--border-main);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-lg);
+      width: 100%;
+      max-width: 800px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: clamp(1.5rem, 3.5vw, 2.25rem);
+    }
+
+    .story-section-box {
+      background-color: var(--c-white);
+      border: var(--border-main);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-sm);
+      padding: 1.15rem;
+      margin-top: 1rem;
+    }
+
+    /* Toast */
+    .toast-popup {
+      position: fixed;
+      bottom: 1.25rem;
+      right: 1.25rem;
+      z-index: 2600;
+      background-color: var(--c-yellow);
+      color: var(--c-black);
+      border: var(--border-main);
+      border-radius: var(--radius-btn);
+      box-shadow: var(--shadow-md);
+      padding: 0.85rem 1.2rem;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 700;
+      transform: translateY(150%);
+      transition: transform 160ms ease;
+    }
+
+    .toast-popup.is-visible {
+      transform: translateY(0);
+    }
+
+    /* ==========================================================================
+       14. PREFERS-REDUCED-MOTION OVERRIDES (All effects off, final state shown)
+       ========================================================================== */
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+
+      .word-strip-track {
+        animation: none !important;
+        flex-wrap: wrap;
+        width: 100%;
+        justify-content: center;
+      }
+
+      .settle-sticker,
+      .work-row .work-shot-col,
+      .work-row .work-text-col {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+
+      .curly-draw-path {
+        stroke-dashoffset: 0 !important;
+      }
+
+      .marker-lime {
+        background-size: 100% 100% !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- ==========================================================================
+       1. NAV: Sticky white bar + 4px lime scroll progress bar underneath
+       ========================================================================== -->
+  <header class="site-nav-header">
+    <nav class="nav-inner" aria-label="Main Navigation">
+      <a href="#hero" class="nav-brand">
+        <span class="rp-square" aria-hidden="true">RP</span>
+        <span>ROHIT PANT</span>
+      </a>
+
+      <button
+        type="button"
+        class="mobile-menu-toggle"
+        id="mobileMenuBtn"
+        aria-expanded="false"
+        aria-controls="navLinksList"
+        aria-label="Toggle navigation menu"
+      >
+        <span>MENU</span>
+      </button>
+
+      <ul class="nav-list" id="navLinksList">
+        <li><a href="#hero" class="nav-item-link">Home</a></li>
+        <li><a href="#about" class="nav-item-link">About</a></li>
+        <li><a href="#work" class="nav-item-link">Projects</a></li>
+        <li><a href="#experience" class="nav-item-link">Experience</a></li>
+        <li><a href="#skills" class="nav-item-link">Skills</a></li>
+        <li><a href="#contact" class="nav-item-link">Contact</a></li>
+        <li><a href="https://github.com/Rohit30418" target="_blank" rel="noopener noreferrer" class="nav-item-link">GitHub ↗</a></li>
+      </ul>
+
+      <div style="display: flex; align-items: center; gap: 0.65rem;">
+        <a href="#contact" class="btn btn--yellow btn--sm">Contact Me</a>
+      </div>
+    </nav>
+
+    <!-- 4px Lime Scroll Progress Bar with Black Border -->
+    <div class="scroll-progress-wrap" aria-hidden="true">
+      <div class="scroll-progress-bar" id="scrollProgressBar"></div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <!-- ========================================================================
+         2. HERO SECTION (CREAM #FFF4D6)
+         ======================================================================== -->
+    <section id="hero" class="band band--cream">
+      <div class="wrap">
+        <div class="hero-layout">
+          <!-- Left Column -->
+          <div>
+            <div class="hero-eyebrow-row">
+              <span class="black-ribbon">ROHIT PANT</span>
+              <span class="flat-tag" style="background-color: var(--c-yellow);">Frontend Developer | UI Developer</span>
+            </div>
+
+            <h1 class="hero-headline">
+              Building responsive interfaces. Making the web work
+              <span class="hand-word">
+                better.
+                <!-- Doodle #1: Squiggle Underline SVG with descender clearance -->
+                <svg class="hand-squiggle" viewBox="0 0 240 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M4 14C36 4 68 20 102 9C136 -1 168 19 202 8C216 4 228 11 236 9" stroke="#FFD23F" stroke-width="8" stroke-linecap="round"/>
+                  <path d="M4 14C36 4 68 20 102 9C136 -1 168 19 202 8C216 4 228 11 236 9" stroke="#000000" stroke-width="3.5" stroke-linecap="round"/>
+                </svg>
+              </span>
+            </h1>
+
+            <p class="hero-desc">
+              I’m a Frontend Developer with <span class="marker-lime">4 years of professional experience</span> building responsive websites, interactive interfaces, client portals, and dashboards using HTML, CSS, JavaScript, Bootstrap, jQuery, and ASP.NET Web Forms.
+            </p>
+
+            <p class="hero-desc">
+              Alongside my professional work, I build projects with <span class="marker-lime">React and TypeScript</span> to strengthen my skills and create modern web experiences.
+            </p>
+
+            <div class="hero-cta-row">
+              <a href="#work" class="btn btn--yellow btn--lg">View My Work</a>
+              <a
+                href="https://rohitpant.in/assets/Rohit-Pant-Resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn btn--white btn--lg"
+              >
+                Download Resume
+              </a>
+              <a href="#contact" class="btn btn--mint btn--lg">Contact Me</a>
+
+              <!-- Doodle #2: Hand-drawn curly arrow pointing to the buttons -->
+              <svg class="hero-arrow-doodle" width="60" height="34" viewBox="0 0 78 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="margin-left: 0.1rem;">
+                <path d="M74 28C54 40 32 36 28 22C25 12 39 8 42 18C45 28 24 34 6 18M6 18L18 16M6 18L11 30" stroke="#000000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+
+            <div class="hero-meta-pills" aria-label="Availability and Location">
+              <span class="flat-tag" style="background-color: var(--c-lime);">
+                ★ Availability: Open to Frontend Developer and React Developer opportunities
+              </span>
+              <span class="flat-tag" style="background-color: var(--c-offwhite);">
+                📍 Location: India
+              </span>
+            </div>
+          </div>
+
+          <!-- Right Column: Taped, slightly tilted photo frame + 2 settle/parallax stickers -->
+          <div class="hero-photo-stage">
+            <div class="taped-photo-frame">
+              <!-- Doodle #5: Tape Strip SVG -->
+              <svg class="tape-strip-svg" viewBox="0 0 130 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M6 4L124 2L120 32L2 34L6 4Z" fill="#FFD23F" fill-opacity="0.92" stroke="#000000" stroke-width="2.5"/>
+              </svg>
+
+              <!-- Doodle #4: Smiley Sticker SVG (settles in + subtle scroll parallax) -->
+              <div class="hero-sticker-smiley settle-sticker" data-parallax-speed="-0.04" aria-hidden="true">
+                <svg width="42" height="42" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="15" cy="16" r="3.5" fill="#000000"/>
+                  <circle cx="29" cy="16" r="3.5" fill="#000000"/>
+                  <path d="M12 26C15 33 29 33 32 26" stroke="#000000" stroke-width="3.5" stroke-linecap="round"/>
+                </svg>
+              </div>
+
+              <div class="photo-slot-box" id="heroPhotoBox">
+                <img
+                  src="https://rohitpant.in/assets/rohit-hero.webp"
+                  alt="Portrait of Rohit Pant, Frontend Developer and UI Developer"
+                  class="photo-slot-img"
+                  width="380"
+                  height="380"
+                  data-fallback-target="heroPhotoBox"
+                />
+                <div class="photo-slot-fallback" aria-hidden="true">
+                  <div style="width:84px; height:84px; background:#FFD23F; border:3px solid #000; border-radius:14px; box-shadow:4px 4px 0 #000; display:flex; align-items:center; justify-content:center; font-family:var(--font-head); font-size:2.3rem; font-weight:800;">
+                    RP
+                  </div>
+                  <span class="mono-sm" style="background:#FFFDF5; padding:0.2rem 0.6rem; border:2px solid #000; border-radius:6px;">
+                    Rohit Pant
+                  </span>
+                </div>
+              </div>
+
+              <!-- Non-redundant sticker badge on portrait -->
+              <span class="sticker-badge hero-sticker-open settle-sticker" data-parallax-speed="0.035">★ 4 Yrs UI Experience</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         3. MOVING TECHNOLOGY STRIP (MINT #7CE6B4)
+         ======================================================================== -->
+    <div class="word-strip-band" aria-label="Moving Technology Strip">
+      <div class="word-strip-track">
+        <span>HTML5 ✺ CSS3 ✺ JavaScript ✺ React ✺ TypeScript ✺ Responsive UI ✺ REST API Integration ✺ Bootstrap ✺ Tailwind CSS ✺ Web Accessibility ✺ Performance Optimization ✺</span>
+        <span aria-hidden="true">HTML5 ✺ CSS3 ✺ JavaScript ✺ React ✺ TypeScript ✺ Responsive UI ✺ REST API Integration ✺ Bootstrap ✺ Tailwind CSS ✺ Web Accessibility ✺ Performance Optimization ✺</span>
+      </div>
+    </div>
+
+    <!-- ========================================================================
+         4. ABOUT ME (YELLOW #FFD23F)
+         ======================================================================== -->
+    <section id="about" class="band band--yellow" aria-labelledby="about-heading">
+      <div class="wrap">
+        <div class="about-split">
+          <!-- Left Column -->
+          <div>
+            <span class="black-ribbon">About Me</span>
+            <h2 id="about-heading" class="section-heading" style="margin-top: 1rem; margin-bottom: 1.35rem;">
+              I turn designs into interfaces people can
+              <span class="hand-word">
+                use.
+                <svg class="hand-squiggle" viewBox="0 0 180 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M4 12C45 3 92 16 176 6" stroke="#000000" stroke-width="3.5" stroke-linecap="round"/>
+                </svg>
+              </span>
+            </h2>
+
+            <div style="display: flex; flex-direction: column; gap: 1.05rem; background-color: var(--c-offwhite); border: var(--border-main); border-radius: var(--radius-card); box-shadow: var(--shadow-md); padding: 1.6rem;">
+              <p>
+                I’m a Frontend Developer with <span class="marker-lime">4 years of professional experience</span> translating designs and requirements into responsive, user-friendly web interfaces.
+              </p>
+              <p>
+                In my professional role, I work with HTML, CSS, JavaScript, Bootstrap, jQuery, and ASP.NET Web Forms to build and maintain websites, registration platforms, and administrative dashboards. I also work with APIs, troubleshoot UI issues, and coordinate with clients and internal teams to deliver practical solutions.
+              </p>
+              <p>
+                Outside my professional work, I build projects using <span class="marker-lime">React and TypeScript</span> to improve my component-based development skills and explore modern frontend practices.
+              </p>
+              <p>
+                I enjoy solving UI problems, improving layouts, writing maintainable code, and creating interfaces that work smoothly across different screen sizes.
+              </p>
+            </div>
+          </div>
+
+          <!-- Right Column: Sticky-note approach, 3 settling round stickers, and torn-paper Education card -->
+          <div>
+            <div class="sticky-note-card">
+              <svg class="tape-strip-svg" viewBox="0 0 130 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M6 4L124 2L120 32L2 34L6 4Z" fill="#7CE6B4" fill-opacity="0.92" stroke="#000000" stroke-width="2.5"/>
+              </svg>
+              <span class="mono-sm" style="background-color: var(--c-yellow); padding: 0.15rem 0.55rem; border: 2px solid #000; border-radius: 6px;">
+                MY APPROACH
+              </span>
+              <p style="font-family: var(--font-head); font-weight: 800; font-size: 1.45rem; line-height: 1.3; margin-top: 0.65rem;">
+                “Build it clearly. Make it useful. Keep improving.”
+              </p>
+            </div>
+
+            <!-- Three Round Stickers that settle into place on scroll -->
+            <div class="round-stickers-row" aria-label="Quick Facts">
+              <div class="round-sticker settle-sticker" style="background-color: var(--c-mint); --rot: -5deg; --settle-delay: 60ms;">
+                4 Years<br/>Professional UI Dev
+              </div>
+              <div class="round-sticker settle-sticker" style="background-color: var(--c-lavender); --rot: 4deg; --settle-delay: 160ms;">
+                React &amp; TS<br/>Personal Projects
+              </div>
+              <div class="round-sticker settle-sticker" style="background-color: var(--c-orange); --rot: -3deg; --settle-delay: 260ms;">
+                India · Open to Frontend &amp; React Roles
+              </div>
+            </div>
+
+            <!-- Education in a small torn-paper card -->
+            <div>
+              <div class="torn-paper-card">
+                <span class="mono-sm" style="background-color: var(--c-lime); padding: 0.15rem 0.55rem; border: 2px solid #000; border-radius: 6px;">
+                  EDUCATION
+                </span>
+                <h3 style="font-size: 1.2rem; margin-top: 0.65rem; line-height: 1.3;">
+                  B.Tech in Electronics and Communication Engineering
+                </h3>
+                <p class="mono-sm" style="margin-top: 0.25rem;">
+                  Graphic Era Hill University | 2020
+                </p>
+              </div>
+              <!-- Doodle #6: Torn-Paper Edge SVG -->
+              <svg class="torn-edge-svg" viewBox="0 0 600 20" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M0 0 L0 8 L20 18 L40 6 L60 18 L80 6 L100 18 L120 6 L140 18 L160 6 L180 18 L200 6 L220 18 L240 6 L260 18 L280 6 L300 18 L320 6 L340 18 L360 6 L380 18 L400 6 L420 18 L440 6 L460 18 L480 6 L500 18 L520 6 L540 18 L560 6 L580 18 L600 8 L600 0 Z" fill="#FFFFFF" stroke="#000000" stroke-width="3" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         5. WHAT I DO (LAVENDER #B8A9FA) — CARDS STACK & SPREAD AS YOU SCROLL
+         ======================================================================== -->
+    <section id="what-i-do" class="band band--lavender" aria-labelledby="what-heading">
+      <div class="wrap">
+        <div style="margin-bottom: 2.5rem;">
+          <span class="black-ribbon">What I Do</span>
+          <h2 id="what-heading" class="section-heading" style="margin-top: 1rem;">
+            What I
+            <span class="hand-word">Do</span>
+          </h2>
+        </div>
+
+        <div class="what-cards-row" id="whatCardsRow">
+          <!-- Card 1: 01 — UI Development -->
+          <article class="tilted-what-card" style="background-color: var(--c-cream); --card-tilt: -1.5deg;">
+            <div class="tilted-what-card-inner">
+              <div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem;">
+                <span class="what-icon-badge" aria-hidden="true">
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="18" height="18" rx="3"/>
+                    <path d="M3 9h18M9 21V9"/>
+                  </svg>
+                </span>
+                <span class="flat-tag" style="background-color: var(--c-white);">01</span>
+              </div>
+              <h3 style="font-size: 1.3rem;">01 — UI Development</h3>
+              <p>
+                Transform designs and requirements into functional, accessible, and maintainable web interfaces using HTML, CSS, and JavaScript.
+              </p>
+            </div>
+          </article>
+
+          <!-- Card 2: 02 — Responsive Web Design -->
+          <article class="tilted-what-card" style="background-color: var(--c-yellow); --card-tilt: 1.4deg;">
+            <div class="tilted-what-card-inner">
+              <div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem;">
+                <span class="what-icon-badge" aria-hidden="true">
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="5" y="2" width="14" height="20" rx="2"/>
+                    <path d="M12 18h.01"/>
+                  </svg>
+                </span>
+                <span class="flat-tag" style="background-color: var(--c-white);">02</span>
+              </div>
+              <h3 style="font-size: 1.3rem;">02 — Responsive Web Design</h3>
+              <p>
+                Build layouts that adapt to desktop, tablet, and mobile screens while maintaining usability and visual consistency.
+              </p>
+            </div>
+          </article>
+
+          <!-- Card 3: 03 — Interactive Features -->
+          <article class="tilted-what-card" style="background-color: var(--c-mint); --card-tilt: -1.2deg;">
+            <div class="tilted-what-card-inner">
+              <div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem;">
+                <span class="what-icon-badge" aria-hidden="true">
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                  </svg>
+                </span>
+                <span class="flat-tag" style="background-color: var(--c-white);">03</span>
+              </div>
+              <h3 style="font-size: 1.3rem;">03 — Interactive Features</h3>
+              <p>
+                Develop forms, navigation, search, filtering, pagination, and other interactive functionality using JavaScript and API integrations.
+              </p>
+            </div>
+          </article>
+
+          <!-- Card 4: 04 — Debugging & Optimization -->
+          <article class="tilted-what-card" style="background-color: var(--c-orange); --card-tilt: 1.5deg;">
+            <div class="tilted-what-card-inner">
+              <div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem;">
+                <span class="what-icon-badge" aria-hidden="true">
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                  </svg>
+                </span>
+                <span class="flat-tag" style="background-color: var(--c-white);">04</span>
+              </div>
+              <h3 style="font-size: 1.3rem;">04 — Debugging &amp; Optimization</h3>
+              <p>
+                Identify and fix UI issues, improve cross-browser consistency, and refine frontend performance and usability.
+              </p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         6. SELECTED PROJECTS (CREAM #FFF4D6) — NO VIEW CODE BUTTON ON CARDS
+         ======================================================================== -->
+    <section id="work" class="band band--cream" aria-labelledby="work-heading">
+      <div class="wrap">
+        <div style="margin-bottom: 2.5rem;">
+          <span class="black-ribbon">Selected Work</span>
+          <h2 id="work-heading" class="section-heading" style="margin-top: 1rem;">
+            Selected
+            <span class="hand-word">
+              Work
+              <svg class="hand-squiggle" viewBox="0 0 140 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M4 12C38 4 86 16 136 6" stroke="#FFD23F" stroke-width="7" stroke-linecap="round"/>
+                <path d="M4 12C38 4 86 16 136 6" stroke="#000000" stroke-width="3" stroke-linecap="round"/>
+              </svg>
+            </span>
+            <!-- Doodle #3: Sparkle SVG -->
+            <svg width="34" height="34" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline-block; vertical-align:top; margin-left:0.25rem;" aria-hidden="true">
+              <path d="M24 4L28.5 18.5L43 24L28.5 29.5L24 44L19.5 29.5L5 24L19.5 18.5L24 4Z" fill="#FFD23F" stroke="#000000" stroke-width="3" stroke-linejoin="round"/>
+            </svg>
+          </h2>
+          <p style="margin-top: 0.75rem; max-width: 68ch;">
+            A selection of personal projects where I explore modern frontend technologies, solve practical problems, and build interactive web experiences. These projects complement my professional experience in UI development.
+          </p>
+        </div>
+
+        <div class="work-stack">
+          <!-- ==================================================================
+               ROW 1: EVENTHIVE (Screenshot Left, Text Right)
+               ================================================================== -->
+          <article class="work-row">
+            <div class="work-shot-col">
+              <div class="browser-frame">
+                <div class="browser-bar" aria-hidden="true">
+                  <div class="browser-dots">
+                    <span class="b-dot"></span>
+                    <span class="b-dot"></span>
+                    <span class="b-dot"></span>
+                  </div>
+                  <span class="mono-sm">eventhive.rohitpant.in</span>
+                </div>
+                <div class="browser-screen" id="shotEventhive">
+                  <img
+                    src="https://rohitpant.in/assets/project-shots/eventhive.jpg"
+                    alt="EventHive Event Management Platform with organizer tools and administrative views"
+                    loading="lazy"
+                    width="1600"
+                    height="900"
+                    data-fallback-target="shotEventhive"
+                  />
+                  <div class="shot-fallback" style="background-color: var(--c-yellow);" aria-hidden="true">
+                    <span class="mono-sm" style="background:#FFF; padding:0.3rem 0.75rem; border:3px solid #000; border-radius:8px; font-size:1.4rem;">EventHive</span>
+                    <span class="mono-sm">Event Management Platform</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="work-text-col" style="display:flex; flex-direction:column; gap:1rem;">
+              <div style="display:flex; align-items:center; gap:0.6rem; flex-wrap:wrap;">
+                <span class="flat-tag" style="background-color: var(--c-yellow);">01 // Event Management Platform</span>
+              </div>
+
+              <h3 style="font-size: clamp(1.65rem, 3vw, 2.25rem);">EventHive</h3>
+
+              <p>
+                A platform for discovering events and managing event-related activities, with organizer tools and administrative views.
+              </p>
+
+              <div style="display:flex; flex-wrap:wrap; gap:0.45rem;" aria-label="EventHive technologies">
+                <span class="flat-tag">React</span>
+                <span class="flat-tag">TypeScript</span>
+                <span class="flat-tag">Firebase</span>
+              </div>
+
+              <div style="display:flex; flex-wrap:wrap; gap:0.85rem; margin-top:0.5rem;">
+                <a
+                  href="https://eventhive.rohitpant.in/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn btn--yellow btn--sm"
+                >
+                  Live Demo ↗
+                </a>
+                <button
+                  type="button"
+                  class="btn btn--white btn--sm"
+                  data-story-id="eventhive"
+                >
+                  Read Project Story →
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Self-drawing curly arrow connecting Row 1 to Row 2 -->
+          <div class="curly-connector" aria-hidden="true">
+            <svg width="64" height="58" viewBox="0 0 64 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path class="curly-draw-path" d="M18 4C46 12 48 32 26 30C10 28 16 46 44 52M44 52L34 44M44 52L32 56" stroke="#000000" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+
+          <!-- ==================================================================
+               ROW 2: VAANI (Text Left, Screenshot Right)
+               ================================================================== -->
+          <article class="work-row work-row--reverse">
+            <div class="work-shot-col">
+              <div class="browser-frame">
+                <div class="browser-bar" style="background-color: var(--c-mint);" aria-hidden="true">
+                  <div class="browser-dots">
+                    <span class="b-dot"></span>
+                    <span class="b-dot"></span>
+                    <span class="b-dot"></span>
+                  </div>
+                  <span class="mono-sm">vaani.rohitpant.in</span>
+                </div>
+                <div class="browser-screen" id="shotVaani">
+                  <img
+                    src="https://rohitpant.in/assets/project-shots/vaani.jpg"
+                    alt="Vaani Real-Time Communication App with audio and video interactions"
+                    loading="lazy"
+                    width="1600"
+                    height="900"
+                    data-fallback-target="shotVaani"
+                  />
+                  <div class="shot-fallback" style="background-color: var(--c-mint);" aria-hidden="true">
+                    <span class="mono-sm" style="background:#FFF; padding:0.3rem 0.75rem; border:3px solid #000; border-radius:8px; font-size:1.4rem;">Vaani</span>
+                    <span class="mono-sm">Real-Time Communication App</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="work-text-col" style="display:flex; flex-direction:column; gap:1rem;">
+              <div style="display:flex; align-items:center; gap:0.6rem; flex-wrap:wrap;">
+                <span class="flat-tag" style="background-color: var(--c-mint);">02 // Real-Time Communication App</span>
+              </div>
+
+              <h3 style="font-size: clamp(1.65rem, 3vw, 2.25rem);">Vaani</h3>
+
+              <p>
+                A communication application exploring real-time audio and video interactions, peer connections, and Firebase-powered functionality.
+              </p>
+
+              <div style="display:flex; flex-wrap:wrap; gap:0.45rem;" aria-label="Vaani technologies">
+                <span class="flat-tag">React</span>
+                <span class="flat-tag">WebRTC</span>
+                <span class="flat-tag">PeerJS</span>
+                <span class="flat-tag">Firebase</span>
+              </div>
+
+              <div style="display:flex; flex-wrap:wrap; gap:0.85rem; margin-top:0.5rem;">
+                <a
+                  href="https://vaani.rohitpant.in/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn btn--yellow btn--sm"
+                >
+                  Live Demo ↗
+                </a>
+                <button
+                  type="button"
+                  class="btn btn--white btn--sm"
+                  data-story-id="vaani"
+                >
+                  Read Project Story →
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Self-drawing curly arrow connecting Row 2 to Row 3 -->
+          <div class="curly-connector" aria-hidden="true">
+            <svg width="64" height="58" viewBox="0 0 64 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path class="curly-draw-path" d="M46 4C18 12 16 32 38 30C54 28 48 46 20 52M20 52L30 44M20 52L32 56" stroke="#000000" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+
+          <!-- ==================================================================
+               ROW 3: KHAREEDO (Clean Illustration Left, Text Right)
+               ================================================================== -->
+          <article class="work-row">
+            <div class="work-shot-col">
+              <div class="browser-frame">
+                <div class="browser-bar" style="background-color: var(--c-orange);" aria-hidden="true">
+                  <div class="browser-dots">
+                    <span class="b-dot"></span>
+                    <span class="b-dot"></span>
+                    <span class="b-dot"></span>
+                  </div>
+                  <span class="mono-sm">khareedo.rohitpant.in</span>
+                </div>
+                <div class="browser-screen">
+                  <img
+                    src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 450'%3E%3Crect width='800' height='450' fill='%23FFF4D6'/%3E%3Crect x='28' y='28' width='200' height='394' rx='12' fill='%23FFFFFF' stroke='%23000000' stroke-width='4'/%3E%3Crect x='48' y='52' width='140' height='28' rx='6' fill='%23FFD23F' stroke='%23000000' stroke-width='3'/%3E%3Ctext x='60' y='71' font-family='monospace' font-weight='bold' font-size='14' fill='%23111111'%3EFILTERS &amp; SORT%3C/text%3E%3Crect x='48' y='100' width='160' height='20' rx='4' fill='%237CE6B4' stroke='%23000000' stroke-width='2.5'/%3E%3Crect x='48' y='134' width='130' height='18' rx='4' fill='%23FFF4D6' stroke='%23000000' stroke-width='2'/%3E%3Crect x='48' y='166' width='148' height='18' rx='4' fill='%23FFF4D6' stroke='%23000000' stroke-width='2'/%3E%3Crect x='252' y='28' width='316' height='394' rx='12' fill='%23FFFFFF' stroke='%23000000' stroke-width='4'/%3E%3Crect x='276' y='54' width='126' height='150' rx='10' fill='%23B8A9FA' stroke='%23000000' stroke-width='3'/%3E%3Crect x='418' y='54' width='126' height='150' rx='10' fill='%2374B9FF' stroke='%23000000' stroke-width='3'/%3E%3Crect x='276' y='224' width='126' height='150' rx='10' fill='%23FFD23F' stroke='%23000000' stroke-width='3'/%3E%3Crect x='418' y='224' width='126' height='150' rx='10' fill='%237CE6B4' stroke='%23000000' stroke-width='3'/%3E%3Crect x='592' y='28' width='180' height='394' rx='12' fill='%23D4FF3A' stroke='%23000000' stroke-width='4'/%3E%3Ctext x='614' y='66' font-family='monospace' font-weight='bold' font-size='15' fill='%23111111'%3ECART &amp; ORDERS%3C/text%3E%3Crect x='614' y='88' width='136' height='54' rx='8' fill='%23FFFFFF' stroke='%23000000' stroke-width='3'/%3E%3Ctext x='626' y='112' font-family='monospace' font-weight='bold' font-size='12' fill='%23111111'%3EGuest: Local%3C/text%3E%3Ctext x='626' y='130' font-family='monospace' font-weight='bold' font-size='12' fill='%23111111'%3EUser: Firestore%3C/text%3E%3Crect x='614' y='342' width='136' height='48' rx='8' fill='%23FFA552' stroke='%23000000' stroke-width='3'/%3E%3Ctext x='626' y='371' font-family='monospace' font-weight='bold' font-size='13' fill='%23111111'%3EDEMO CHECKOUT%3C/text%3E%3C/svg%3E"
+                    alt="Illustration of Khareedo E-commerce Web Application showing product discovery, filtering, and cart interactions"
+                    loading="lazy"
+                    width="1600"
+                    height="900"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="work-text-col" style="display:flex; flex-direction:column; gap:1rem;">
+              <div style="display:flex; align-items:center; gap:0.6rem; flex-wrap:wrap;">
+                <span class="flat-tag" style="background-color: var(--c-orange);">03 // E-commerce Web Application</span>
+              </div>
+
+              <h3 style="font-size: clamp(1.65rem, 3vw, 2.25rem);">Khareedo</h3>
+
+              <p>
+                An online shopping experience featuring product discovery, product filtering, and cart-related interactions.
+              </p>
+
+              <div style="display:flex; flex-wrap:wrap; gap:0.45rem;" aria-label="Khareedo technologies">
+                <span class="flat-tag">React</span>
+                <span class="flat-tag">Vite</span>
+                <span class="flat-tag">Tailwind CSS</span>
+                <span class="flat-tag">Firebase</span>
+                <span class="flat-tag">DummyJSON</span>
+              </div>
+
+              <div style="display:flex; flex-wrap:wrap; gap:0.85rem; margin-top:0.5rem;">
+                <a
+                  href="https://khareedo.rohitpant.in/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn btn--yellow btn--sm"
+                >
+                  Live Demo ↗
+                </a>
+                <button
+                  type="button"
+                  class="btn btn--white btn--sm"
+                  data-story-id="khareedo"
+                >
+                  Read Project Story →
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Self-drawing curly arrow connecting Row 3 to Row 4 -->
+          <div class="curly-connector" aria-hidden="true">
+            <svg width="64" height="58" viewBox="0 0 64 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path class="curly-draw-path" d="M18 4C46 12 48 32 26 30C10 28 16 46 44 52M44 52L34 44M44 52L32 56" stroke="#000000" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+
+          <!-- ==================================================================
+               ROW 4: ARGUS (Text Left, Screenshot Right — NO View Code button)
+               ================================================================== -->
+          <article class="work-row work-row--reverse">
+            <div class="work-shot-col">
+              <div class="browser-frame">
+                <div class="browser-bar" style="background-color: var(--c-sky);" aria-hidden="true">
+                  <div class="browser-dots">
+                    <span class="b-dot"></span>
+                    <span class="b-dot"></span>
+                    <span class="b-dot"></span>
+                  </div>
+                  <span class="mono-sm">argus-pro-a2px.onrender.com</span>
+                </div>
+                <div class="browser-screen" id="shotArgus">
+                  <img
+                    src="https://rohitpant.in/assets/project-shots/argus.jpg"
+                    alt="Argus Browser QA and Testing Tool presenting automated website checks"
+                    loading="lazy"
+                    width="1600"
+                    height="900"
+                    data-fallback-target="shotArgus"
+                  />
+                  <div class="shot-fallback" style="background-color: var(--c-sky);" aria-hidden="true">
+                    <span class="mono-sm" style="background:#FFF; padding:0.3rem 0.75rem; border:3px solid #000; border-radius:8px; font-size:1.4rem;">Argus</span>
+                    <span class="mono-sm">Browser QA &amp; Testing Tool</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="work-text-col" style="display:flex; flex-direction:column; gap:1rem;">
+              <div style="display:flex; align-items:center; gap:0.6rem; flex-wrap:wrap;">
+                <span class="flat-tag" style="background-color: var(--c-sky);">04 // Browser QA &amp; Testing Tool</span>
+              </div>
+
+              <h3 style="font-size: clamp(1.65rem, 3vw, 2.25rem);">Argus</h3>
+
+              <p>
+                A browser-testing project designed to explore automated website checks and present testing results through a developer-focused workflow.
+              </p>
+
+              <div style="display:flex; flex-wrap:wrap; gap:0.45rem;" aria-label="Argus technologies">
+                <span class="flat-tag">JavaScript</span>
+                <span class="flat-tag">Node.js</span>
+                <span class="flat-tag">Express</span>
+                <span class="flat-tag">Playwright</span>
+              </div>
+
+              <div style="display:flex; flex-wrap:wrap; gap:0.85rem; margin-top:0.5rem;">
+                <a
+                  href="https://argus-pro-a2px.onrender.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn btn--yellow btn--sm"
+                >
+                  Live Demo ↗
+                </a>
+                <button
+                  type="button"
+                  class="btn btn--white btn--sm"
+                  data-story-id="argus"
+                >
+                  Read Project Story →
+                </button>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         7. PROFESSIONAL EXPERIENCE (OFF-WHITE #FFFDF5, NOTEBOOK PAPER)
+         ======================================================================== -->
+    <section id="experience" class="band band--offwhite" aria-labelledby="exp-heading">
+      <div class="wrap">
+        <div style="margin-bottom: 2.75rem;">
+          <span class="black-ribbon">Professional Experience</span>
+          <h2 id="exp-heading" class="section-heading" style="margin-top: 1rem;">
+            Professional
+            <span class="hand-word">Experience</span>
+          </h2>
+        </div>
+
+        <div class="exp-layout">
+          <!-- Notebook Card with Spiral Rings and Ruled Lines -->
+          <article class="notebook-card">
+            <div class="spiral-rings-bar" aria-hidden="true">
+              <svg width="26" height="36" viewBox="0 0 26 36" fill="none"><rect x="6" y="2" width="14" height="32" rx="7" fill="#FFF4D6" stroke="#000" stroke-width="3"/><circle cx="13" cy="28" r="5" fill="#111"/></svg>
+              <svg width="26" height="36" viewBox="0 0 26 36" fill="none"><rect x="6" y="2" width="14" height="32" rx="7" fill="#FFF4D6" stroke="#000" stroke-width="3"/><circle cx="13" cy="28" r="5" fill="#111"/></svg>
+              <svg width="26" height="36" viewBox="0 0 26 36" fill="none"><rect x="6" y="2" width="14" height="32" rx="7" fill="#FFF4D6" stroke="#000" stroke-width="3"/><circle cx="13" cy="28" r="5" fill="#111"/></svg>
+              <svg width="26" height="36" viewBox="0 0 26 36" fill="none"><rect x="6" y="2" width="14" height="32" rx="7" fill="#FFF4D6" stroke="#000" stroke-width="3"/><circle cx="13" cy="28" r="5" fill="#111"/></svg>
+              <svg width="26" height="36" viewBox="0 0 26 36" fill="none"><rect x="6" y="2" width="14" height="32" rx="7" fill="#FFF4D6" stroke="#000" stroke-width="3"/><circle cx="13" cy="28" r="5" fill="#111"/></svg>
+              <svg width="26" height="36" viewBox="0 0 26 36" fill="none"><rect x="6" y="2" width="14" height="32" rx="7" fill="#FFF4D6" stroke="#000" stroke-width="3"/><circle cx="13" cy="28" r="5" fill="#111"/></svg>
+            </div>
+
+            <div style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1rem; margin-bottom:1.35rem;">
+              <div>
+                <h3 style="font-size: 1.6rem;">Frontend Developer</h3>
+                <p class="mono-sm" style="margin-top: 0.25rem;">Prometheus Solutions Pvt. Ltd.</p>
+              </div>
+              <span class="date-ribbon">August 2022 – Present</span>
+            </div>
+
+            <ul style="padding-left: 1.35rem; display:flex; flex-direction:column; gap:0.7rem;">
+              <li>Develop and maintain responsive websites, registration platforms, and administrative dashboards using HTML, CSS, JavaScript, Bootstrap, and jQuery.</li>
+              <li>Build and update web pages within ASP.NET Web Forms projects.</li>
+              <li>Convert design mockups and client requirements into functional, responsive interfaces.</li>
+              <li>Integrate frontend interfaces with REST APIs and implement features such as forms, search, filtering, and pagination.</li>
+              <li>Debug layout, styling, and browser-compatibility issues using browser developer tools.</li>
+              <li>Collaborate with clients, designers, developers, and internal teams to clarify requirements, discuss feasibility, and deliver updates.</li>
+              <li>Participate in client calls, project demonstrations, feedback discussions, and delivery coordination.</li>
+              <li>Support UI improvements and technical SEO where required.</li>
+            </ul>
+          </article>
+
+          <!-- Lime Sticker beside the notebook card for Professional Focus -->
+          <aside class="seo-win-sticker settle-sticker" id="seoStickerCard" aria-label="Professional Focus">
+            <svg class="tape-strip-svg" viewBox="0 0 130 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M6 4L124 2L120 32L2 34L6 4Z" fill="#FFD23F" fill-opacity="0.92" stroke="#000000" stroke-width="2.5"/>
+            </svg>
+            <span class="mono-sm" style="display:inline-block; background:#FFF; padding:0.2rem 0.6rem; border:2px solid #000; border-radius:6px;">
+              PROFESSIONAL FOCUS
+            </span>
+            <p style="font-family: var(--font-head); font-weight: 800; font-size: 1.45rem; line-height: 1.25; margin-top: 0.85rem;">
+              Frontend development, responsive UI implementation, troubleshooting, and client collaboration.
+            </p>
+            <p class="mono-sm" style="margin-top: 0.85rem; background:#FFFDF5; padding:0.45rem 0.65rem; border:2px solid #000; border-radius:8px;">
+              4 Years Experience · Aug 2022 – Present
+            </p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         8. TECHNICAL SKILLS (SKY BLUE #74B9FF)
+         ======================================================================== -->
+    <section id="skills" class="band band--sky" aria-labelledby="skills-heading">
+      <div class="wrap">
+        <div style="margin-bottom: 2.25rem;">
+          <span class="black-ribbon">Technical Skills</span>
+          <h2 id="skills-heading" class="section-heading" style="margin-top: 1rem;">
+            Technical
+            <span class="hand-word">Skills</span>
+          </h2>
+        </div>
+
+        <div class="skills-columns">
+          <!-- Group 1: Core Frontend -->
+          <div class="skill-group-box">
+            <div>
+              <span class="black-ribbon">Core Frontend</span>
+            </div>
+            <ul class="skill-sticker-cloud" aria-label="Core Frontend skills">
+              <li class="skill-sticker">HTML5</li>
+              <li class="skill-sticker">CSS3</li>
+              <li class="skill-sticker">JavaScript</li>
+              <li class="skill-sticker">Responsive Web Design</li>
+              <li class="skill-sticker">Bootstrap</li>
+              <li class="skill-sticker">jQuery</li>
+            </ul>
+          </div>
+
+          <!-- Group 2: React Development -->
+          <div class="skill-group-box">
+            <div>
+              <span class="black-ribbon">React Development</span>
+            </div>
+            <ul class="skill-sticker-cloud" aria-label="React Development skills">
+              <li class="skill-sticker">React</li>
+              <li class="skill-sticker">Components</li>
+              <li class="skill-sticker">Props &amp; State</li>
+              <li class="skill-sticker">Hooks</li>
+              <li class="skill-sticker">React Router</li>
+              <li class="skill-sticker">TypeScript</li>
+            </ul>
+          </div>
+
+          <!-- Group 3: APIs & Data -->
+          <div class="skill-group-box">
+            <div>
+              <span class="black-ribbon">APIs &amp; Data</span>
+            </div>
+            <ul class="skill-sticker-cloud" aria-label="APIs and Data skills">
+              <li class="skill-sticker">REST APIs</li>
+              <li class="skill-sticker">Fetch API</li>
+              <li class="skill-sticker">Axios</li>
+              <li class="skill-sticker">Firebase</li>
+            </ul>
+          </div>
+
+          <!-- Group 4: UI Engineering -->
+          <div class="skill-group-box">
+            <div>
+              <span class="black-ribbon">UI Engineering</span>
+            </div>
+            <ul class="skill-sticker-cloud" aria-label="UI Engineering skills">
+              <li class="skill-sticker">Responsive Layouts</li>
+              <li class="skill-sticker">Flexbox</li>
+              <li class="skill-sticker">CSS Grid</li>
+              <li class="skill-sticker">Semantic HTML</li>
+              <li class="skill-sticker">Cross-Browser Compatibility</li>
+              <li class="skill-sticker">Browser DevTools</li>
+              <li class="skill-sticker">UI Debugging</li>
+            </ul>
+          </div>
+
+          <!-- Group 5: Additional Technologies -->
+          <div class="skill-group-box">
+            <div>
+              <span class="black-ribbon">Additional Technologies</span>
+            </div>
+            <ul class="skill-sticker-cloud" aria-label="Additional Technologies">
+              <li class="skill-sticker">Tailwind CSS</li>
+              <li class="skill-sticker">Redux Toolkit</li>
+              <li class="skill-sticker">React Query</li>
+              <li class="skill-sticker">WebRTC</li>
+              <li class="skill-sticker">PeerJS</li>
+              <li class="skill-sticker">Playwright</li>
+              <li class="skill-sticker">Vitest</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Experience Note -->
+        <div class="skills-note-box">
+          <span class="flat-tag" style="background-color: var(--c-yellow);">Experience note</span>
+          <p style="flex: 1; min-width: 260px;">
+            HTML, CSS, JavaScript, Bootstrap, jQuery, and ASP.NET Web Forms are part of my professional background. React, TypeScript, and other modern tools are technologies I practise and apply in personal projects.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         9. CONTACT SECTION (LIME #D4FF3A)
+         ======================================================================== -->
+    <section id="contact" class="band band--lime" aria-labelledby="contact-heading">
+      <div class="wrap">
+        <div style="margin-bottom: 2.5rem;">
+          <span class="black-ribbon">Contact</span>
+          <h2 id="contact-heading" class="section-heading" style="margin-top: 1rem;">
+            Let's talk about your next
+            <span class="hand-word">
+              frontend role.
+              <svg class="hand-squiggle" viewBox="0 0 220 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M4 13C56 4 118 18 216 7" stroke="#000000" stroke-width="4" stroke-linecap="round"/>
+              </svg>
+            </span>
+          </h2>
+          <p style="font-size: 1.15rem; margin-top: 1.25rem; max-width: 62ch; font-weight: 500;">
+            I’m open to opportunities where I can contribute my UI development experience, collaborate with a strong team, and continue growing as a frontend developer.
+          </p>
+          <p style="font-size: 1.15rem; margin-top: 0.65rem; max-width: 62ch; font-weight: 500;">
+            Whether you're hiring, building a product, or interested in my work, feel free to get in touch.
+          </p>
+        </div>
+
+        <div class="contact-split">
+          <!-- Left Column: Contact Info + Email Me, LinkedIn, GitHub Buttons -->
+          <div style="display:flex; flex-direction:column; gap:1.25rem;">
+            <div style="background-color: var(--c-offwhite); border: var(--border-main); border-radius: var(--radius-card); box-shadow: var(--shadow-md); padding: 1.5rem; display:flex; flex-direction:column; gap:0.85rem;">
+              <div>
+                <span class="mono-sm">Email:</span>
+                <div style="display:flex; flex-wrap:wrap; align-items:center; gap:0.6rem; margin-top:0.2rem;">
+                  <a href="mailto:rohitpant090@gmail.com" style="font-family:var(--font-head); font-weight:800; font-size:1.15rem; text-decoration:underline;">
+                    rohitpant090@gmail.com
+                  </a>
+                  <button
+                    type="button"
+                    id="copyEmailBtn"
+                    class="flat-tag"
+                    style="background-color:var(--c-yellow); cursor:pointer;"
+                  >
+                    Copy
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <span class="mono-sm">Location:</span>
+                <p style="font-weight: 600;">India</p>
+              </div>
+
+              <div>
+                <span class="mono-sm">Interested in:</span>
+                <div style="display:flex; flex-wrap:wrap; gap:0.45rem; margin-top:0.35rem;">
+                  <span class="flat-tag" style="background-color:var(--c-yellow);">Frontend Developer</span>
+                  <span class="flat-tag" style="background-color:var(--c-mint);">UI Developer</span>
+                  <span class="flat-tag" style="background-color:var(--c-lavender);">React Developer</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Action Buttons: Email Me, LinkedIn, GitHub -->
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(132px, 1fr)); gap:0.75rem;">
+              <a
+                href="mailto:rohitpant090@gmail.com"
+                class="btn btn--yellow"
+                style="padding: 0.75rem 1rem;"
+              >
+                <span>Email Me</span>
+                <span aria-hidden="true">✉</span>
+              </a>
+              <a
+                href="https://www.linkedin.com/in/rohitpantdev/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn btn--white"
+                style="padding: 0.75rem 1rem;"
+              >
+                <span>LinkedIn</span>
+                <span aria-hidden="true">↗</span>
+              </a>
+              <a
+                href="https://github.com/Rohit30418"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn btn--white"
+                style="padding: 0.75rem 1rem;"
+              >
+                <span>GitHub</span>
+                <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Right Column: Contact Form (Your Name, Your Email, Subject, Your Message, Send Message) -->
+          <div class="contact-form-box">
+            <form id="contactForm" action="https://formspree.io/f/xdkogpvr" method="POST" novalidate>
+              <div class="hp-trap" aria-hidden="true">
+                <label for="botField">Do not fill this out</label>
+                <input type="text" id="botField" name="_gotcha" tabindex="-1" autocomplete="off" />
+              </div>
+
+              <div class="field-group">
+                <label for="senderName" class="field-label">Your Name *</label>
+                <input
+                  type="text"
+                  id="senderName"
+                  name="name"
+                  class="field-input"
+                  placeholder="Your Name"
+                  required
+                  autocomplete="name"
+                />
+              </div>
+
+              <div class="field-group">
+                <label for="senderEmail" class="field-label">Your Email *</label>
+                <input
+                  type="email"
+                  id="senderEmail"
+                  name="email"
+                  class="field-input"
+                  placeholder="you@example.com"
+                  required
+                  autocomplete="email"
+                />
+              </div>
+
+              <div class="field-group">
+                <label for="senderSubject" class="field-label">Subject *</label>
+                <input
+                  type="text"
+                  id="senderSubject"
+                  name="subject"
+                  class="field-input"
+                  placeholder="Frontend Developer Opportunity / Project Inquiry"
+                  required
+                />
+              </div>
+
+              <div class="field-group">
+                <label for="senderMessage" class="field-label">Your Message *</label>
+                <textarea
+                  id="senderMessage"
+                  name="message"
+                  class="field-textarea"
+                  placeholder="Tell me about the role or project you have in mind..."
+                  required
+                ></textarea>
+              </div>
+
+              <button type="submit" class="btn btn--yellow btn--lg" id="submitFormBtn">
+                Send Message →
+              </button>
+
+              <div id="formStatusBanner" class="status-msg-box" role="status" aria-live="polite"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==========================================================================
+       10. FOOTER (BLACK #111111, WHITE TEXT)
+       ========================================================================== -->
+  <footer class="band band--black" style="padding: 2.85rem 0;">
+    <div class="wrap" style="display:flex; flex-direction:column; gap:1.5rem;">
+      <div style="display:flex; flex-wrap:wrap; align-items:flex-start; justify-content:space-between; gap:1.5rem;">
+        <div>
+          <p style="font-family:var(--font-head); font-weight:800; font-size:1.3rem;">
+            ROHIT PANT — Frontend Developer
+          </p>
+          <p style="margin-top:0.35rem; color:var(--c-cream); font-size:1rem;">
+            Building responsive interfaces and continuously improving my craft.
+          </p>
+        </div>
+
+        <ul style="display:flex; flex-wrap:wrap; gap:1.25rem; list-style:none; font-family:var(--font-mono); font-size:0.875rem; font-weight:700;">
+          <li><a href="#hero" style="text-decoration:underline;">Home</a></li>
+          <li><a href="#about" style="text-decoration:underline;">About</a></li>
+          <li><a href="#work" style="text-decoration:underline;">Projects</a></li>
+          <li><a href="#experience" style="text-decoration:underline;">Experience</a></li>
+          <li><a href="#skills" style="text-decoration:underline;">Skills</a></li>
+          <li><a href="#contact" style="text-decoration:underline;">Contact</a></li>
+          <li><a href="https://github.com/Rohit30418" target="_blank" rel="noopener noreferrer" style="text-decoration:underline;">GitHub</a></li>
+          <li><a href="https://www.linkedin.com/in/rohitpantdev/" target="_blank" rel="noopener noreferrer" style="text-decoration:underline;">LinkedIn</a></li>
+        </ul>
+      </div>
+
+      <div style="border-top: 1px solid rgba(255,253,245,0.2); padding-top: 1.15rem; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:1rem;">
+        <p class="mono-sm" style="font-weight:400;">
+          © <span id="currentYear">2026</span> Rohit Pant. All rights reserved.
+        </p>
+        <a href="#hero" class="mono-sm" style="color:var(--c-yellow); text-decoration:underline;">Back to top ↑</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+       ACCESSIBLE PROJECT STORY MODAL (KEYBOARD ESCAPE + FOCUS TRAP, NO VIEW CODE)
+       ========================================================================== -->
+  <div
+    class="story-backdrop"
+    id="storyModalBackdrop"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="storyModalTitle"
+    aria-hidden="true"
+  >
+    <div class="story-dialog">
+      <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; padding-bottom:1rem; border-bottom:var(--border-main);">
+        <div>
+          <span class="flat-tag" id="storyModalTag" style="background-color:var(--c-yellow);">Project Story</span>
+          <h2 id="storyModalTitle" style="font-size:1.75rem; margin-top:0.5rem;">Project Name</h2>
+          <p id="storyModalTagline" class="mono-sm" style="margin-top:0.25rem;"></p>
+        </div>
+        <button type="button" class="btn btn--yellow btn--sm" id="closeStoryModalBtn" aria-label="Close project story modal">
+          Close ✕
+        </button>
+      </div>
+
+      <div class="story-section-box" style="background-color:var(--c-cream);">
+        <span class="mono-sm">TECHNOLOGIES &amp; FLOW</span>
+        <p id="storyModalArch" class="mono-sm" style="margin-top:0.35rem; font-weight:400;"></p>
+      </div>
+
+      <div class="story-section-box">
+        <span class="mono-sm" style="background-color:var(--c-yellow); padding:0.1rem 0.5rem; border:2px solid #000; border-radius:4px;">1. Overview &amp; Goal</span>
+        <p id="storyModalProblem" style="margin-top:0.5rem; white-space:pre-line;"></p>
+      </div>
+
+      <div class="story-section-box">
+        <span class="mono-sm" style="background-color:var(--c-mint); padding:0.1rem 0.5rem; border:2px solid #000; border-radius:4px;">2. Key Features Built</span>
+        <p id="storyModalBuilt" style="margin-top:0.5rem; white-space:pre-line;"></p>
+      </div>
+
+      <div class="story-section-box">
+        <span class="mono-sm" style="background-color:var(--c-lavender); padding:0.1rem 0.5rem; border:2px solid #000; border-radius:4px;">3. Frontend Implementation</span>
+        <p id="storyModalDecisions" style="margin-top:0.5rem; white-space:pre-line;"></p>
+      </div>
+
+      <div class="story-section-box">
+        <span class="mono-sm" style="background-color:var(--c-orange); padding:0.1rem 0.5rem; border:2px solid #000; border-radius:4px;">4. Takeaway &amp; Scope</span>
+        <p id="storyModalLimits" style="margin-top:0.5rem; white-space:pre-line;"></p>
+      </div>
+
+      <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:1rem; margin-top:1.5rem; padding-top:1rem; border-top:var(--border-main);">
+        <div style="display:flex; flex-wrap:wrap; gap:0.75rem;">
+          <a href="https://rohitpant.in" target="_blank" rel="noopener noreferrer" class="btn btn--yellow btn--sm" id="storyModalLiveLink">
+            Live Demo ↗
+          </a>
+        </div>
+        <button type="button" class="btn btn--white btn--sm" id="closeStoryBottomBtn">
+          Done reading
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Popup -->
+  <div id="toastPopup" class="toast-popup" role="status" aria-live="polite"></div>
+
+  <!-- ==========================================================================
+       JAVASCRIPT: STICKER-SLAP LOADER, SCROLL ANIMATIONS, MODALS & FORMSPREE
+       ========================================================================== -->
+  <script>
+    (function () {
+      'use strict';
+
+      const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      /* ------------------------------------------------------------------------
+         1. "STICKER SLAP" LOADER OVERLAY
+         - Added by JS only so page is 100% visible if JS fails
+         - Skipped when prefers-reduced-motion is on
+         - Shown once per visit via sessionStorage (wrapped in try/catch)
+         - Min visible ~600ms, total <= 1s, click or any key removes immediately
+         ------------------------------------------------------------------------ */
+      (function initStickerLoader() {
+        if (reducedMotion) return;
+
+        let alreadySeen = false;
+        try {
+          alreadySeen = sessionStorage.getItem('rp_sticker_loader_seen') === '1';
+          sessionStorage.setItem('rp_sticker_loader_seen', '1');
+        } catch (e) {
+          alreadySeen = false;
+        }
+        if (alreadySeen) return;
+
+        const overlay = document.createElement('div');
+        overlay.className = 'sticker-loader-overlay';
+        overlay.setAttribute('aria-hidden', 'true');
+        overlay.innerHTML =
+          '<div class="loader-stage">' +
+            '<div class="loader-rp-box">RP</div>' +
+            '<div class="loader-smiley-box">' +
+              '<svg width="42" height="42" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+                '<circle cx="15" cy="16" r="3.5" fill="#000000"/>' +
+                '<circle cx="29" cy="16" r="3.5" fill="#000000"/>' +
+                '<path d="M12 26C15 33 29 33 32 26" stroke="#000000" stroke-width="3.5" stroke-linecap="round"/>' +
+              '</svg>' +
+            '</div>' +
+          '</div>';
+
+        document.body.appendChild(overlay);
+
+        const startTime = performance.now();
+        let dismissed = false;
+
+        function dismissLoader(immediate) {
+          if (dismissed) return;
+          dismissed = true;
+          window.removeEventListener('keydown', onImmediateDismiss);
+          overlay.removeEventListener('click', onImmediateDismiss);
+
+          if (immediate) {
+            if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+            return;
+          }
+
+          overlay.classList.add('is-curtain-up');
+          setTimeout(function () {
+            if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+          }, 330);
+        }
+
+        function onImmediateDismiss() {
+          dismissLoader(true);
+        }
+
+        overlay.addEventListener('click', onImmediateDismiss);
+        window.addEventListener('keydown', onImmediateDismiss);
+
+        function scheduleHide() {
+          const elapsed = performance.now() - startTime;
+          const wait = Math.max(0, 620 - elapsed);
+          setTimeout(function () {
+            dismissLoader(false);
+          }, wait);
+        }
+
+        if (document.readyState === 'complete') {
+          scheduleHide();
+        } else {
+          window.addEventListener('load', scheduleHide, { once: true });
+          setTimeout(function () {
+            dismissLoader(false);
+          }, 680);
+        }
+      })();
+
+      /* ------------------------------------------------------------------------
+         2. IMAGE FALLBACK HANDLER
+         ------------------------------------------------------------------------ */
+      document.querySelectorAll('img[data-fallback-target]').forEach(function (img) {
+        function showFallback() {
+          const id = img.getAttribute('data-fallback-target');
+          const box = id ? document.getElementById(id) : img.parentElement;
+          if (box) box.classList.add('is-fallback');
+        }
+        img.addEventListener('error', showFallback);
+        if (img.complete && img.naturalWidth === 0) {
+          showFallback();
+        }
+      });
+
+      /* ------------------------------------------------------------------------
+         3. SCROLL ANIMATIONS (IntersectionObserver, run once per element)
+         ------------------------------------------------------------------------ */
+      if (!reducedMotion && 'IntersectionObserver' in window) {
+        const scrollObs = new IntersectionObserver(function (entries, obs) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            const el = entry.target;
+
+            if (el.classList.contains('settle-sticker')) {
+              el.classList.add('is-settled');
+            }
+            if (el.classList.contains('work-row')) {
+              el.classList.add('is-inview');
+            }
+            if (el.classList.contains('curly-connector')) {
+              el.classList.add('is-drawn');
+            }
+            if (el.id === 'whatCardsRow') {
+              el.classList.add('is-spread');
+            }
+            if (el.classList.contains('marker-lime')) {
+              el.classList.add('is-highlighted');
+            }
+
+            obs.unobserve(el);
+          });
+        }, { threshold: 0.16 });
+
+        document.querySelectorAll('.settle-sticker, .work-row, .curly-connector, #whatCardsRow, .marker-lime').forEach(function (el) {
+          scrollObs.observe(el);
+        });
+      } else {
+        document.querySelectorAll('.settle-sticker').forEach(function (el) { el.classList.add('is-settled'); });
+        document.querySelectorAll('.work-row').forEach(function (el) { el.classList.add('is-inview'); });
+        document.querySelectorAll('.curly-connector').forEach(function (el) { el.classList.add('is-drawn'); });
+        const whatRow = document.getElementById('whatCardsRow');
+        if (whatRow) whatRow.classList.add('is-spread');
+        document.querySelectorAll('.marker-lime').forEach(function (el) { el.classList.add('is-highlighted'); });
+      }
+
+      /* ------------------------------------------------------------------------
+         4. SCROLL PROGRESS BAR (scaleX) & SUBTLE HERO STICKER PARALLAX (rAF)
+         ------------------------------------------------------------------------ */
+      const progressBar = document.getElementById('scrollProgressBar');
+      const parallaxStickers = document.querySelectorAll('[data-parallax-speed]');
+      let ticking = false;
+
+      function updateOnScroll() {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop || 0;
+        const docHeight = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+        const ratio = Math.min(1, Math.max(0, scrollTop / docHeight));
+
+        if (progressBar) {
+          progressBar.style.transform = 'scaleX(' + ratio.toFixed(4) + ')';
+        }
+
+        if (!reducedMotion && scrollTop < 900) {
+          parallaxStickers.forEach(function (sticker) {
+            const speed = parseFloat(sticker.getAttribute('data-parallax-speed')) || 0;
+            const offset = Math.max(-12, Math.min(12, scrollTop * speed));
+            sticker.style.setProperty('--parallax-y', offset.toFixed(1) + 'px');
+          });
+        }
+
+        ticking = false;
+      }
+
+      window.addEventListener('scroll', function () {
+        if (!ticking) {
+          requestAnimationFrame(updateOnScroll);
+          ticking = true;
+        }
+      }, { passive: true });
+      updateOnScroll();
+
+      /* ------------------------------------------------------------------------
+         5. PROJECT CASE STUDY STORIES (Modal Data — Honest, Recruiter-Friendly)
+         ------------------------------------------------------------------------ */
+      const STORIES = {
+        eventhive: {
+          tag: 'Event Management Platform',
+          title: 'EventHive',
+          tagline: 'A platform for discovering events and managing event-related activities, with organizer tools and administrative views.',
+          arch: 'React · TypeScript · Firebase | Visitor Discovery → Event Details & Registration → Organizer Tools → Administrative Views',
+          problem: 'An event platform serves visitors, organizers, and administrators, each needing clear navigation and dedicated views without cluttering the interface.',
+          built: '1. Public event discovery and event detail views.\n2. Organizer workflows for creating and managing event activities.\n3. Administrative views for reviewing events and registrations.\n4. Responsive layouts and clear loading, empty, and error states.',
+          decisions: 'Built with React and TypeScript to practice component-based architecture, typed props and state, role-based routing, and Firebase integration.',
+          limits: 'Built as an independent personal project to strengthen React and TypeScript skills alongside my professional UI development work.',
+          liveUrl: 'https://eventhive.rohitpant.in/'
+        },
+        vaani: {
+          tag: 'Real-Time Communication App',
+          title: 'Vaani',
+          tagline: 'A communication application exploring real-time audio and video interactions, peer connections, and Firebase-powered functionality.',
+          arch: 'React · WebRTC · PeerJS · Firebase | Device Setup → Join Room → Peer Connection → Audio/Video Controls',
+          problem: 'Real-time communication interfaces require clear camera and microphone controls, participant status feedback, and smooth room transitions.',
+          built: '1. Pre-join device preview and audio/video toggle controls.\n2. Peer-to-peer connection handling with WebRTC and PeerJS.\n3. Room coordination and participant presence backed by Firebase.\n4. Responsive call interface designed for desktop and mobile screens.',
+          decisions: 'Focused on handling asynchronous media states cleanly in React and providing clear visual indicators for mute, camera, and connection status.',
+          limits: 'Personal project built to explore WebRTC, PeerJS, and real-time React state management.',
+          liveUrl: 'https://vaani.rohitpant.in/'
+        },
+        khareedo: {
+          tag: 'E-commerce Web Application',
+          title: 'Khareedo',
+          tagline: 'An online shopping experience featuring product discovery, product filtering, and cart-related interactions.',
+          arch: 'React · Vite · Tailwind CSS · Firebase · DummyJSON | Catalogue Browse → Filter & Search → Cart Management → Demo Checkout',
+          problem: 'E-commerce interfaces need fast product browsing, intuitive multi-criteria filtering, and predictable cart updates across sessions.',
+          built: '1. Product catalogue powered by DummyJSON data with category, price, and search filtering.\n2. Interactive shopping cart with quantity controls and state persistence.\n3. Firebase authentication and account views.\n4. Responsive storefront styled with Tailwind CSS.',
+          decisions: 'Used React with Vite and Tailwind CSS to build reusable product cards, filter controls, and clean cart state transitions.',
+          limits: 'Personal e-commerce demonstration project with simulated checkout flow.',
+          liveUrl: 'https://khareedo.rohitpant.in/'
+        },
+        argus: {
+          tag: 'Browser QA & Testing Tool',
+          title: 'Argus',
+          tagline: 'A browser-testing project designed to explore automated website checks and present testing results through a developer-focused workflow.',
+          arch: 'JavaScript · Node.js · Express · Playwright | Target URL → Automated Browser Checks → Structured QA Findings',
+          problem: 'Running repeatable browser checks manually across pages is time-consuming and makes it easy to miss broken links, console errors, or layout issues.',
+          built: '1. Automated page inspection workflow powered by Playwright.\n2. Express and Node.js service for triggering scans and collecting results.\n3. Developer-focused report view summarizing findings and reproduction details.',
+          decisions: 'Focused on presenting automated browser check results clearly so developers can review issues quickly.',
+          limits: 'Personal developer-tooling project built to explore browser automation with Playwright and Node.js.',
+          liveUrl: 'https://argus-pro-a2px.onrender.com'
+        }
+      };
+
+      /* 6. Toast Helper */
+      const toastEl = document.getElementById('toastPopup');
+      let toastTimer = null;
+      function showToast(text) {
+        if (!toastEl) return;
+        toastEl.textContent = text;
+        toastEl.classList.add('is-visible');
+        if (toastTimer) clearTimeout(toastTimer);
+        toastTimer = setTimeout(function () {
+          toastEl.classList.remove('is-visible');
+        }, 3500);
+      }
+
+      /* 7. Mobile Menu Toggle */
+      const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+      const navLinksList = document.getElementById('navLinksList');
+      if (mobileMenuBtn && navLinksList) {
+        mobileMenuBtn.addEventListener('click', function () {
+          const isOpen = mobileMenuBtn.getAttribute('aria-expanded') === 'true';
+          mobileMenuBtn.setAttribute('aria-expanded', String(!isOpen));
+          navLinksList.classList.toggle('is-open', !isOpen);
+        });
+
+        navLinksList.querySelectorAll('a').forEach(function (link) {
+          link.addEventListener('click', function () {
+            mobileMenuBtn.setAttribute('aria-expanded', 'false');
+            navLinksList.classList.remove('is-open');
+          });
+        });
+
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape' && navLinksList.classList.contains('is-open')) {
+            mobileMenuBtn.setAttribute('aria-expanded', 'false');
+            navLinksList.classList.remove('is-open');
+            mobileMenuBtn.focus();
+          }
+        });
+      }
+
+      /* 8. Story Modal with Escape & Focus Trap */
+      const storyBackdrop = document.getElementById('storyModalBackdrop');
+      const closeStoryModalBtn = document.getElementById('closeStoryModalBtn');
+      const closeStoryBottomBtn = document.getElementById('closeStoryBottomBtn');
+      let lastTrigger = null;
+
+      function openStoryModal(id, trigger) {
+        const item = STORIES[id];
+        if (!item || !storyBackdrop) return;
+        lastTrigger = trigger || document.activeElement;
+
+        document.getElementById('storyModalTag').textContent = item.tag;
+        document.getElementById('storyModalTitle').textContent = item.title;
+        document.getElementById('storyModalTagline').textContent = item.tagline;
+        document.getElementById('storyModalArch').textContent = item.arch;
+        document.getElementById('storyModalProblem').textContent = item.problem;
+        document.getElementById('storyModalBuilt').textContent = item.built;
+        document.getElementById('storyModalDecisions').textContent = item.decisions;
+        document.getElementById('storyModalLimits').textContent = item.limits;
+
+        const liveLink = document.getElementById('storyModalLiveLink');
+        liveLink.href = item.liveUrl;
+
+        storyBackdrop.classList.add('is-open');
+        storyBackdrop.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+
+        setTimeout(function () {
+          if (closeStoryModalBtn) closeStoryModalBtn.focus();
+        }, 20);
+      }
+
+      function closeStoryModal() {
+        if (!storyBackdrop || !storyBackdrop.classList.contains('is-open')) return;
+        storyBackdrop.classList.remove('is-open');
+        storyBackdrop.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        if (lastTrigger && typeof lastTrigger.focus === 'function') {
+          lastTrigger.focus();
+        }
+      }
+
+      document.querySelectorAll('button[data-story-id]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          openStoryModal(btn.getAttribute('data-story-id'), btn);
+        });
+      });
+
+      if (closeStoryModalBtn) closeStoryModalBtn.addEventListener('click', closeStoryModal);
+      if (closeStoryBottomBtn) closeStoryBottomBtn.addEventListener('click', closeStoryModal);
+      if (storyBackdrop) {
+        storyBackdrop.addEventListener('click', function (e) {
+          if (e.target === storyBackdrop) closeStoryModal();
+        });
+      }
+
+      document.addEventListener('keydown', function (e) {
+        if (!storyBackdrop || !storyBackdrop.classList.contains('is-open')) return;
+        if (e.key === 'Escape') {
+          e.preventDefault();
+          closeStoryModal();
+          return;
+        }
+        if (e.key === 'Tab') {
+          const focusable = storyBackdrop.querySelectorAll('button, [href], [tabindex]:not([tabindex="-1"])');
+          if (!focusable.length) return;
+          const first = focusable[0];
+          const last = focusable[focusable.length - 1];
+          if (e.shiftKey && document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          } else if (!e.shiftKey && document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
+      });
+
+      /* 9. Copy Email Button */
+      const copyEmailBtn = document.getElementById('copyEmailBtn');
+      if (copyEmailBtn) {
+        copyEmailBtn.addEventListener('click', function () {
+          const email = 'rohitpant090@gmail.com';
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(email).then(function () {
+              showToast('Copied rohitpant090@gmail.com!');
+            }).catch(function () {
+              fallbackCopyEmail(email);
+            });
+          } else {
+            fallbackCopyEmail(email);
+          }
+        });
+      }
+
+      function fallbackCopyEmail(text) {
+        const area = document.createElement('textarea');
+        area.value = text;
+        area.style.position = 'fixed';
+        area.style.opacity = '0';
+        document.body.appendChild(area);
+        area.select();
+        try {
+          document.execCommand('copy');
+          showToast('Copied rohitpant090@gmail.com!');
+        } catch (err) {
+          showToast('Email: rohitpant090@gmail.com');
+        }
+        document.body.removeChild(area);
+      }
+
+      /* 10. Contact Form via Formspree (with Subject field) */
+      const contactForm = document.getElementById('contactForm');
+      const formStatusBanner = document.getElementById('formStatusBanner');
+      const submitFormBtn = document.getElementById('submitFormBtn');
+
+      if (contactForm) {
+        contactForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+
+          const botVal = document.getElementById('botField').value;
+          if (botVal) return;
+
+          const name = document.getElementById('senderName').value.trim();
+          const email = document.getElementById('senderEmail').value.trim();
+          const subject = document.getElementById('senderSubject').value.trim();
+          const message = document.getElementById('senderMessage').value.trim();
+
+          if (!name || !email || !subject || !message) {
+            formStatusBanner.textContent = 'Please fill in your name, email, subject, and message before sending.';
+            formStatusBanner.classList.add('is-error', 'is-visible');
+            return;
+          }
+
+          formStatusBanner.classList.remove('is-error');
+          submitFormBtn.disabled = true;
+          submitFormBtn.textContent = 'Sending...';
+
+          fetch(contactForm.getAttribute('action'), {
+            method: 'POST',
+            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: name, email: email, subject: subject, message: message })
+          }).then(function (res) {
+            submitFormBtn.disabled = false;
+            submitFormBtn.textContent = 'Send Message →';
+            if (res.ok) {
+              formStatusBanner.textContent = 'Thanks, ' + name + '! Your message has been sent.';
+              formStatusBanner.classList.add('is-visible');
+              contactForm.reset();
+            } else {
+              throw new Error('Form endpoint returned an error');
+            }
+          }).catch(function () {
+            submitFormBtn.disabled = false;
+            submitFormBtn.textContent = 'Send Message →';
+            const mailtoUrl = 'mailto:rohitpant090@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(message + '\n\nFrom: ' + name + ' (' + email + ')');
+            formStatusBanner.innerHTML = 'Could not reach Formspree right now — <a href="' + mailtoUrl + '" style="text-decoration:underline;">click here to send via your email app</a>.';
+            formStatusBanner.classList.add('is-error', 'is-visible');
+          });
+        });
+      }
+
+      const yearSpan = document.getElementById('currentYear');
+      if (yearSpan) yearSpan.textContent = String(new Date().getFullYear());
+    })();
+  </script>
+</body>
+</html>
